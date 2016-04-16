@@ -20,6 +20,6 @@ export class Vase {
 		this.sprite.body.clearShapes();
 		this.sprite.body.loadPolygon("rcvp", spriteName);
 		this.sprite.body.setCollisionGroup(clsn.vaseCollisionGroup);
-		this.sprite.body.collides(clsn.getCatGroup());
+		this.sprite.body.collides(clsn.catCollisionGroup);
 	}
 }
