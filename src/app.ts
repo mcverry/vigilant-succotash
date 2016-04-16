@@ -12,13 +12,12 @@ class SimpleGame {
     }
 
     public create() {
-        let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
+        let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");  
         logo.anchor.setTo(0.5, 0.5);
     }
 
 }
 
 window.onload = () => {
-    
     let game = new SimpleGame();
 };

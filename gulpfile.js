@@ -31,7 +31,15 @@ var gulp        = require("gulp"),
     istanbul    = require("gulp-istanbul"),
     watch       = require("gulp-watch"),
     browserSync = require('browser-sync').create();
-    
+
+
+function swallowError (error) {
+
+  // If you want details of the error in the console
+  console.log(error.toString());
+  //this.emit('error');
+}    
+
 
 //******************************************************************************
 //* LINT
@@ -107,6 +115,7 @@ gulp.task("watch", function(){
 });
 
 gulp.task('default', function() {
+    console.log("Starting build!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     runSequence('build', 'bundle-assets', 'bundle-libs', 'bundle');
 });
 
