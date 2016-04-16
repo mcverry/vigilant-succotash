@@ -10,7 +10,7 @@ var builddir = config.builddir || null;
 var destdir = config.destdir || null;
 var deploydir = config.deploydir || null;
 var entryJsFile = builddir + "/app.js";
-var libraryName = "lodumdare";
+var libraryName = "ludumdare";
 
 console.log(config);
 

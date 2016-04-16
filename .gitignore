@@ -3,3 +3,4 @@ node_modules/
 envconfig/**
 !envconfig/myconfig.template.json
 **/*.js
+.vscode/
