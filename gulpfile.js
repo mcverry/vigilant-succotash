@@ -82,7 +82,7 @@ gulp.task("bundle", function() {
 
 gulp.task("deploy", function() {
     
-    if (deployDir === undefined)
+    if (deploydir === null)
     {
         console.log("Can't deploy, no target deploy folder 'deploydir' in config");
         return;
