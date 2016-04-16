@@ -1,5 +1,7 @@
 const DEBUG:boolean = true;
 
+import { CollisionManager } from "./CollisionManager";
+
 export class CatLeg {
 	private MAX_FORCE: number = 20000;
 
