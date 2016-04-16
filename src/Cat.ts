@@ -165,22 +165,22 @@ export class Cat {
 		this.catBody.body.setRectangle(width, height);
 		this.catBody.body.mass = 20;
 
-		/*let frontLeftLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
+		let frontLeftLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
 		let frontRightLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
 		let backLeftLeg = new CatLeg(this.game, this, x + (width / 2), y + (height / 2), width / 2, height / 2);
 		let backRightLeg = new CatLeg(this.game, this, x + (width / 2), y + (height / 2), width / 2, height / 2);
-*/
+
 		this.catBody.body.setCollisionGroup(myCollisions.catCollisionGroup);
-		/*frontLeftLeg.setCollisionGroup(myCollisions.catCollisionGroup);
+		frontLeftLeg.setCollisionGroup(myCollisions.catCollisionGroup);
 		frontRightLeg.setCollisionGroup(myCollisions.catCollisionGroup);
 		backLeftLeg.setCollisionGroup(myCollisions.catCollisionGroup);
-		backRightLeg.setCollisionGroup(myCollisions.catCollisionGroup);*/
+		backRightLeg.setCollisionGroup(myCollisions.catCollisionGroup);
 
 		this.catBody.body.collides([myCollisions.vaseCollisionGroup]);
-		/*frontLeftLeg.collides([myCollisions.vaseCollisionGroup]);
+		frontLeftLeg.collides([myCollisions.vaseCollisionGroup]);
 		frontRightLeg.collides([myCollisions.vaseCollisionGroup]);
 		backLeftLeg.collides([myCollisions.vaseCollisionGroup]);
-		backRightLeg.collides([myCollisions.vaseCollisionGroup]);*/
+		backRightLeg.collides([myCollisions.vaseCollisionGroup]);
 
 		let tail = new CatTail(this.game, this, x - (width/2), y - (height/2), -width / 2, -height / 2);
 		tail.setCollisionGroup(myCollisions.catCollisionGroup);
