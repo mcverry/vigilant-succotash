@@ -1,5 +1,5 @@
 /// <reference path="../definitions/phaser.d.ts"/>
-import { Cat } from "./Cat";
+import { Cat, CollisionManager } from "./Cat";
 
 class SimpleGame {
 
@@ -20,7 +20,8 @@ class SimpleGame {
         this.game.physics.startSystem(Phaser.Physics.P2JS);
        // this.game.physics.p2.gravity.y = 1200;
 
-        let cat = new Cat(this.game, 200, 200, 100, 30);
+        let collisions = new CollisionManager(this.game);
+        let cat = new Cat(this.game, collisions, 200, 200, 100, 30);
 
         // let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
         // logo.anchor.setTo(0.5, 0.5);
