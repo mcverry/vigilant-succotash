@@ -1,4 +1,5 @@
 .DS_Store
 node_modules/
 envconfig/**
-!envconfig/myconfig.template.js
+!envconfig/myconfig.template.json
+**/*.js
