@@ -16,18 +16,20 @@ class SimpleGame {
         //this.game.load.image("logo", "phaser.png");
 
         this.game.load.image('really_crappy_vase_sprite', 'really-crappy-vase-sprite.png');
-        this.game.load.physics('really_crappy_vase_physics', 'really-crappy-vase-sprite.json');
+        this.game.load.image('super-crappy-tall-vase', 'super-crappy-tall-vase.png');
+        this.game.load.physics('rcvp', 'vases.json');
 
     }
 
     public create() {
 
         this.game.physics.startSystem(Phaser.Physics.P2JS);
-       this.game.physics.p2.gravity.y = 1200;
+        this.game.physics.p2.gravity.y = 1200;
+        this.game.physics.p2.setBounds(0, 0, 800, 600, true, true, true, true, true);
 
         let collisions = new CollisionManager(this.game);
-        let cat = new Cat(this.game, collisions, 200, 200, 100, 30);
-        let vase = new Vase(this.game, 400, 400, 'really_crappy_vase_sprite');
+        let cat = new Cat(this.game, collisions, 400, 200, 100, 30);
+        let vase = new Vase(this.game, 400, 400, 'super-crappy-tall-vase', collisions);
 
 
         // let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
