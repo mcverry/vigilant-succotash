@@ -1,7 +1,20 @@
 const DEBUG:boolean = true;
 
-const LEG_GROUP = 2;
-const BODY_GROUP = 4;
+export class CollisionManager {
+	public frontLeftLegCollisionGroup: Phaser.Physics.P2.CollisionGroup;
+	public frontRightLegCollisionGroup: Phaser.Physics.P2.CollisionGroup;
+	public backLeftLegCollisionGroup: Phaser.Physics.P2.CollisionGroup;
+	public backRightLegCollisionGroup: Phaser.Physics.P2.CollisionGroup;
+	public bodyCollisionGroup: Phaser.Physics.P2.CollisionGroup;
+
+	constructor(game: Phaser.Game) {
+		this.frontLeftLegCollisionGroup = game.physics.p2.createCollisionGroup();
+		this.frontRightLegCollisionGroup = game.physics.p2.createCollisionGroup();
+		this.backLeftLegCollisionGroup = game.physics.p2.createCollisionGroup();
+		this.backRightLegCollisionGroup = game.physics.p2.createCollisionGroup();
+		this.bodyCollisionGroup = game.physics.p2.createCollisionGroup();
+	}
+}
 
 export class CatLeg {
 	private MAX_FORCE: number = 20000;
@@ -12,31 +25,31 @@ export class CatLeg {
 	private legTop: Phaser.Sprite;
 
 	constructor(
-		game:Phaser.Game,
-		body:Cat,
-		x:number,
-		y:number,
+		game: Phaser.Game,
+		body: Cat,
+		x: number,
+		y: number,
 		attachX: number,
 		attachY: number
 	) {
 		this.legTop = game.add.sprite(x, y + (this.height / 2), 'cat_leg', 1);
 		game.physics.p2.enable(this.legTop, DEBUG);
 		game.physics.p2.createRevoluteConstraint(this.legTop, [-this.width / 2, -this.height / 2], body.body, [attachX, attachY], this.MAX_FORCE);
-		this.legTop.body.clearCollision(true, true);
+
 		this.legTop.body.setRectangle(this.width, this.height);
 		this.legTop.body.mass = 10;
+	}
+
+	public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {
+		this.legTop.body.setCollisionGroup(collisionGroup);
 	}
 }
 
 export class Cat {
-
-	private debug: boolean = true;
-
 	public body: Phaser.Sprite;
-
 	private game: Phaser.Game;
 
-	public constructor(game:Phaser.Game, x:number, y:number, width: number, height: number) {
+	public constructor(game: Phaser.Game, myCollisions: CollisionManager, x: number, y: number, width: number, height: number) {
 		this.game = game;
 
 		this.body = game.add.sprite(x, y, 'cat_body');
@@ -45,9 +58,12 @@ export class Cat {
 		this.body.body.velocity.x = 100;
 		this.body.body.mass = 20;
 
-		var frontLeftLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2),-width / 2, height / 2);
+		let frontLeftLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
+		let frontRightLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
 
-		var frontRightLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
+		this.body.body.setCollisionGroup(myCollisions.bodyCollisionGroup);
+		frontLeftLeg.setCollisionGroup(myCollisions.frontLeftLegCollisionGroup);
+		frontRightLeg.setCollisionGroup(myCollisions.frontRightLegCollisionGroup);
 	}
 
 
