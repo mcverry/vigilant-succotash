@@ -4,3 +4,6 @@ envconfig/**
 !envconfig/myconfig.template.json
 **/*.js
 .vscode/
+dist/
+build/
+deploy/
