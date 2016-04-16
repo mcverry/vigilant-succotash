@@ -16,6 +16,7 @@ class SimpleGame {
     }
 
     public create() {
+
         this.game.physics.startSystem(Phaser.Physics.P2JS);
        // this.game.physics.p2.gravity.y = 1200;
 
@@ -28,6 +29,5 @@ class SimpleGame {
 }
 
 window.onload = () => {
-
     let game = new SimpleGame();
 };
