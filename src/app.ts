@@ -1,6 +1,7 @@
 /// <reference path="../definitions/phaser.d.ts"/>
 
-import { Cat, CollisionManager } from "./Cat";
+import { CollisionManager } from "./CollisionManager";
+import { Cat } from "./Cat";
 import { Vase } from "./Vase";
 
 class SimpleGame {
