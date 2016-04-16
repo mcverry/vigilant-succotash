@@ -2,6 +2,13 @@ const DEBUG:boolean = true;
 
 import { CollisionManager } from "./CollisionManager";
 
+export class CatTail {
+	private JOINT_MASS: number = 5;
+
+	public joints: number = 10;
+	public jointLength: number = 0.5;
+}
+
 export class CatLeg {
 	private MAX_FORCE: number = 20000;
 	private KNEE_FOLD_ADJUST: number = 0.5;
@@ -24,7 +31,12 @@ export class CatLeg {
 	) {
 		this.legTop = game.add.sprite(x, y + (this.height / 2), 'cat_leg', 1);
 		game.physics.p2.enable(this.legTop, DEBUG);
-		let hip : Phaser.Physics.P2.RevoluteConstraint = game.physics.p2.createRevoluteConstraint(this.legTop, [-this.width / 2, -this.height / 2], body.catBody, [attachX, attachY], this.MAX_FORCE);
+		let hip : Phaser.Physics.P2.RevoluteConstraint
+			= game.physics.p2.createRevoluteConstraint(this.legTop,
+																									[-this.width / 2, -this.height / 2],
+																									body.catBody,
+																									[attachX, attachY],
+																									this.MAX_FORCE);
 		hip.setLimits(-Math.PI / 2, Math.PI / 2);
 		this.legTop.body.setRectangle(this.width, this.height);
 		this.legTop.body.mass = this.LEG_PART_MASS;
@@ -33,14 +45,24 @@ export class CatLeg {
 		game.physics.p2.enable(this.legMid, DEBUG);
 		this.legMid.body.setRectangle(this.width, this.height);
 		this.legMid.body.mass = this.LEG_PART_MASS;
-		let knee  : Phaser.Physics.P2.RevoluteConstraint = game.physics.p2.createRevoluteConstraint(this.legMid, [0, -this.height / 2], this.legTop, [0, this.height / 2], this.MAX_FORCE);
+		let knee  : Phaser.Physics.P2.RevoluteConstraint
+			= game.physics.p2.createRevoluteConstraint(this.legMid,
+																									[0, -this.height / 2],
+																									this.legTop,
+																									[0, this.height / 2],
+																									this.MAX_FORCE);
 		knee.setLimits(-Math.PI - this.KNEE_FOLD_ADJUST, 0);
 
 		this.legBot = game.add.sprite(this.legMid.x, this.legMid.y + (this.height / 2), 'cat_leg', 1);
 		game.physics.p2.enable(this.legBot, DEBUG);
 		this.legBot.body.setRectangle(this.width, this.height);
 		this.legBot.body.mass = this.LEG_PART_MASS;
-		let ankle: Phaser.Physics.P2.RevoluteConstraint = game.physics.p2.createRevoluteConstraint(this.legBot, [0, -this.height / 2], this.legMid, [0, this.height / 2], this.MAX_FORCE);
+		let ankle: Phaser.Physics.P2.RevoluteConstraint
+			= game.physics.p2.createRevoluteConstraint(this.legBot,
+																									[0, -this.height / 2],
+																									this.legMid,
+																									[0, this.height / 2],
+																									this.MAX_FORCE);
 		ankle.setLimits(-Math.PI - this.KNEE_FOLD_ADJUST, 0);
 	}
 
@@ -89,4 +111,3 @@ export class Cat {
 
 	}
 }
-
