@@ -2,6 +2,7 @@
 
 var config = require('./envconfig/myconfig');
 
+
 var sourcedir = config.sourcedir +  "/**/**.ts";
 var testdir = config.testdir + "/**/**.ts";
 var assetsdir = config.assetsdir + "/**/*";
@@ -28,6 +29,7 @@ var gulp        = require("gulp"),
     runSequence = require("run-sequence"),
     mocha       = require("gulp-mocha"),
     istanbul    = require("gulp-istanbul"),
+    watch       = require("gulp-watch"),
     browserSync = require('browser-sync').create();
     
 
@@ -98,6 +100,11 @@ gulp.task("deploy", function() {
         .pipe(gulp.dest(deploydir))
 });
 
+gulp.task("watch", function(){
+    return watch(sourcedir, function(){
+        gulp.start("default");
+    });
+});
 
 gulp.task('default', function() {
     runSequence('build', 'bundle-assets', 'bundle-libs', 'bundle');
