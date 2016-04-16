@@ -24,12 +24,12 @@ class SimpleGame {
     public create() {
 
         this.game.physics.startSystem(Phaser.Physics.P2JS);
-        this.game.physics.p2.gravity.y = 200;
+        //this.game.physics.p2.gravity.y = 200;
         this.game.physics.p2.setBounds(0, 0, 800, 600, true, true, true, true, true);
 
         let collisions = new CollisionManager(this.game);
         let cat = new Cat(this.game, collisions, 400, 0, 100, 30);
-        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
+        //let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
 
 
         // let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
