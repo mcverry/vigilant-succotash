@@ -66,7 +66,7 @@ gulp.task("bundle-assets", function() {
     return gulp.src(assetsdir).pipe(gulp.dest(destdir + "/assets/"));
 });
 
-gulp.task("bundle", ["bundle-libs", "bundle-assets"], function() {
+gulp.task("bundle", function() {
 
     var mainTsFilePath = entryJsFile;
     var outputFileName = libraryName + ".min.js";
@@ -99,5 +99,10 @@ gulp.task("deploy", function() {
 });
 
 
-gulp.task('default', ['lint', 'build', 'bundle', 'deploy']);
-gulp.task('release', ['default', 'deploy']);
+gulp.task('default', function() {
+    runSequence('build', 'bundle-assets', 'bundle-libs', 'bundle');
+});
+
+gulp.task('release', function() {
+    runSequence('default', 'deploy')
+});
