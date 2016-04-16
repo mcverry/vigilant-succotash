@@ -3,6 +3,45 @@ const DEBUG:boolean = true;
 import { CollisionManager } from "./CollisionManager";
 import { Paw } from "./paw";
 
+export class CatHead {
+	private HEAD_MASS: number = 10;
+	private MAX_FORCE: number = 20000;
+
+	private headHeight: number = 60;
+	private headWidth: number = 60;
+
+	private headPhys: Phaser.Sprite;
+
+	constructor(
+		game: Phaser.Game,
+		body: Cat,
+		x: number,
+		y: number,
+		attachX: number,
+		attachY: number) {
+			this.headPhys = game.add.sprite(x, y, "cat_head", 1);
+			game.physics.p2.enable(this.headPhys, DEBUG);
+			this.headPhys.body.setRectangle(this.headWidth, this.headHeight);
+			this.headPhys.body.mass = this.HEAD_MASS;
+			let neck: Phaser.Physics.P2.RevoluteConstraint
+				= game.physics.p2.createRevoluteConstraint(
+					this.headPhys,
+					[0, 0],
+					body.catBody,
+					[attachX, attachY],
+					this.MAX_FORCE);
+			//neck.setLimits(-Math.PI / 2, Math.PI / 2);
+		}
+
+		public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {
+			this.headPhys.body.setCollisionGroup(collisionGroup);
+		}
+
+		public collides(collisionGroup: [Phaser.Physics.P2.CollisionGroup]) {
+			this.headPhys.body.collides(collisionGroup);
+		}
+}
+
 export class CatTail {
 	private JOINT_MASS: number = 5;
 	private MAX_FORCE: number = 20000;
@@ -199,6 +238,10 @@ export class Cat {
 		let tail = new CatTail(this.game, this, x - (width/2), y - (height/2), -width / 2, -height / 2);
 		tail.setCollisionGroup(myCollisions.catCollisionGroup);
 		tail.collides([myCollisions.vaseCollisionGroup]);
+
+		let head = new CatHead(this.game, this, x + (width/2), y - (height/2), width / 2, -height / 2);
+		head.setCollisionGroup(myCollisions.catCollisionGroup);
+		head.collides([myCollisions.vaseCollisionGroup]);
 
 	}
 }
