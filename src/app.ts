@@ -1,4 +1,6 @@
 /// <reference path="../definitions/phaser.d.ts"/>
+import { Cat } from "./Cat";
+
 class SimpleGame {
 
     private game: Phaser.Game;
@@ -8,17 +10,24 @@ class SimpleGame {
     }
 
     public preload() {
-        this.game.load.image("logo", "phaser.png");
+        //this.game.load.image("logo", "phaser.png");
+
+
     }
 
     public create() {
-        let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
-        logo.anchor.setTo(0.5, 0.5);
+        this.game.physics.startSystem(Phaser.Physics.P2JS);
+       // this.game.physics.p2.gravity.y = 1200;
+
+        let cat = new Cat(this.game, 200, 200, 100, 30);
+
+        // let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
+        // logo.anchor.setTo(0.5, 0.5);
     }
 
 }
 
 window.onload = () => {
-    
+
     let game = new SimpleGame();
 };
