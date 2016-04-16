@@ -44,7 +44,6 @@ export class Cat {
 		this.body.body.setRectangle(width, height);
 		this.body.body.velocity.x = 100;
 		this.body.body.mass = 20;
-		this.body.bodt.
 
 		var frontLeftLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2),-width / 2, height / 2);
 
