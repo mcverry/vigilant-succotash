@@ -4,16 +4,15 @@ var config = require('./envconfig/myconfig');
 
 var sourcedir = config.sourcedir +  "/**/**.ts";
 var testdir = config.testdir + "/**/**.ts";
-var assetsdir = config.assetsdir = "/**/**";
+var assetsdir = config.assetsdir + "/**/*";
+var libsdir = config.libsdir + "/**/*";
 var builddir = config.builddir || null;
 var destdir = config.destdir || null;
 var deploydir = config.deploydir || null;
-var entryJsFile = builddir + "/HelloWorld.js";
+var entryJsFile = builddir + "/app.js";
 var libraryName = "lodumdare";
 
-console.log("source dir:  " + sourcedir);
-console.log("test dir:    " + testdir);
-console.log("dest dir:    " + builddir);
+console.log(config);
 
 //******************************************************************************
 //* DEPENDENCIES
@@ -53,16 +52,23 @@ var tsProject = tsc.createProject("tsconfig.json");
 gulp.task("build", function() {
     return gulp.src([
             sourcedir,
-            "typings/main.d.ts/",
+            "definitions/**/*.d.ts"
         ])
         .pipe(tsc(tsProject))
         .js.pipe(gulp.dest(builddir));
 });
 
-gulp.task("bundle", function() {
+gulp.task("bundle-libs", function() {
+    return gulp.src(libsdir).pipe(gulp.dest(destdir + "/libs/"));
+});
+
+gulp.task("bundle-assets", function() {
+    return gulp.src(assetsdir).pipe(gulp.dest(destdir + "/assets/"));
+});
+
+gulp.task("bundle", ["bundle-libs", "bundle-assets"], function() {
 
     var mainTsFilePath = entryJsFile;
-    var outputFolder   = destdir;
     var outputFileName = libraryName + ".min.js";
 
     var bundler = browserify({
@@ -77,7 +83,7 @@ gulp.task("bundle", function() {
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(outputFolder));
+        .pipe(gulp.dest(destdir));
 });
 
 gulp.task("deploy", function() {
@@ -88,8 +94,8 @@ gulp.task("deploy", function() {
         return;
     }
     
-    return gulp.src([destdir + "/**/**", assetsdir])
-        .pipe(gulp.dest(deploydir));
+    return gulp.src(destdir + "/**/**")
+        .pipe(gulp.dest(deploydir))
 });
 
 

@@ -3,5 +3,8 @@
     "testdir" : "./test",
     "destdir" : "../../../projects/lodumdare2016/dist",
     "builddir" : "../../../projects/lodumdare2016/build/",
-    "deploydir" : "../../../projects/lodumdare2016/deploy"
+    "deploydir" : "../../../projects/lodumdare2016/deploy",
+    
+    "assetdir" : "./assets/",
+    "libdir" : "./libs/"
 }
