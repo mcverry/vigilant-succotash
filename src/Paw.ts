@@ -3,14 +3,12 @@ export class Paw {
    private game: Phaser.Game;
    private sprite: Phaser.Sprite;
    private MAX_FORCE = 20000;
-   
+   private dragPaw: DraggablePaw;
    public constructor(
        game: Phaser.Game,
-       world: Phaser.Physics.P2,
        x: number,
        y: number,
        legbottom: Phaser.Sprite,
-       dragPaw: DraggablePaw,
        attachX: number,
        attachY: number,
        DEBUG: boolean) {
@@ -22,7 +20,6 @@ export class Paw {
        
        this.dragPaw = new DraggablePaw(
            game,
-           world,
            this,
            DEBUG
        );
@@ -55,7 +52,6 @@ class DraggablePaw {
     
     public constructor(
         game: Phaser.Game,
-        world: Phaser.Physics.P2,
         catPaw: Paw,
         DEBUG: boolean){
         this.game = game;
@@ -66,8 +62,7 @@ class DraggablePaw {
 
         game.physics.p2.enable(this.sprite, DEBUG);
 
-        let spring = new Phaser.Physics.P2.Spring(
-            world,
+        let spring = game.physics.p2.createSpring(
             this.sprite.body,
             catPaw.getSprite().body,
             1,

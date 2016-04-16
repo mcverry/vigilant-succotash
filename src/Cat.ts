@@ -1,6 +1,7 @@
 const DEBUG:boolean = true;
 
 import { CollisionManager } from "./CollisionManager";
+import { Paw } from "./paw";
 
 export class CatTail {
 	private JOINT_MASS: number = 5;
@@ -67,6 +68,16 @@ export class CatLeg {
 			this.MAX_FORCE);
 			
 		ankle.setLimits(-Math.PI - this.KNEE_FOLD_ADJUST, 0);
+		
+		let paw = new Paw(
+			game,
+			0,
+			0,
+			this.legBot,
+			0,
+			0,
+			DEBUG
+			);
 	}
 
 	public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {
