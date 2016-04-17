@@ -1,63 +1,79 @@
 import {Cat} from "./cat";
-
+import {Treat} from "./treat";
+import {CollisionManager} from "./CollisionManager";
 export class LevelManager
 {
     private cat: Cat
     private currentLevel: number;
     private currentScene: number;
+   
     private game: Phaser.Game;
-    
+    private activeWorld: ActiveWorld;
+    private collisionManager: CollisionManager;
     private levels: Level[] = [];
 
-    public constructor(game: Phaser.Game, cat: Cat)
+    public constructor(game: Phaser.Game, cat: Cat, collisionManager: CollisionManager)
     {
         this.game = game;
         this.cat = cat;
-       
+        this.collisionManager = collisionManager;
+        
         let json = game.cache.getJSON("levels");
       
         for (let level of json){
-            this.levels.push(new Level(game, level));
+            this.levels.push(new Level(level));
         }
     }
-<<<<<<< HEAD
-   
+
    
    public startLevel(levelNumber:number)
    {
       let level: Level = this.levels[levelNumber];
+      this.activeWorld = new ActiveWorld(this.game, this.collisionManager);
 
       this.game.world.removeAll(true, true);
-      
       level.setBackground();
-      
-      level.createTreats();
-      
-      
+      level.createTreats(this.activeWorld);
    }
    
+}
+
+class ActiveWorld
+{
+    public game: Phaser.Game;
+    public collisionManager: CollisionManager;
+    public constructor(game: Phaser.Game, cm: CollisionManager)
+    {
+        this.game = game;
+        this.collisionManager = cm;
+    }
+    
+    public treats: Treat[];
 }
 
 class Level
 {
    private name: String;
    private stages: Stage[] = [];
-   private game: Phaser.Game;
    
-   public constructor(game: Phaser.Game, level : any)
+   public constructor(level : any)
    {
-       this.game = game;
        this.name = level.name;
        for(let stage of level.stages)
        {
-           this.stages.push(new Stage(game, stage));
+           this.stages.push(stage);
        }
    }
    
-   public setBackground()
-   {
+   public setBackground(){
       for (let stage of this.stages){
           stage.setBackgound();
+      }
+   }
+   
+   public createTreats(activeWorld: ActiveWorld){
+      for (let stage of this.stages){
+          stage.createTreats(activeWorld);
       }
    }
 }
@@ -73,16 +89,18 @@ class Stage
     private backgroundImage: String;
     private game: Phaser.Game;
     
-    public constructor(game: Phaser.Game, stage: any)
+    public constructor(stage: any)
     {
         this.name = stage.name;
         this.startX = stage.startX;
         this.endX = stage.endX;
         this.backgroundImage = stage.backgroundImage;
         
+        let i = 0;
         for (let treat of stage.treats)
         {
-            this.treats.push(new TreatSpec(treat));
+            this.treats.push(new TreatSpec(treat, i));
+            i++;
         }
         
         for (let zone of stage.zones)
@@ -99,28 +117,54 @@ class Stage
     public setBackgound(): void {
         this.game.add.sprite(this.startX, 0, this.backgroundImage);
     }
+    
+    public createTreats(activeWorld: ActiveWorld): void{
+        for (let treat of this.treats)
+        {
+            treat.init(activeWorld);
+        }
+    }
+    
+    public createZones(activeWorld: ActiveWorld): void{
+        for (let zone of this.zones)
+        {
+            zone.init(activeWorld);
+        }
+    }
+    
+    public createToys(activeWorld: ActiveWorld): void{
+        for (let toy of this.toys)
+        {
+            toy.init(activeWorld);
+        }
+    }
 }
 
 class Spec
 {
-    public init(): void {}
+    public init(activeWorld: ActiveWorld): void {}
 }
 
-class TreatSpec
+class TreatSpec extends Spec
 {
     private x: number;
     private y: number;
     private hidden: boolean;
+    private id: number;
     
-    public constructor(treat: any){
+    public constructor(treat: any, id: number){
+        super();
         this.x = treat.x;
         this.y = treat.y;
         this.hidden = treat.hidden;
+        this.id = id;
     }
     
-    public init(): void
+    public init(activeWorld: ActiveWorld): void
     {
-        
+        activeWorld.treats.push(
+            new Treat(this.id, activeWorld.game, activeWorld.collisionManager, this.x, this.y)
+        );
     }
 
 }
@@ -140,7 +184,7 @@ class ZoneSpecFactory{
 
 class ZoneSpec extends Spec
 {
-    public init(): void {}
+    public init(activeWorld: ActiveWorld): void {}
 }
 
 class RectangleZoneSpec extends ZoneSpec
@@ -160,7 +204,7 @@ class RectangleZoneSpec extends ZoneSpec
     }
 
     
-    public init(): void {
+    public init(activeWorld: ActiveWorld): void {
         
     }
 }
@@ -179,7 +223,7 @@ class CircleZoneSpec extends ZoneSpec
         this.radius = radius;
     }
     
-    public init(): void {
+    public init(activeWorld: ActiveWorld): void {
         
     }
 }
@@ -209,7 +253,7 @@ class ToySpec extends Spec
         return this.type;
     }
     
-    public init(): void
+    public init(activeWorld: ActiveWorld): void
     {
         
     }
