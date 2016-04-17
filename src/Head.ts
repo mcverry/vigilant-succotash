@@ -1,4 +1,4 @@
-const DEBUG:boolean = true;
+const DEBUG:boolean = false;
 
 import { CollisionManager } from "./CollisionManager";
 import { CatBodyPart } from "./Body";

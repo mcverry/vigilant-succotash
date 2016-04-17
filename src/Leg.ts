@@ -3,7 +3,7 @@ import { Paw } from "./paw";
 import { Cat } from "./cat";
 import { CatBodyPart } from "./Body";
 
-const DEBUG = true;
+const DEBUG = false;
 
 export class CatLeg {
 	private MAX_FORCE: number = 20000;
@@ -35,18 +35,19 @@ export class CatLeg {
 		x: number,
 		y: number,
 		attach: CatBodyPart,
-		isFrontLeg: boolean
+		isFrontLeg: boolean,
+		spriteString: string
 	) {
 
 		this.isFrontLeg = isFrontLeg;
 
-		this.thighBone = game.add.sprite(x, y + (this.THIGH_BONE_LENGTH / 2), 'invisible', 1);
-		this.shinBone = game.add.sprite(this.thighBone.x, this.thighBone.y + (this.thighBone.height / 2), 'invisible', 1);
+		this.thighBone = game.add.sprite(x, y + (this.THIGH_BONE_LENGTH / 2), 'cat_' + spriteString + '_thigh', 1);
+		this.shinBone = game.add.sprite(this.thighBone.x, this.thighBone.y + (this.thighBone.height / 2), 'cat_' + spriteString + '_shin', 1);
 		if (!isFrontLeg) {
-			this.footBone = game.add.sprite(this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'invisible', 1);
-			this.toeBone = game.add.sprite(this.footBone.x, this.footBone.y + (this.footBone.height / 2), 'invisible', 1);
+			this.footBone = game.add.sprite(this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'cat_' + spriteString + '_foot', 1);
+			this.toeBone = game.add.sprite(this.footBone.x, this.footBone.y + (this.footBone.height / 2), 'cat_' + spriteString + '_toe', 1);
 		} else {
-			this.toeBone = game.add.sprite(this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'invisible', 1);
+			this.toeBone = game.add.sprite(this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'cat_' + spriteString + '_toe', 1);
 		}
 
 

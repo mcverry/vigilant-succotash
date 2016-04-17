@@ -1,4 +1,4 @@
-const DEBUG:boolean = true;
+const DEBUG:boolean = false;
 
 import { CollisionManager } from "./CollisionManager";
 import { Paw } from "./paw";
@@ -30,25 +30,29 @@ export class Cat {
 				x: x + (width / 2),
 				y: y + (height / 2),
 				attach: this.catBody.chest,
-				isFrontLeg: true
+				isFrontLeg: true,
+				string: "left_front"
 			},
 			{	//front right leg
 				x: x + (width / 2),
 				y: y + (height / 2),
 				attach: this.catBody.chest,
-				isFrontLeg: true
+				isFrontLeg: true,
+				string: "right_front"
 			},
 			{	//hind left leg
 				x: x + (-width / 2),
 				y: y + (height / 2),
 				attach: this.catBody.butt,
-				isFrontLeg: false
+				isFrontLeg: false,
+				string: "left_back"
 			},
 			{	//hind right leg
 				x: x + (-width / 2),
 				y: y + (height / 2),
 				attach: this.catBody.butt,
-				isFrontLeg: false
+				isFrontLeg: false,
+				string: "right_back"
 			}
 		];
 
@@ -60,7 +64,8 @@ export class Cat {
 				legData[i].x,
 				legData[i].y,
 				legData[i].attach,
-				legData[i].isFrontLeg
+				legData[i].isFrontLeg,
+				legData[i].string
 			);
 			leg.setCollisionGroup(clsn.catCollisionGroup);
 			leg.collides([clsn.vaseCollisionGroup]);

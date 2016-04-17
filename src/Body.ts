@@ -1,7 +1,7 @@
 import { CollisionManager } from "./CollisionManager";
 import { Cat } from "./cat";
 
-const DEBUG = true;
+const DEBUG = false;
 
 export class CatBodyPart extends Phaser.Sprite {
 	private radius: number;

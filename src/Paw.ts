@@ -1,5 +1,7 @@
 import { CollisionManager } from "./CollisionManager";
 
+const DEBUG = false;
+
 export class Paw {
    private game: Phaser.Game;
    private sprite: Phaser.Sprite;
@@ -11,29 +13,29 @@ export class Paw {
        y: number,
        legbottom: Phaser.Sprite,
        attachX: number,
-       attachY: number,
-       DEBUG: boolean) {
-           
+       attachY: number
+   ) {
+
        this.game = game;
-       this.sprite = game.add.sprite(x, y, "paw_sprite");
+       this.sprite = game.add.sprite(x, y, "invisible");
        this.game.physics.p2.enable(this.sprite, DEBUG);
-       
+
        this.sprite.body.setCollisionGroup(collisions.catCollisionGroup);
-       
+
        game.physics.p2.createRevoluteConstraint(
            this.sprite, [0, 0], legbottom, [attachX, attachY], this.MAX_FORCE)
    }
-   
+
    public getHandle(): Phaser.Physics.P2.Body
    {
        return this.sprite.body;
    }
-   
+
    public getSprite(): Phaser.Sprite
    {
        return this.sprite;
    }
-   
+
    public getX(): number{
        return this.sprite.x;
    }
@@ -41,7 +43,7 @@ export class Paw {
    public getY(): number{
        return this.sprite.y;
    }
-   
+
    public setForceAngle(angle:number)
    {
        this.sprite.body.force.x = Math.sin(angle) * 100;

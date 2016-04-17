@@ -3,6 +3,7 @@
 import { CollisionManager } from "./CollisionManager";
 import { Cat } from "./Cat";
 import { Vase } from "./Vase";
+import { CatSpriteManager } from "./CatSpriteManager";
 
 class SimpleGame {
 
@@ -10,6 +11,7 @@ class SimpleGame {
     private handle_bodies: Phaser.Physics.P2.Body[];
     private mouseSpring: Phaser.Physics.P2.Spring;
     private mouseBody: Phaser.Sprite;
+    private catSpriteManager: CatSpriteManager;
 
     constructor() {
         this.game = new Phaser.Game(800, 600, Phaser.AUTO, "content", { preload: this.preload, create: this.create });
@@ -24,13 +26,8 @@ class SimpleGame {
 
         this.game.load.image('invisible', 'invisible.png');
 
-        this.game.load.image('cat_tail', 'invisible.png');
-        this.game.load.image('cat_head', 'invisible.png');
-
-        this.game.load.image('cat_chest', 'invisible.png');
-        this.game.load.image('cat_belly', 'invisible.png');
-        this.game.load.image('cat_butt', 'invisible.png');
-
+        this.catSpriteManager = new CatSpriteManager(this.game);
+        this.catSpriteManager.loadSpritesForCat("brown");
     }
 
     public create() {
@@ -41,7 +38,7 @@ class SimpleGame {
 
         let collisions = new CollisionManager(this.game);
 
-        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
+//        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
         let cat = new Cat(this.game, collisions, 400, Math.random() * 100, 100, 30);
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');

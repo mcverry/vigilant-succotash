@@ -1,4 +1,4 @@
-const DEBUG:boolean = true;
+const DEBUG:boolean = false;
 
 import { CollisionManager } from "./CollisionManager";
 import { CatBodyPart } from "./Body";
@@ -22,7 +22,7 @@ export class CatTail {
 	) {
 		x += attach.getTailAttachPoint()[0];
 		y += attach.getTailAttachPoint()[1];
-		let joint: Phaser.Sprite = game.add.sprite(x + this.jointLength*0.5, y, "cat_tail", 1);
+		let joint: Phaser.Sprite = game.add.sprite(x + this.jointLength*0.5, y, "cat_tail_0", 1);
 		game.physics.p2.enable(joint, DEBUG);
 		joint.body.setRectangle(this.jointLength, this.jointWidth);
 		joint.body.mass = this.JOINT_MASS;
@@ -41,7 +41,7 @@ export class CatTail {
 			x -= this.jointLength;
 
 			let lastJoint: Phaser.Sprite = this.tailJoints[i-1];
-			joint = game.add.sprite(x + this.jointLength*0.5, y + this.jointWidth*0.5, "cat_tail", 1);
+			joint = game.add.sprite(x + this.jointLength*0.5, y + this.jointWidth*0.5, "cat_tail_" + i, 1);
 			game.physics.p2.enable(joint, DEBUG);
 			let tailConstraint: Phaser.Physics.P2.RevoluteConstraint
 				= game.physics.p2.createRevoluteConstraint(
