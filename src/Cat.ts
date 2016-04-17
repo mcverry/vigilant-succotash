@@ -112,9 +112,6 @@ export class Cat {
 		this.catBody.setZIndex(7);
 		this.tail.setZIndex(6);
 		this.head.setZIndex(8);
-		this.getSpriteGroup().forEach(function(sprite:Phaser.Sprite) {
-			console.log(sprite, sprite.z);
-		}, this);
 		this.getSpriteGroup().sort('z', Phaser.Group.SORT_ASCENDING);
 	}
 
