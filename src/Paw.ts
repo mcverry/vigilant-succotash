@@ -1,4 +1,5 @@
 import { CollisionManager } from "./CollisionManager";
+import { Cat } from "./Cat";
 
 const DEBUG = false;
 
@@ -13,6 +14,7 @@ export class Paw {
 
    public constructor(
        game: Phaser.Game,
+       cat: Cat,
        collisions: CollisionManager,
        x: number,
        y: number,
@@ -22,8 +24,10 @@ export class Paw {
    ) {
 
        this.game = game;
+
+       this.sprite = new Phaser.Sprite(game, x, y, "cat_paw");
+       cat.getSpriteGroup().add(this.sprite);
        this.myCollisions = collisions;
-       this.sprite = game.add.sprite(x, y, "cat_paw");
        this.game.physics.p2.enable(this.sprite, DEBUG);
 
        this.sprite.body.setCollisionGroup(collisions.catCollisionGroup);
@@ -83,6 +87,10 @@ export class Paw {
    public getSprite(): Phaser.Sprite
    {
        return this.sprite;
+   }
+
+   public setZIndex(zIndex: number) {
+     this.sprite.z = zIndex;
    }
 
    public getX(): number{
