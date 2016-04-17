@@ -20,7 +20,7 @@ export class Paw {
    ) {
 
        this.game = game;
-       this.sprite = game.add.sprite(x, y, "invisible");
+       this.sprite = game.add.sprite(x, y, "cat_paw");
        this.game.physics.p2.enable(this.sprite, DEBUG);
 
        this.sprite.body.setCollisionGroup(collisions.catCollisionGroup);
