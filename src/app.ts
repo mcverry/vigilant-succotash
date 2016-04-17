@@ -6,7 +6,7 @@ import { Vase } from "./Vase";
 
 class SimpleGame {
 
-    private game: Phaser.Game; 
+    private game: Phaser.Game;
     private handle_bodies: Phaser.Physics.P2.Body[];
     private mouseSpring: Phaser.Physics.P2.Spring;
     private mouseBody: Phaser.Sprite;
@@ -34,22 +34,20 @@ class SimpleGame {
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.gravity.y = 200;
         this.game.physics.p2.setBounds(0, 0, 800, 600, true, true, true, true, true);
-        
+
+        let collisions = new CollisionManager(this.game);
+
+        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
+        let cat = new Cat(this.game, collisions, 400, Math.random() * 100, 100, 30);
+
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
         this.game.physics.p2.enable(this.mouseBody, true);
         this.mouseBody.body.static = true;
         this.mouseBody.body.setCircle(10);
         this.mouseBody.body.data.shapes[0].sensor = true;
-            
- 
 
-        let collisions = new CollisionManager(this.game);
-
-        let cat = new Cat(this.game, collisions, 400, Math.random() * 100, 100, 30);
-        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
-    
         this.handle_bodies = cat.getHandles();
-       
+
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
         this.game.input.addMoveCallback(move, this);
