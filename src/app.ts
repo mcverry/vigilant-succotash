@@ -29,9 +29,15 @@ class SimpleGame {
         this.game.load.physics('physics', 'cat-physics.json');
 
         this.game.load.image('invisible', 'invisible.png');
+        this.game.load.image('cat_paw', 'cat-paw.png');
 
         this.catSpriteManager = new CatSpriteManager(this.game);
-        this.catSpriteManager.loadSpritesForCat("orange");
+        //this.catSpriteManager.loadSpritesForCat("brown");
+        //this.catSpriteManager.loadSpritesForCat("orange");
+        //this.catSpriteManager.loadSpritesForCat("fat");
+        //this.catSpriteManager.loadSpritesForCat("calico");
+        // this.catSpriteManager.loadSpritesForCat("black");
+        this.catSpriteManager.loadSpritesForCat("hairless");
     }
 
     public create() {

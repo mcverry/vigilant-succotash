@@ -45,7 +45,6 @@ export class CatLeg {
 
 		let isFrontLeg = frontBack == "front";
 
-		console.log('cat_' + leftRight + "_" + frontBack + '_thigh');
 		this.thighBone = new Phaser.Sprite(game, x, y + (this.THIGH_BONE_LENGTH / 2), 'cat_' + leftRight + "_" + frontBack + '_thigh', 1);
 		this.shinBone = new Phaser.Sprite(game, this.thighBone.x, this.thighBone.y + (this.thighBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_shin', 1);
 		if (!isFrontLeg) {
