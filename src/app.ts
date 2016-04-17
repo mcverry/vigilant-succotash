@@ -21,6 +21,9 @@ class SimpleGame {
 
         this.game.load.image('invisible', 'invisible.png');
 
+        this.game.load.image('cat_tail', 'invisible.png');
+        this.game.load.image('cat_head', 'invisible.png');
+
     }
 
     public create() {
@@ -31,7 +34,7 @@ class SimpleGame {
 
         let collisions = new CollisionManager(this.game);
         let cat = new Cat(this.game, collisions, 400, Math.random() * 100, 100, 30);
-        //let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
+        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
 
 
         // let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
