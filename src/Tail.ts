@@ -63,8 +63,8 @@ export class CatTail {
 	}
 
 	public setZIndex(zIndex:number ){
-		this.tailJoints.forEach(function(joint) {
-			joint.z = zIndex;
+		this.tailJoints.forEach(function(joint, index) {
+			joint.z = zIndex + (1 - (index / 10));
 		});
 	}
 

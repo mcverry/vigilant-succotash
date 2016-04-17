@@ -22,16 +22,14 @@ class SimpleGame {
     }
 
     public preload() {
-        //this.game.load.image("logo", "phaser.png");
-
         this.game.load.image('really_crappy_vase_sprite', 'really-crappy-vase-sprite.png');
         this.game.load.image('super-crappy-tall-vase', 'super-crappy-tall-vase.png');
-        this.game.load.physics('rcvp', 'vases.json');
+        this.game.load.physics('physics', 'cat-physics.json');
 
         this.game.load.image('invisible', 'invisible.png');
 
         this.catSpriteManager = new CatSpriteManager(this.game);
-        this.catSpriteManager.loadSpritesForCat("brown");
+        this.catSpriteManager.loadSpritesForCat("orange");
     }
 
     public create() {
