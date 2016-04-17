@@ -7,8 +7,8 @@ export class CatHead {
 	private HEAD_MASS: number = 10;
 	private MAX_FORCE: number = 20000;
 
-	private headHeight: number = 60;
-	private headWidth: number = 60;
+	private headHeight: number = 40;
+	private headWidth: number = 40;
 
 	private headPhys: Phaser.Sprite;
 
@@ -47,7 +47,7 @@ export class CatTail {
 	private MAX_FORCE: number = 20000;
 
 	private jointCount: number = 8;
-	private jointLength: number = 25;
+	private jointLength: number = 15;
 	private jointWidth: number = 7;
 	private tailFlex: number = Math.PI / 4;
 
@@ -71,7 +71,7 @@ export class CatTail {
 					body.catBody,
 					[attachX, attachY],
 					this.MAX_FORCE);
-			butt.setLimits(-Math.PI / 2, Math.PI / 2);
+			butt.setLimits(-Math.PI / 4, Math.PI * 3 / 8);
 			this.tailJoints.push(joint);
 			for(let i: number = 1; i < this.jointCount; ++i) {
 				let lastX: number = x;
@@ -90,7 +90,7 @@ export class CatTail {
 						this.MAX_FORCE);
 				joint.body.setRectangle(this.jointLength, this.jointWidth);
 				joint.body.mass = this.JOINT_MASS;
-				tailConstraint.setLimits(-this.tailFlex, this.tailFlex);
+				tailConstraint.setLimits(-this.tailFlex/2, this.tailFlex);
 				this.tailJoints.push(joint);
 			}
 		}
@@ -111,12 +111,12 @@ export class CatTail {
 export class CatLeg {
 	private MAX_FORCE: number = 20000;
 	private KNEE_FOLD_ADJUST: number = 0.5;
-	private LEG_PART_MASS = 20;
+	private LEG_PART_MASS = 10;
 
-	private BONES_WIDTH = 10;
-	private THIGH_BONE_LENGTH = 30;
-	private SHIN_BONE_LENGTH = 20;
-	private FOOT_BONE_LENGTH = 10;
+	private BONES_WIDTH = 15;
+	private THIGH_BONE_LENGTH = 40;
+	private SHIN_BONE_LENGTH = 30;
+	private FOOT_BONE_LENGTH = 20;
 	private TOE_BONE_LENGTH = 10;
 
 	private LEG_JOINT_STIFFNESS = 20000;
@@ -180,15 +180,21 @@ export class CatLeg {
 		this.footBone.body.setRectangle(this.BONES_WIDTH, this.FOOT_BONE_LENGTH);
 		this.toeBone.body.setRectangle(this.BONES_WIDTH, this.TOE_BONE_LENGTH);
 
+		hip.setLimits(-Math.PI / 4, Math.PI / 2);
+
 		if (isFrontLeg) {
-			hip.setLimits(0, Math.PI / 3);
+			knee.setLimits(0, Math.PI * 3 / 4);
+			ankle.setLimits(-Math.PI / 4, Math.PI / 4);
 		} else {
-			hip.setLimits(-Math.PI / 3, 0);
+			knee.setLimits(-Math.PI * 3 / 4, -Math.PI / 6);
+			ankle.setLimits(0, Math.PI / 4);
 		}
 
-		knee.setLimits(-Math.PI - this.KNEE_FOLD_ADJUST, 0);
-		ankle.setLimits(0, Math.PI - this.KNEE_FOLD_ADJUST);
-		meta.setLimits(0, Math.PI / 4);
+
+		meta.setLimits(0, Math.PI / 6);
+		// knee.setLimits(-Math.PI - this.KNEE_FOLD_ADJUST, 0);
+		// ankle.setLimits(0, Math.PI - this.KNEE_FOLD_ADJUST);
+		// meta.setLimits(0, Math.PI / 4);
 
 		this.thighBone.body.mass = this.LEG_PART_MASS;
 		this.shinBone.body.mass = this.LEG_PART_MASS;
@@ -252,29 +258,29 @@ export class Cat {
 		this.game.physics.p2.enable(this.catBody, DEBUG);
 		this.catBody.body.collideWorldBounds = true;
 		this.catBody.body.setRectangle(width, height);
+
+		let b: Phaser.Physics.P2.Body = this.catBody.body;
+		b.applyForce([Math.random() * 10, Math.random() * 10], x, y);
+
 		this.catBody.body.mass = 20;
 
-		let frontLeftLeg = new CatLeg(this.game, myCollisions, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2, true);
-		let frontRightLeg = new CatLeg(this.game, myCollisions, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2, true);
-		let backLeftLeg = new CatLeg(this.game, myCollisions, this, x + (width / 2), y + (height / 2), width / 2, height / 2, false);
-		let backRightLeg = new CatLeg(this.game, myCollisions, this, x + (width / 2), y + (height / 2), width / 2, height / 2, false);
+		this.frontLeftLeg = new CatLeg(this.game, myCollisions, this, x + (width / 2), y + (height / 2), width / 2, height / 2, true);
+		this.frontRightLeg = new CatLeg(this.game, myCollisions, this, x + (width / 2), y + (height / 2), width / 2, height / 2, true);
+		this.backLeftLeg = new CatLeg(this.game, myCollisions, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2, false);
+		this.backRightLeg = new CatLeg(this.game, myCollisions, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2, false);
 
-		this.frontLeftLeg = frontLeftLeg;
-		this.frontRightLeg = frontRightLeg;
-		this.backLeftLeg = backLeftLeg;
-		this.backRightLeg = backRightLeg;
 
 		this.catBody.body.setCollisionGroup(myCollisions.catCollisionGroup);
-		frontLeftLeg.setCollisionGroup(myCollisions.catCollisionGroup);
-		frontRightLeg.setCollisionGroup(myCollisions.catCollisionGroup);
-		backLeftLeg.setCollisionGroup(myCollisions.catCollisionGroup);
-		backRightLeg.setCollisionGroup(myCollisions.catCollisionGroup);
+		this.frontLeftLeg.setCollisionGroup(myCollisions.catCollisionGroup);
+		this.frontRightLeg.setCollisionGroup(myCollisions.catCollisionGroup);
+		this.backLeftLeg.setCollisionGroup(myCollisions.catCollisionGroup);
+		this.backRightLeg.setCollisionGroup(myCollisions.catCollisionGroup);
 
 		this.catBody.body.collides([myCollisions.vaseCollisionGroup]);
-		frontLeftLeg.collides([myCollisions.vaseCollisionGroup]);
-		frontRightLeg.collides([myCollisions.vaseCollisionGroup]);
-		backLeftLeg.collides([myCollisions.vaseCollisionGroup]);
-		backRightLeg.collides([myCollisions.vaseCollisionGroup]);
+		this.frontLeftLeg.collides([myCollisions.vaseCollisionGroup]);
+		this.frontRightLeg.collides([myCollisions.vaseCollisionGroup]);
+		this.backLeftLeg.collides([myCollisions.vaseCollisionGroup]);
+		this.backRightLeg.collides([myCollisions.vaseCollisionGroup]);
 
 		let tail = new CatTail(this.game, this, x - (width/2), y - (height/2), -width / 2, -height / 2);
 		tail.setCollisionGroup(myCollisions.catCollisionGroup);
