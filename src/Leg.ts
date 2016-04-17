@@ -142,8 +142,7 @@ export class CatLeg {
 			collisionManager,
 			0, 0,
 			this.toeBone,
-			0, 0,
-			DEBUG
+			0, 0
 		);
 	}
 
