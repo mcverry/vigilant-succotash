@@ -29,6 +29,8 @@ class SimpleGame {
         this.game.load.physics('rcvp', 'vases.json');
 
         this.game.load.image('invisible', 'invisible.png');
+        
+        this.game.load.json("levels", "levels.json");
 
         this.catSpriteManager = new CatSpriteManager(this.game);
         this.catSpriteManager.loadSpritesForCat("brown");
