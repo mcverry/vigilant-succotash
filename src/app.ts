@@ -18,7 +18,7 @@ class SimpleGame {
     private trackingBody: Phaser.Physics.P2.Body;
 
     constructor() {
-        this.game = new Phaser.Game(800, 600, Phaser.AUTO, "content", { preload: this.preload, create: this.create });
+        this.game = new Phaser.Game(800, 600, Phaser.CANVAS, "content", { preload: this.preload, create: this.create });
     }
 
     public preload() {
@@ -77,18 +77,16 @@ function click(pointer) {
         if (bodies.length) {
             if('paw' in bodies[0].parent) {
               this.trackingBody = bodies[0].parent;
-              bodies[0].parent.static = false;
-              bodies[0].parent.dynamic = true;
-              bodies[0].parent.paw.stopOnContact = false;
+              bodies[0].parent.paw.beginDrag();
             }
-            this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 200, 1);
+            this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 500, 1);
         }
     }
 
 function release() {
         this.game.physics.p2.removeSpring(this.mouseSpring);
         if(this.trackingBody != null) {
-          this.trackingBody.paw.stopOnContact = true;
+          this.trackingBody.paw.endDrag();
         }
         this.trackingBody = null;
     }
