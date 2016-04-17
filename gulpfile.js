@@ -109,7 +109,7 @@ gulp.task("deploy", function() {
 });
 
 gulp.task("watch", function(){
-    return watch(sourcedir, function(){
+    return watch([sourcedir, assetsdir], function(){
         gulp.start("default");
     });
 });

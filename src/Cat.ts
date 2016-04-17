@@ -52,7 +52,7 @@ export class Cat {
 			}
 		];
 
-		for (let i :number = 0; i < legData.length; i++) {
+		for (let i: number = 0; i < legData.length; i++) {
 			let leg: CatLeg = new CatLeg(
 				this.game,
 				clsn,
@@ -74,6 +74,13 @@ export class Cat {
 		let head = new CatHead(this.game, x - (width / 2), y - (height / 2), this.catBody.chest);
 		head.setCollisionGroup(clsn.catCollisionGroup);
 		head.collides([clsn.vaseCollisionGroup]);
+	}
+	
+	public getX(): number {
+		return this.catBody.belly.x;
+	}
+	public getY(): number {
+		return this.catBody.belly.y;
 	}
 
 	public getHandles(): Phaser.Physics.P2.Body[]
