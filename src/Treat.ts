@@ -29,7 +29,7 @@ export class Treat {
     this.sprite.body.mass = this.TREAT_MASS;
     this.sprite.body.setCircle(this.treatRadius);
     this.sprite.body.setCollisionGroup(collisions.treatCollisionGroup);
-    this.sprite.body.collides([collisions.catCollisionGroup, collisions.pawCollisionGroup], this.catCollided, this);
+    this.sprite.body.collides([collisions.catCollisionGroup], this.catCollided, this);
     //this.sprite.body.static = true;
   }
 

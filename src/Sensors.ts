@@ -61,7 +61,7 @@ export class ZoneSensor {
   public asRectangle(x1: number, y1: number, x2: number, y2: number) {
     let width: number = x2 - x1;
     let height: number = y2 - y1;
-    this.setCenter(x1 + (0.5*width), y1 + (0.5*height);
+    this.setCenter(x1 + (0.5*width), y1 + (0.5*height));
     this.sprite.body.clearShapes();
     this.sprite.body.setRectangle(width, height);
     this.sprite.body.data.shapes[0].sensor = true;

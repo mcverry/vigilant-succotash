@@ -24,6 +24,6 @@ export class CollisionManager {
 		this.sensorCollisionGroup = game.physics.p2.createCollisionGroup();
 		this.treatCollisionGroup = game.physics.p2.createCollisionGroup();
 
-		this.catCollidesWith = [this.vaseCollisionGroup, this.treatCollisionGroup, this.sensorCollisionGroup];
+		this.catCollidesWith = [this.vaseCollisionGroup, this.sensorCollisionGroup];
 	}
 }
