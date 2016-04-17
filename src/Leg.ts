@@ -1,6 +1,7 @@
 import { CollisionManager } from "./CollisionManager";
 import { Paw } from "./paw";
 import { Cat } from "./cat";
+import { CatBodyPart } from "./Body";
 
 const DEBUG = true;
 
@@ -28,11 +29,10 @@ export class CatLeg {
 	constructor(
 		game: Phaser.Game,
 		collisionManager: CollisionManager,
-		body: Cat,
+		cat: Cat,
 		x: number,
 		y: number,
-		attachX: number,
-		attachY: number,
+		attach: CatBodyPart,
 		isFrontLeg: boolean
 	) {
 
@@ -49,8 +49,8 @@ export class CatLeg {
 		let hip: Phaser.Physics.P2.RevoluteConstraint = game.physics.p2.createRevoluteConstraint(
 			this.thighBone,
 			[-this.BONES_WIDTH / 2, -this.THIGH_BONE_LENGTH / 2],
-			body.catBody,
-			[attachX, attachY],
+			attach,
+			attach.getLegAttachPoint(),
 			this.MAX_FORCE);
 		let knee: Phaser.Physics.P2.RevoluteConstraint = game.physics.p2.createRevoluteConstraint(
 			this.shinBone,
@@ -78,12 +78,13 @@ export class CatLeg {
 
 		hip.setLimits(-Math.PI / 4, Math.PI / 2);
 
+
 		if (isFrontLeg) {
-			knee.setLimits(0, Math.PI * 3 / 4);
-			ankle.setLimits(-Math.PI / 4, Math.PI / 4);
-		} else {
 			knee.setLimits(-Math.PI * 3 / 4, -Math.PI / 6);
 			ankle.setLimits(0, Math.PI / 4);
+		} else {
+			knee.setLimits(0, Math.PI * 3 / 4);
+			ankle.setLimits(-Math.PI / 4, Math.PI / 4);
 		}
 		meta.setLimits(0, Math.PI / 6);
 

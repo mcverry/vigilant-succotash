@@ -27,6 +27,10 @@ class SimpleGame {
         this.game.load.image('cat_tail', 'invisible.png');
         this.game.load.image('cat_head', 'invisible.png');
 
+        this.game.load.image('cat_chest', 'invisible.png');
+        this.game.load.image('cat_belly', 'invisible.png');
+        this.game.load.image('cat_butt', 'invisible.png');
+
     }
 
     public create() {
