@@ -6,6 +6,9 @@ export class Paw {
    private game: Phaser.Game;
    private sprite: Phaser.Sprite;
    private MAX_FORCE = 20000;
+
+   public stopOnContact: boolean = true;
+
    public constructor(
        game: Phaser.Game,
        collisions: CollisionManager,
@@ -21,9 +24,21 @@ export class Paw {
        this.game.physics.p2.enable(this.sprite, DEBUG);
 
        this.sprite.body.setCollisionGroup(collisions.catCollisionGroup);
+       this.sprite.body.collides(collisions.vaseCollisionGroup);
+       this.sprite.body.createGroupCallback(collisions.vaseCollisionGroup, this.handleWorldCollision, this);
+       this.sprite.body.paw = this;
 
        game.physics.p2.createRevoluteConstraint(
-           this.sprite, [0, 0], legbottom, [attachX, attachY], this.MAX_FORCE)
+           this.sprite, [0, 0], legbottom, [attachX, attachY], this.MAX_FORCE);
+   }
+
+   public handleWorldCollision(body, impactedBody, shape, impactedShape) {
+     if(this.stopOnContact) {
+       body.static = true;
+       body.velocity.x = 0;
+       body.velocity.y = 0;
+       body.angularVelocity = 0;
+     }
    }
 
    public getHandle(): Phaser.Physics.P2.Body

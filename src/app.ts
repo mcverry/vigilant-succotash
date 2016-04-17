@@ -14,6 +14,8 @@ class SimpleGame {
     private mouseBody: Phaser.Sprite;
     private catSpriteManager: CatSpriteManager;
     private levelManager: LevelManager;
+    private collisions: CollisionManager;
+    private trackingBody: Phaser.Physics.P2.Body;
 
     constructor() {
         this.game = new Phaser.Game(800, 600, Phaser.AUTO, "content", { preload: this.preload, create: this.create });
@@ -37,16 +39,16 @@ class SimpleGame {
         let worldW = 800 * 6;
         let worldH = 600;
         this.game.physics.startSystem(Phaser.Physics.P2JS);
+        this.game.physics.p2.setImpactEvents(true);
         this.game.physics.p2.gravity.y = 200;
         this.game.physics.p2.setBounds(0, 0, 800, 600, true, true, true, true, true);
         this.game.world.setBounds(0, 0, worldW, worldH);
         this.game.camera.setBoundsToWorld();
 
+        this.collisions = new CollisionManager(this.game);
 
-        let collisions = new CollisionManager(this.game);
-
-//        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
-        let cat = new Cat(this.game, collisions, 400, Math.random() * 100, 100, 80);
+        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', this.collisions);
+        let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
 
         this.levelManager = new LevelManager(this.game, cat);
 
@@ -73,16 +75,29 @@ function click(pointer) {
 
         let bodies = this.game.physics.p2.hitTest(pointer.position, this.handle_bodies);
         if (bodies.length) {
-            this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 2000, 1);
+            if('paw' in bodies[0].parent) {
+              this.trackingBody = bodies[0].parent;
+              bodies[0].parent.static = false;
+              bodies[0].parent.dynamic = true;
+              bodies[0].parent.paw.stopOnContact = false;
+            }
+            this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 200, 1);
         }
     }
 
 function release() {
         this.game.physics.p2.removeSpring(this.mouseSpring);
+        if(this.trackingBody != null) {
+          this.trackingBody.paw.stopOnContact = true;
+        }
+        this.trackingBody = null;
     }
 
 function move(pointer, x, y, isDown) {
-
+        if(this.trackingBody != null) {
+          this.trackingBody.static = false;
+          this.trackingBody.dynamic = true;
+        }
         this.mouseBody.body.x = x;
         this.mouseBody.body.y = y;
         // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
