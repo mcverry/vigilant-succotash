@@ -5,6 +5,7 @@ import { Cat } from "./Cat";
 import { Vase } from "./Vase";
 import { CatSpriteManager } from "./CatSpriteManager";
 import { LevelManager } from "./LevelManager";
+import { Treat } from "./Treat"
 
 class SimpleGame {
 
@@ -47,7 +48,8 @@ class SimpleGame {
 
         this.collisions = new CollisionManager(this.game);
 
-        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', this.collisions);
+        //let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', this.collisions);
+        let treat = new Treat(0, this.game, this.collisions, 600, 500);
         let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
 
         this.levelManager = new LevelManager(this.game, cat);

@@ -27,7 +27,7 @@ export class Paw {
        this.game.physics.p2.enable(this.sprite, DEBUG);
 
        this.sprite.body.setCollisionGroup(collisions.catCollisionGroup);
-       this.sprite.body.collides(collisions.vaseCollisionGroup);//, this.handleWorldCollision, this);
+       this.sprite.body.collides(collisions.catCollidesWith);
        this.sprite.body.onBeginContact.add(this.contactBegan, this, 0);
        this.sprite.body.onEndContact.add(this.contactEnded, this, 0);
        this.sprite.body.paw = this;
