@@ -28,12 +28,17 @@ class SimpleGame {
         this.game.load.image('cat_head', 'invisible.png');
 
     }
-
+    
     public create() {
 
+        let worldW = 800 * 6;
+        let worldH = 600;
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.gravity.y = 200;
-        this.game.physics.p2.setBounds(0, 0, 800, 600, true, true, true, true, true);
+        this.game.physics.p2.setBounds(0, 0, worldW, worldH, true, true, true, true, true);
+        this.game.world.setBounds(0, 0, worldW, worldH);
+        this.game.camera.setBoundsToWorld();
+        
 
         let collisions = new CollisionManager(this.game);
 
@@ -47,6 +52,7 @@ class SimpleGame {
         this.mouseBody.body.data.shapes[0].sensor = true;
 
         this.handle_bodies = cat.getHandles();
+        this.game.camera.follow(cat.catBody);
 
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
