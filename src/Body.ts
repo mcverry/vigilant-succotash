@@ -30,8 +30,6 @@ export class CatBodyPart extends Phaser.Sprite {
 	public getHeadAttachPoint(reversed:boolean = false) {
 		return this.getTailAttachPoint(!reversed);
 	}
-
-
 }
 
 export class CatBody {
