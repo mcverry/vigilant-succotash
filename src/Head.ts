@@ -8,9 +8,6 @@ export class CatHead {
 	private HEAD_MASS: number = 10;
 	private MAX_FORCE: number = 20000;
 
-	private headHeight: number = 40;
-	private headWidth: number = 40;
-
 	private headSprite: Phaser.Sprite;
 
 	constructor(

@@ -70,7 +70,6 @@ export class ZoneSensor {
   }
 
   public catContacted(otherBody, otherShape, myShape, contactEq) {
-    console.log(otherBody);
     if(otherBody != null) {
       if(this.entries == 0) {
         this.onCatEntered.dispatch(this.zoneID, otherBody, otherShape, myShape);

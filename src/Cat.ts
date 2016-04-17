@@ -89,9 +89,7 @@ export class Cat {
 
 		this.head = new CatHead(this.game, this, x - (width / 2), y - (height / 2), this.catBody.chest);
 		this.head.setCollisionGroup(clsn.catCollisionGroup);
-		let headCollisions = [clsn.treatCollisionGroup];
-		headCollisions = headCollisions.concat(clsn.catCollidesWith);
-		this.head.collides(headCollisions);
+		this.head.collides(clsn.catCollidesWith);
 
 		this.sortSprites();
 	}
