@@ -166,7 +166,7 @@ export class CatLeg {
 		this.toeBone.body.setCollisionGroup(collisionGroup);
 	}
 
-	public collides(collisionGroup: [Phaser.Physics.P2.CollisionGroup]) {
+	public collides(collisionGroup: Phaser.Physics.P2.CollisionGroup[]) {
 		this.thighBone.body.collides(collisionGroup);
 		this.shinBone.body.collides(collisionGroup);
 		if (this.frontBack == "back") {
