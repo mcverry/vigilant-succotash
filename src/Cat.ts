@@ -11,7 +11,11 @@ export class Cat {
 	public catBody: CatBody;
 	private game: Phaser.Game;
 
+	private spriteGroup: Phaser.Group;
+
 	private legs: CatLeg[] = [];
+	private head: CatHead;
+	private tail: CatTail;
 
 	public constructor(
 		game: Phaser.Game,
@@ -22,6 +26,8 @@ export class Cat {
 		height: number
 	) {
 		this.game = game;
+
+		this.spriteGroup = game.add.group(undefined, 'cat', true);
 
 		this.catBody = new CatBody(game, this, clsn, x, y);
 
@@ -76,13 +82,40 @@ export class Cat {
 			this.legs.push(leg);
 		}
 
-		let tail = new CatTail(this.game, x - (width / 2), y - (height / 2), this.catBody.butt);
-		tail.setCollisionGroup(clsn.catCollisionGroup);
-		tail.collides([clsn.vaseCollisionGroup]);
+		this.tail = new CatTail(this.game, this, x - (width / 2), y - (height / 2), this.catBody.butt);
+		this.tail.setCollisionGroup(clsn.catCollisionGroup);
+		this.tail.collides([clsn.vaseCollisionGroup]);
 
-		let head = new CatHead(this.game, x - (width / 2), y - (height / 2), this.catBody.chest);
-		head.setCollisionGroup(clsn.catCollisionGroup);
-		head.collides([clsn.vaseCollisionGroup]);
+
+		this.head = new CatHead(this.game, this, x - (width / 2), y - (height / 2), this.catBody.chest);
+		this.head.setCollisionGroup(clsn.catCollisionGroup);
+		this.head.collides([clsn.vaseCollisionGroup]);
+
+		this.sortSprites();
+	}
+
+	private sortSprites() : void {
+		//paw = 10
+		//left legs = 9
+		//head = 8
+		//body = 7
+		//tail = 6
+		//right legs = 5
+
+		this.legs.forEach(function(leg) {
+			leg.setZIndex({
+				"left": 9,
+				"right": 5
+			});
+			leg.getPaw().setZIndex(10);
+		});
+		this.catBody.setZIndex(7);
+		this.tail.setZIndex(6);
+		this.head.setZIndex(8);
+		this.getSpriteGroup().forEach(function(sprite:Phaser.Sprite) {
+			console.log(sprite, sprite.z);
+		}, this);
+		this.getSpriteGroup().sort('z', Phaser.Group.SORT_ASCENDING);
 	}
 
 	public getX(): number {
@@ -95,5 +128,9 @@ export class Cat {
 	public getHandles(): Phaser.Physics.P2.Body[]
 	{
 		return this.legs.map(function(leg) { return leg.getHandle() });
+	}
+
+	public getSpriteGroup() :Phaser.Group {
+		return this.spriteGroup;
 	}
 }

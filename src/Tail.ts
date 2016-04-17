@@ -2,6 +2,7 @@ const DEBUG:boolean = false;
 
 import { CollisionManager } from "./CollisionManager";
 import { CatBodyPart } from "./Body";
+import { Cat } from "./Cat";
 
 export class CatTail {
 	private JOINT_MASS: number = 5;
@@ -17,13 +18,15 @@ export class CatTail {
 
 	constructor(
 		game: Phaser.Game,
+		cat: Cat,
 		x: number,
 		y: number,
 		attach: CatBodyPart
 	) {
 		x += attach.getTailAttachPoint()[0];
 		y += attach.getTailAttachPoint()[1];
-		let joint: Phaser.Sprite = game.add.sprite(x + this.jointLength*0.5, y, "cat_tail_0", 1);
+		let joint: Phaser.Sprite = new Phaser.Sprite(game, x + this.jointLength*0.5, y, "cat_tail_0", 1);
+		cat.getSpriteGroup().add(joint);
 		game.physics.p2.enable(joint, DEBUG);
 		joint.body.setRectangle(this.jointLength, this.jointWidth);
 		joint.body.mass = this.JOINT_MASS;
@@ -42,7 +45,8 @@ export class CatTail {
 			x -= this.jointLength;
 
 			let lastJoint: Phaser.Sprite = this.tailJoints[i-1];
-			joint = game.add.sprite(x + this.jointLength*0.5, y + this.jointWidth*0.5, "cat_tail_" + i, 1);
+			joint = new Phaser.Sprite(game, x + this.jointLength*0.5, y + this.jointWidth*0.5, "cat_tail_" + i, 1);
+			cat.getSpriteGroup().add(joint)
 			game.physics.p2.enable(joint, DEBUG);
 			let tailConstraint: Phaser.Physics.P2.RevoluteConstraint
 				= game.physics.p2.createRevoluteConstraint(
@@ -56,6 +60,12 @@ export class CatTail {
 			tailConstraint.setLimits(this.tailFlexMin, this.tailFlexMax);
 			this.tailJoints.push(joint);
 		}
+	}
+
+	public setZIndex(zIndex:number ){
+		this.tailJoints.forEach(function(joint) {
+			joint.z = zIndex;
+		});
 	}
 
 	public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {

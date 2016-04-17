@@ -54,9 +54,9 @@ export class CatBody {
 
 		let parts: Phaser.Sprite[] = [this.chest, this.belly, this.butt];
 
-		game.add.existing(this.chest);
-		game.add.existing(this.belly);
-		game.add.existing(this.butt);
+		cat.getSpriteGroup().add(this.chest);
+		cat.getSpriteGroup().add(this.belly);
+		cat.getSpriteGroup().add(this.butt);
 
 		for (let i = 1; i < parts.length; i++) {
 			let joint: Phaser.Physics.P2.RevoluteConstraint = game.physics.p2.createRevoluteConstraint(
@@ -67,5 +67,11 @@ export class CatBody {
 				this.MAX_FORCE);
 			joint.setLimits(-Math.PI / 6, Math.PI / 6)
 		}
+	}
+
+	setZIndex(zIndex:number) :void {
+		this.chest.z = zIndex;
+		this.belly.z = zIndex;
+		this.butt.z = zIndex;
 	}
 }
