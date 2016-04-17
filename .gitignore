@@ -3,6 +3,7 @@ node_modules/
 envconfig/**
 !envconfig/myconfig.template.json
 **/*.js
+**/*.js.map
 !libs/**/*.js
 .vscode/
 dist/
