@@ -31,9 +31,17 @@ class SimpleGame {
         this.game.load.image('invisible', 'invisible.png');
         
         this.game.load.json("levels", "levels.json");
+        this.game.load.image('cat_paw', 'cat-paw.png');
 
         this.catSpriteManager = new CatSpriteManager(this.game);
-        this.catSpriteManager.loadSpritesForCat("orange");
+        //this.catSpriteManager.loadSpritesForCat("brown");
+        //this.catSpriteManager.loadSpritesForCat("orange");
+        //this.catSpriteManager.loadSpritesForCat("fat");
+        //this.catSpriteManager.loadSpritesForCat("calico");
+        // this.catSpriteManager.loadSpritesForCat("black");
+        this.catSpriteManager.loadSpritesForCat("hairless");
+        
+        this.game.load.image("background-1-1", "room-curtains.png");
     }
 
     public create() {
@@ -76,10 +84,6 @@ class SimpleGame {
         this.game.input.addMoveCallback(move, this);
     }
 
-    public update()
-    {
-        this.levelManager.testForProgress();
-    }
 }
 
 function click(pointer) {
