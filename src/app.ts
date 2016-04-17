@@ -7,6 +7,10 @@ import { Vase } from "./Vase";
 class SimpleGame {
 
     private game: Phaser.Game;
+    private handles: Phaser.Sprite[];
+    private handle_bodies: Phaser.Physics.P2.Body[];
+    private mouseSpring: Phaser.Physics.P2.Spring;
+    private mouseBody: Phaser.Sprite;
 
     constructor() {
         this.game = new Phaser.Game(800, 600, Phaser.AUTO, "content", { preload: this.preload, create: this.create });
@@ -27,15 +31,64 @@ class SimpleGame {
         this.game.physics.p2.gravity.y = 200;
         this.game.physics.p2.setBounds(0, 0, 800, 600, true, true, true, true, true);
 
+        
+        this.handles = createHandles(this.game);
+        this.handle_bodies = this.handles.map(
+            function(value: Phaser.Sprite): Phaser.Physics.P2.Body{
+                return value.body;
+            });
+        
+        this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
+        this.game.physics.p2.enable(this.mouseBody, true);
+        this.mouseBody.body.static = true;
+        this.mouseBody.body.setCircle(10);
+        this.mouseBody.body.data.shapes[0].sensor = true;
+            
+ 
+
         let collisions = new CollisionManager(this.game);
-        let cat = new Cat(this.game, collisions, 400, 0, 100, 30);
-        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
+        //let cat = new Cat(this.game, collisions, 400, 0, 100, 30);
+        //let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
+    
+        this.game.input.onDown.add(click, this);
+        this.game.input.onUp.add(release, this);
+        this.game.input.addMoveCallback(move, this);
+    }
+}
 
+function click(pointer) {
 
-        // let logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
-        // logo.anchor.setTo(0.5, 0.5);
+        let bodies = this.game.physics.p2.hitTest(pointer.position, this.handle_bodies);
+        if (bodies.length)
+        {
+            //  Attach to the first body the mouse hit
+            this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 30, 1);
+            //line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
+            //drawLine = true;
+        }
     }
 
+function release() {
+        this.game.physics.p2.removeSpring(this.mouseSpring);
+    }
+
+function move(pointer, x, y, isDown) {
+
+        this.mouseBody.body.x = x;
+        this.mouseBody.body.y = y;
+        // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
+    }
+
+function createHandles(game: Phaser.Game): Phaser.Sprite[] {
+    let handles: Phaser.Sprite[] = [];
+    let i = 0;
+    while (i < 4) {
+        let sprite = game.add.sprite(100*i, 100*i, "handle");
+        handles.push(sprite);
+        game.physics.p2.enable(sprite);
+        i++;
+    }
+    return handles;
 }
 
 window.onload = () => {

@@ -24,6 +24,7 @@ export class CatLeg {
 
 	constructor(
 		game: Phaser.Game,
+		collisionManager: CollisionManager,
 		body: Cat,
 		x: number,
 		y: number,
@@ -71,11 +72,10 @@ export class CatLeg {
 		
 		let paw = new Paw(
 			game,
-			0,
-			0,
+			collisionManager,
+			0, 0,
 			this.legBot,
-			0,
-			0,
+			0, 0,
 			DEBUG
 			);
 	}
@@ -106,10 +106,10 @@ export class Cat {
 		this.catBody.body.setRectangle(width, height);
 		this.catBody.body.mass = 20;
 
-		let frontLeftLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
-		let frontRightLeg = new CatLeg(this.game, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
-		let backLeftLeg = new CatLeg(this.game, this, x + (width / 2), y + (height / 2), width / 2, height / 2);
-		let backRightLeg = new CatLeg(this.game, this, x + (width / 2), y + (height / 2), width / 2, height / 2);
+		let frontLeftLeg = new CatLeg(this.game, myCollisions, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
+		let frontRightLeg = new CatLeg(this.game, myCollisions, this, x + (-width / 2), y + (height / 2), -width / 2, height / 2);
+		let backLeftLeg = new CatLeg(this.game, myCollisions, this, x + (width / 2), y + (height / 2), width / 2, height / 2);
+		let backRightLeg = new CatLeg(this.game, myCollisions, this, x + (width / 2), y + (height / 2), width / 2, height / 2);
 
 		this.catBody.body.setCollisionGroup(myCollisions.catCollisionGroup);
 		frontLeftLeg.setCollisionGroup(myCollisions.catCollisionGroup);
