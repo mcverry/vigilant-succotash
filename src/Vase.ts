@@ -18,7 +18,7 @@ export class Vase {
 		game.physics.p2.enable([this.sprite], DEBUG);
 		this.sprite.body.static = true;
 		this.sprite.body.clearShapes();
-		this.sprite.body.loadPolygon("rcvp", spriteName);
+		this.sprite.body.loadPolygon("physics", spriteName);
 		this.sprite.body.setCollisionGroup(clsn.vaseCollisionGroup);
 		this.sprite.body.collides([clsn.catCollisionGroup, clsn.pawCollisionGroup]);
 	}

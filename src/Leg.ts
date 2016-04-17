@@ -113,9 +113,6 @@ export class CatLeg {
 		}
 		this.toeBone.body.setRectangle(this.BONES_WIDTH, this.TOE_BONE_LENGTH);
 
-
-
-
 		if (isFrontLeg) {
 			hip.setLimits(-Math.PI / 2, Math.PI / 4);
 			knee.setLimits(-Math.PI * 3 / 4, -Math.PI / 6);
@@ -126,7 +123,6 @@ export class CatLeg {
 			ankle.setLimits(-Math.PI / 4, Math.PI / 4);
 			meta.setLimits(0, Math.PI / 6);
 		}
-
 
 		this.thighBone.body.mass = this.LEG_PART_MASS;
 		this.shinBone.body.mass = this.LEG_PART_MASS;

@@ -11,7 +11,7 @@ export class CatHead {
 	private headHeight: number = 40;
 	private headWidth: number = 40;
 
-	private headPhys: Phaser.Sprite;
+	private headSprite: Phaser.Sprite;
 
 	constructor(
 		game: Phaser.Game,
@@ -22,14 +22,21 @@ export class CatHead {
 	) {
 		x += attach.getHeadAttachPoint()[0];
 		y += attach.getHeadAttachPoint()[1];
-		this.headPhys = new Phaser.Sprite(game, x, y, "cat_head", 1);
-		cat.getSpriteGroup().add(this.headPhys);
-		game.physics.p2.enable(this.headPhys, DEBUG);
-		this.headPhys.body.setRectangle(this.headWidth, this.headHeight);
-		this.headPhys.body.mass = this.HEAD_MASS;
+		this.headSprite = new Phaser.Sprite(game, x, y, "cat_head", 1);
+
+		game.physics.p2.enable(this.headSprite, DEBUG);
+
+		let headPhys: Phaser.Physics.P2.Body = this.headSprite.body;
+
+		headPhys.clearShapes();
+		headPhys.loadPolygon('physics', 'cat-head');
+
+		cat.getSpriteGroup().add(this.headSprite);
+
+		this.headSprite.body.mass = this.HEAD_MASS;
 		let neck: Phaser.Physics.P2.RevoluteConstraint
 			= game.physics.p2.createRevoluteConstraint(
-				this.headPhys,
+				this.headSprite,
 				[0, 0],
 				attach,
 				attach.getHeadAttachPoint(),
@@ -38,14 +45,14 @@ export class CatHead {
 	}
 
 	public setZIndex(zIndex:number) {
-		this.headPhys.z = zIndex;
+		this.headSprite.z = zIndex;
 	}
 
 	public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {
-		this.headPhys.body.setCollisionGroup(collisionGroup);
+		this.headSprite.body.setCollisionGroup(collisionGroup);
 	}
 
-	public collides(collisionGroup: Phaser.Physics.P2.CollisionGroup[]) {
-		this.headPhys.body.collides(collisionGroup);
+	public collides(collisionGroup: [Phaser.Physics.P2.CollisionGroup]) {
+		this.headSprite.body.collides(collisionGroup);
 	}
 }
