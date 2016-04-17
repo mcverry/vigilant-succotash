@@ -1,5 +1,7 @@
 import { CollisionManager } from "./CollisionManager";
 
+const DEBUG = false;
+
 export class Paw {
    private game: Phaser.Game;
    private sprite: Phaser.Sprite;
@@ -14,22 +16,31 @@ export class Paw {
        y: number,
        legbottom: Phaser.Sprite,
        attachX: number,
+<<<<<<< HEAD
        attachY: number,
        DEBUG: boolean) {
+=======
+       attachY: number
+   ) {
+>>>>>>> master
 
        this.game = game;
-       this.sprite = game.add.sprite(x, y, "paw_sprite");
+       this.sprite = game.add.sprite(x, y, "invisible");
        this.game.physics.p2.enable(this.sprite, DEBUG);
 
        this.sprite.body.setCollisionGroup(collisions.catCollisionGroup);
+<<<<<<< HEAD
        this.sprite.body.collides(collisions.vaseCollisionGroup);
        this.sprite.body.createGroupCallback(collisions.vaseCollisionGroup, this.handleWorldCollision, this);
        this.sprite.body.paw = this;
+=======
+>>>>>>> master
 
        game.physics.p2.createRevoluteConstraint(
            this.sprite, [0, 0], legbottom, [attachX, attachY], this.MAX_FORCE);
    }
 
+<<<<<<< HEAD
    public handleWorldCollision(body, impactedBody, shape, impactedShape) {
      if(this.stopOnContact) {
        body.static = true;
@@ -39,6 +50,8 @@ export class Paw {
      }
    }
 
+=======
+>>>>>>> master
    public getHandle(): Phaser.Physics.P2.Body
    {
        return this.sprite.body;
