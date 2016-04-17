@@ -5,7 +5,8 @@ import { Cat } from "./Cat";
 import { Vase } from "./Vase";
 import { CatSpriteManager } from "./CatSpriteManager";
 import { LevelManager } from "./LevelManager";
-import { Treat } from "./Treat"
+import { Treat } from "./Treat";
+import { ZoneSensor } from "./Sensors";
 
 class SimpleGame {
 
@@ -51,6 +52,10 @@ class SimpleGame {
         //let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', this.collisions);
         let treat = new Treat(0, this.game, this.collisions, 600, 500);
         //treat.onCatGotTreat.add(function(id) {alert("You got the " + id + " treat!!");} );
+        let zone = new ZoneSensor(0, this.game, this.collisions);
+        zone.asRectangle(0, 400, 800, 500);
+        zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
+        zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
         let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
 
         this.levelManager = new LevelManager(this.game, cat);
