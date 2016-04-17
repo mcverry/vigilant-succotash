@@ -1,6 +1,7 @@
 const DEBUG:boolean = true;
 
 import { CollisionManager } from "./CollisionManager";
+import { CatBodyPart } from "./Body";
 
 export class CatHead {
 	private HEAD_MASS: number = 10;
@@ -13,30 +14,31 @@ export class CatHead {
 
 	constructor(
 		game: Phaser.Game,
-		body,
 		x: number,
 		y: number,
-		attachX: number,
-		attachY: number) {
-			this.headPhys = game.add.sprite(x, y, "cat_head", 1);
-			game.physics.p2.enable(this.headPhys, DEBUG);
-			this.headPhys.body.setRectangle(this.headWidth, this.headHeight);
-			this.headPhys.body.mass = this.HEAD_MASS;
-			let neck: Phaser.Physics.P2.RevoluteConstraint
-				= game.physics.p2.createRevoluteConstraint(
-					this.headPhys,
-					[0, 0],
-					body.catBody,
-					[attachX, attachY],
-					this.MAX_FORCE);
-			//neck.setLimits(-Math.PI / 2, Math.PI / 2);
-		}
+		attach: CatBodyPart
+	) {
+		x += attach.getHeadAttachPoint()[0];
+		y += attach.getHeadAttachPoint()[1];
+		this.headPhys = game.add.sprite(x, y, "cat_head", 1);
+		game.physics.p2.enable(this.headPhys, DEBUG);
+		this.headPhys.body.setRectangle(this.headWidth, this.headHeight);
+		this.headPhys.body.mass = this.HEAD_MASS;
+		let neck: Phaser.Physics.P2.RevoluteConstraint
+			= game.physics.p2.createRevoluteConstraint(
+				this.headPhys,
+				[0, 0],
+				attach,
+				attach.getHeadAttachPoint(),
+				this.MAX_FORCE);
+		//neck.setLimits(-Math.PI / 2, Math.PI / 2);
+	}
 
-		public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {
-			this.headPhys.body.setCollisionGroup(collisionGroup);
-		}
+	public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {
+		this.headPhys.body.setCollisionGroup(collisionGroup);
+	}
 
-		public collides(collisionGroup: [Phaser.Physics.P2.CollisionGroup]) {
-			this.headPhys.body.collides(collisionGroup);
-		}
+	public collides(collisionGroup: [Phaser.Physics.P2.CollisionGroup]) {
+		this.headPhys.body.collides(collisionGroup);
+	}
 }
