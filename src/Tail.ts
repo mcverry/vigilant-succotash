@@ -10,7 +10,8 @@ export class CatTail {
 	private jointCount: number = 8;
 	private jointLength: number = 15;
 	private jointWidth: number = 7;
-	private tailFlex: number = Math.PI / 4;
+	private tailFlexMin: number = 0;
+	private tailFlexMax: number = Math.PI / 4;
 
 	private tailJoints: Phaser.Sprite[] = [];
 
@@ -33,7 +34,7 @@ export class CatTail {
 				attach,
 				attach.getTailAttachPoint(),
 				this.MAX_FORCE);
-		butt.setLimits(-Math.PI / 4, Math.PI * 3 / 8);
+		butt.setLimits(0, 0 );
 		this.tailJoints.push(joint);
 		for(let i: number = 1; i < this.jointCount; ++i) {
 			let lastX: number = x;
@@ -46,13 +47,13 @@ export class CatTail {
 			let tailConstraint: Phaser.Physics.P2.RevoluteConstraint
 				= game.physics.p2.createRevoluteConstraint(
 					joint,
-					[this.jointLength*0.5, 0],
-					lastJoint,
 					[-this.jointLength*0.5, 0],
+					lastJoint,
+					[this.jointLength*0.5, 0],
 					this.MAX_FORCE);
 			joint.body.setRectangle(this.jointLength, this.jointWidth);
 			joint.body.mass = this.JOINT_MASS;
-			tailConstraint.setLimits(-this.tailFlex/2, this.tailFlex);
+			tailConstraint.setLimits(this.tailFlexMin, this.tailFlexMax);
 			this.tailJoints.push(joint);
 		}
 	}

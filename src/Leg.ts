@@ -6,7 +6,7 @@ import { CatBodyPart } from "./Body";
 const DEBUG = false;
 
 export class CatLeg {
-	private MAX_FORCE: number = 20000;
+	private MAX_FORCE: number = 100000;
 	private KNEE_FOLD_ADJUST: number = 0.5;
 	private LEG_PART_MASS = 10;
 
@@ -26,7 +26,8 @@ export class CatLeg {
 
 	private paw: Paw;
 
-	private isFrontLeg: boolean;
+	private frontBack: string;
+	private leftRight: string;
 
 	constructor(
 		game: Phaser.Game,
@@ -35,19 +36,23 @@ export class CatLeg {
 		x: number,
 		y: number,
 		attach: CatBodyPart,
-		isFrontLeg: boolean,
-		spriteString: string
+		frontBack : string,
+		leftRight: string
 	) {
 
-		this.isFrontLeg = isFrontLeg;
+		this.frontBack = frontBack;
+		this.leftRight = leftRight;
 
-		this.thighBone = game.add.sprite(x, y + (this.THIGH_BONE_LENGTH / 2), 'cat_' + spriteString + '_thigh', 1);
-		this.shinBone = game.add.sprite(this.thighBone.x, this.thighBone.y + (this.thighBone.height / 2), 'cat_' + spriteString + '_shin', 1);
+		let isFrontLeg = frontBack == "front";
+
+		console.log('cat_' + leftRight + "_" + frontBack + '_thigh');
+		this.thighBone = game.add.sprite(x, y + (this.THIGH_BONE_LENGTH / 2), 'cat_' + leftRight + "_" + frontBack + '_thigh', 1);
+		this.shinBone = game.add.sprite(this.thighBone.x, this.thighBone.y + (this.thighBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_shin', 1);
 		if (!isFrontLeg) {
-			this.footBone = game.add.sprite(this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'cat_' + spriteString + '_foot', 1);
-			this.toeBone = game.add.sprite(this.footBone.x, this.footBone.y + (this.footBone.height / 2), 'cat_' + spriteString + '_toe', 1);
+			this.footBone = game.add.sprite(this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_foot', 1);
+			this.toeBone = game.add.sprite(this.footBone.x, this.footBone.y + (this.footBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_toe', 1);
 		} else {
-			this.toeBone = game.add.sprite(this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'cat_' + spriteString + '_toe', 1);
+			this.toeBone = game.add.sprite(this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_toe', 1);
 		}
 
 
@@ -101,13 +106,15 @@ export class CatLeg {
 		}
 		this.toeBone.body.setRectangle(this.BONES_WIDTH, this.TOE_BONE_LENGTH);
 
-		hip.setLimits(-Math.PI / 4, Math.PI / 2);
+
 
 
 		if (isFrontLeg) {
+			hip.setLimits(-Math.PI / 2, Math.PI / 4);
 			knee.setLimits(-Math.PI * 3 / 4, -Math.PI / 6);
 			ankle.setLimits(0, Math.PI / 4);
 		} else {
+			hip.setLimits(-Math.PI / 4, Math.PI / 2);
 			knee.setLimits(0, Math.PI * 3 / 4);
 			ankle.setLimits(-Math.PI / 4, Math.PI / 4);
 			meta.setLimits(0, Math.PI / 6);
@@ -149,7 +156,7 @@ export class CatLeg {
 	public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {
 		this.thighBone.body.setCollisionGroup(collisionGroup);
 		this.shinBone.body.setCollisionGroup(collisionGroup);
-		if (!this.isFrontLeg) {
+		if (this.frontBack == "back") {
 			this.footBone.body.setCollisionGroup(collisionGroup);
 		}
 		this.toeBone.body.setCollisionGroup(collisionGroup);
@@ -158,7 +165,7 @@ export class CatLeg {
 	public collides(collisionGroup: [Phaser.Physics.P2.CollisionGroup]) {
 		this.thighBone.body.collides(collisionGroup);
 		this.shinBone.body.collides(collisionGroup);
-		if (!this.isFrontLeg) {
+		if (this.frontBack == "back") {
 			this.footBone.body.collides(collisionGroup);
 		}
 		this.toeBone.body.collides(collisionGroup);

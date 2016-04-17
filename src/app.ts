@@ -46,7 +46,7 @@ class SimpleGame {
         let collisions = new CollisionManager(this.game);
 
 //        let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', collisions);
-        let cat = new Cat(this.game, collisions, 400, Math.random() * 100, 100, 30);
+        let cat = new Cat(this.game, collisions, 400, Math.random() * 100, 100, 80);
 
         this.levelManager = new LevelManager(this.game, cat);
 

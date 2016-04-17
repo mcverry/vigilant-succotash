@@ -31,7 +31,7 @@ export class CatHead {
 				attach,
 				attach.getHeadAttachPoint(),
 				this.MAX_FORCE);
-		//neck.setLimits(-Math.PI / 2, Math.PI / 2);
+		neck.setLimits(-Math.PI / 4, Math.PI / 4);
 	}
 
 	public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {

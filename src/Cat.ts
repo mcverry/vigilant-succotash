@@ -31,28 +31,32 @@ export class Cat {
 				y: y + (height / 2),
 				attach: this.catBody.chest,
 				isFrontLeg: true,
-				string: "left_front"
+				leftRight: "left",
+				frontBack: "front"
 			},
 			{	//front right leg
 				x: x + (width / 2),
 				y: y + (height / 2),
 				attach: this.catBody.chest,
 				isFrontLeg: true,
-				string: "right_front"
+				leftRight: "right",
+				frontBack: "front"
 			},
 			{	//hind left leg
 				x: x + (-width / 2),
 				y: y + (height / 2),
 				attach: this.catBody.butt,
 				isFrontLeg: false,
-				string: "left_back"
+				leftRight: "left",
+				frontBack: "back"
 			},
 			{	//hind right leg
 				x: x + (-width / 2),
 				y: y + (height / 2),
 				attach: this.catBody.butt,
 				isFrontLeg: false,
-				string: "right_back"
+				leftRight: "right",
+				frontBack: "back"
 			}
 		];
 
@@ -64,8 +68,8 @@ export class Cat {
 				legData[i].x,
 				legData[i].y,
 				legData[i].attach,
-				legData[i].isFrontLeg,
-				legData[i].string
+				legData[i].frontBack,
+				legData[i].leftRight
 			);
 			leg.setCollisionGroup(clsn.catCollisionGroup);
 			leg.collides([clsn.vaseCollisionGroup]);
@@ -80,7 +84,7 @@ export class Cat {
 		head.setCollisionGroup(clsn.catCollisionGroup);
 		head.collides([clsn.vaseCollisionGroup]);
 	}
-	
+
 	public getX(): number {
 		return this.catBody.belly.x;
 	}

@@ -20,15 +20,15 @@ export class CatBodyPart extends Phaser.Sprite {
 	}
 
 	public getLegAttachPoint() : number[] {
-		return [0, this.radius];
+		return [0, 0];
 	}
 
 	public getTailAttachPoint(reversed: boolean = false) {
-		return reversed ? [-this.radius, 0] : [this.radius, 0];
+		return reversed ? [-this.radius *  3/4, 0] : [this.radius * 3/4, 0];
 	}
 
 	public getHeadAttachPoint(reversed:boolean = false) {
-		return this.getTailAttachPoint(!reversed);
+		return reversed ? [this.radius, 0] : [-this.radius, 0];
 	}
 }
 
@@ -37,9 +37,9 @@ export class CatBody {
 	public belly: CatBodyPart;
 	public butt: CatBodyPart;
 
-	private RADIUS: number = 25;
+	private RADIUS: number = 40;
 	private SEPERATION: number = 35;
-	private MAX_FORCE: number = 10000;
+	private MAX_FORCE: number = 100000;
 
 	constructor(
 		game: Phaser.Game,
@@ -48,9 +48,9 @@ export class CatBody {
 		startX: number,
 		startY: number
 	) {
-		this.chest = new CatBodyPart(game, startX, startY, 'cat_chest', this.RADIUS, clsn);
-		this.belly = new CatBodyPart(game, startX + this.SEPERATION, startY, 'cat_belly', this.RADIUS, clsn);
-		this.butt = new CatBodyPart(game, startX + (this.SEPERATION * 2), startY, 'cat_butt', this.RADIUS, clsn);
+		this.chest = new CatBodyPart(game, startX, startY, DEBUG ? '' : 'cat_chest', this.RADIUS, clsn);
+		this.belly = new CatBodyPart(game, startX + this.SEPERATION, startY, DEBUG ? '' : 'cat_belly', this.RADIUS, clsn);
+		this.butt = new CatBodyPart(game, startX + (this.SEPERATION * 2), startY, DEBUG ? '' : 'cat_butt', this.RADIUS, clsn);
 
 		let parts: Phaser.Sprite[] = [this.chest, this.belly, this.butt];
 
@@ -65,7 +65,7 @@ export class CatBody {
 				parts[i - 1],
 				[this.SEPERATION / 2, 0],
 				this.MAX_FORCE);
-			joint.setLimits(-Math.PI / 4, Math.PI / 4)
+			joint.setLimits(-Math.PI / 6, Math.PI / 6)
 		}
 	}
 }
