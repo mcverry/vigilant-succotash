@@ -45,7 +45,7 @@ export class CatHead {
 		this.headPhys.body.setCollisionGroup(collisionGroup);
 	}
 
-	public collides(collisionGroup: [Phaser.Physics.P2.CollisionGroup]) {
+	public collides(collisionGroup: Phaser.Physics.P2.CollisionGroup[]) {
 		this.headPhys.body.collides(collisionGroup);
 	}
 }

@@ -74,7 +74,7 @@ export class CatTail {
 		}
 	}
 
-	public collides(collisionGroup: [Phaser.Physics.P2.CollisionGroup]) {
+	public collides(collisionGroup: Phaser.Physics.P2.CollisionGroup[]) {
 		for(let i: number = 0; i < this.tailJoints.length; ++i) {
 			this.tailJoints[i].body.collides(collisionGroup);
 		}

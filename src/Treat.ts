@@ -7,7 +7,7 @@ export class Treat {
   private sprite: Phaser.Sprite;
   private myCollisions: CollisionManager;
   private treatRadius: number = 14;
-  private TREAT_MASS: number = 25;
+  private TREAT_MASS: number = 15;
 
   public onCatGotTreat: Phaser.Signal = new Phaser.Signal();
   public treatID: number;
@@ -29,7 +29,7 @@ export class Treat {
     this.sprite.body.mass = this.TREAT_MASS;
     this.sprite.body.setCircle(this.treatRadius);
     this.sprite.body.setCollisionGroup(collisions.treatCollisionGroup);
-    this.sprite.body.collides([collisions.catCollisionGroup, collisions.pawCollisionGroup]);
+    this.sprite.body.collides([collisions.catCollisionGroup, collisions.pawCollisionGroup], this.catCollided, this);
     //this.sprite.body.static = true;
   }
 

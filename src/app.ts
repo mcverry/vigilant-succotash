@@ -50,6 +50,7 @@ class SimpleGame {
 
         //let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', this.collisions);
         let treat = new Treat(0, this.game, this.collisions, 600, 500);
+        //treat.onCatGotTreat.add(function(id) {alert("You got the " + id + " treat!!");} );
         let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
 
         this.levelManager = new LevelManager(this.game, cat);

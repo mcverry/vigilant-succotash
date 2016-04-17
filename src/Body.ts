@@ -16,7 +16,7 @@ export class CatBodyPart extends Phaser.Sprite {
 		bod.setCircle(radius);
 		bod.mass = 20;
 		bod.setCollisionGroup(clsn.catCollisionGroup);
-		bod.collides([clsn.vaseCollisionGroup]);
+		bod.collides(clsn.catCollidesWith);
 	}
 
 	public getLegAttachPoint() : number[] {

@@ -78,18 +78,18 @@ export class Cat {
 				legData[i].leftRight
 			);
 			leg.setCollisionGroup(clsn.catCollisionGroup);
-			leg.collides([clsn.vaseCollisionGroup]);
+			leg.collides(clsn.catCollidesWith);
 			this.legs.push(leg);
 		}
 
 		this.tail = new CatTail(this.game, this, x - (width / 2), y - (height / 2), this.catBody.butt);
 		this.tail.setCollisionGroup(clsn.catCollisionGroup);
-		this.tail.collides([clsn.vaseCollisionGroup]);
+		this.tail.collides(clsn.catCollidesWith);
 
 
 		this.head = new CatHead(this.game, this, x - (width / 2), y - (height / 2), this.catBody.chest);
 		this.head.setCollisionGroup(clsn.catCollisionGroup);
-		this.head.collides([clsn.vaseCollisionGroup]);
+		this.head.collides(clsn.catCollidesWith);
 
 		this.sortSprites();
 	}
