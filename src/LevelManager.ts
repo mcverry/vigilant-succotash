@@ -20,6 +20,7 @@ export class LevelManager
             this.levels.push(new Level(game, level));
         }
     }
+<<<<<<< HEAD
    
    
    public startLevel(levelNumber:number)
@@ -121,6 +122,7 @@ class TreatSpec
     {
         
     }
+
 }
 
 class ZoneSpecFactory{
@@ -156,6 +158,7 @@ class RectangleZoneSpec extends ZoneSpec
         this.y1 = y1;
         this.y2 = y2;
     }
+
     
     public init(): void {
         
