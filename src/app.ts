@@ -56,9 +56,12 @@ class SimpleGame {
         zone.asRectangle(0, 400, 800, 500);
         zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
         zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
-        let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
+        
+        //let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
 
-        this.levelManager = new LevelManager(this.game, cat);
+        this.levelManager = new LevelManager(this.game, this.collisions);
+
+        this.levelManager.startLevel(0);
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
         this.game.physics.p2.enable(this.mouseBody, true);
@@ -66,7 +69,7 @@ class SimpleGame {
         this.mouseBody.body.setCircle(10);
         this.mouseBody.body.data.shapes[0].sensor = true;
 
-        this.handle_bodies = cat.getHandles();
+        this.handle_bodies = this.levelManager.getCat().getHandles();
 
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
