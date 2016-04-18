@@ -11,10 +11,10 @@ export class ZoneSensor {
 
   public onCatEntered: Phaser.Signal = new Phaser.Signal();
   public onCatLeft: Phaser.Signal = new Phaser.Signal();
-  public zoneID: number;
+  public zoneID: string;
 
   constructor (
-    id: number,
+    id: string,
     game: Phaser.Game,
     collisions: CollisionManager,
     x: number = 0,
