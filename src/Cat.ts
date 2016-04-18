@@ -125,6 +125,18 @@ export class Cat {
 		return this.catBody.belly.y;
 	}
 
+	public enablePaws(frontBack: string, e: boolean) {
+		this.legs.forEach(function(leg) {
+			if(leg.getFrontBack() == frontBack) {
+				if(e) {
+					leg.getPaw().beginDrag();
+				} else {
+					leg.getPaw().endDrag();
+				}
+			}
+		});
+	}
+
 	public getHandles(): Phaser.Physics.P2.Body[]
 	{
 		return this.legs.map(function(leg) { return leg.getHandle() });

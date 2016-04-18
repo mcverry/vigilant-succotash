@@ -187,6 +187,10 @@ export class CatLeg {
 		return this.paw;
 	}
 
+	public getFrontBack() : string {
+		return this.frontBack;
+	}
+
 	public getHandle(): Phaser.Physics.P2.Body
 	{
 		return this.paw.getHandle();

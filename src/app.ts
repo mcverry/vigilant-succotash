@@ -22,6 +22,7 @@ class SimpleGame {
     private collisions: CollisionManager;
     private groupManager: GroupManager;
     private trackingBody: Phaser.Physics.P2.Body;
+    private pawLock: string = null;
 
     private fishy: Fishy;
 
@@ -118,7 +119,6 @@ class SimpleGame {
         this.levelManager.startLevel(0);
 
         this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 50);
-        this.game.time.events.loop(Phaser.Timer.SECOND * (1 / 30), this.fishy.update, this.fishy);
         //this.fishy.onEaten.add(function() {console.log("The fish has been eaten, you won!");});
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
@@ -132,6 +132,12 @@ class SimpleGame {
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
         this.game.input.addMoveCallback(move, this);
+        let zKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        let xKey = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+        zKey.onDown.add(frontClawsIn, this);
+        zKey.onUp.add(frontClawsOut, this);
+        xKey.onDown.add(backClawsIn, this);
+        xKey.onUp.add(backClawsOut, this);
 
         this.groupManager.getAllGroups().forEach(function(group) {
             this.game.add.existing(group);
@@ -175,6 +181,34 @@ function move(pointer, x, y, isDown) {
         this.mouseBody.body.y = y + this.game.camera.y;
         // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
     }
+
+function frontClawsIn() {
+  if(this.levelManager.cat != null && this.pawLock != 'back') {
+    this.levelManager.cat.enablePaws("front", true);
+    this.pawLock = 'front';
+  }
+}
+
+function frontClawsOut() {
+  if(this.levelManager.cat != null && this.pawLock == 'front') {
+    this.levelManager.cat.enablePaws("front", false);
+    this.pawLock = null;
+  }
+}
+
+function backClawsIn() {
+  if(this.levelManager.cat != null && this.pawLock != 'front') {
+    this.levelManager.cat.enablePaws("back", true);
+    this.pawLock = 'back';
+  }
+}
+
+function backClawsOut() {
+  if(this.levelManager.cat != null && this.pawLock == 'back') {
+    this.levelManager.cat.enablePaws("back", false);
+    this.pawLock = null;
+  }
+}
 
 window.onload = () => {
     let game = new SimpleGame();

@@ -41,6 +41,8 @@ export class Fishy {
     this.sprite.body.collides(this.myCollisions.catCollisionGroup, this.touchy, this);
     this.sprite.body.kinematic = true;
 
+    this.game.time.events.loop(Phaser.Timer.SECOND * (1 / 30), this.update, this);
+
     let dx: number = this.xTo - this.xFrom;
     let dy: number = this.yTo - this.yFrom;
     let len: number = Math.sqrt(dx*dx + dy*dy);
