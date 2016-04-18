@@ -66,12 +66,17 @@ class SimpleGame {
             this.catSpriteManager.loadSpritesForCat("hairless");
         }
 
+        /* Treat */
+        this.game.load.image("fish_treat", "fish_treat.png");
+
         /* Debug Sprites */
         this.game.load.image("debug_wall", "debug_wall.png");
 
         /* Start Level */
         this.game.load.image("start_background", "levels/start/start_background.png");
         this.game.load.image("start_sprite_floor", "levels/start/start_sprite_floor.png");
+        this.game.load.image("start_sprite_bed", "levels/start/start_sprite_bed.png");
+        this.game.load.image("start_sprite_curtains", "levels/start/start_sprite_curtains.png");
 
         /* Box Level*/
         this.game.load.image("box_background", "levels/box/box_background.png");
@@ -166,7 +171,7 @@ class SimpleGame {
         this.levelManager = new LevelManager(this.game, this.collisions, this.groupManager, this.soundManager);
         this.levelManager.startLevel(0);
 
-        this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 50);
+        this.fishy = new Fishy(this.game, this.collisions, 350, 250, 450, 270, 20);
         //this.fishy.onEaten.add(function() {console.log("The fish has been eaten, you won!");});
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');

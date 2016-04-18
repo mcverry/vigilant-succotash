@@ -1,7 +1,7 @@
 import { CollisionManager } from "./CollisionManager";
 import { SoundManager } from "./SoundManager";
 
-const DEBUG = true;
+const DEBUG = false;
 
 export class Treat {
   private game: Phaser.Game;
@@ -23,7 +23,7 @@ export class Treat {
     sounds: SoundManager,
     x: number,
     y: number,
-    image: string = "treat_img",
+    image: string = "fish_treat",
     edible: boolean = true,
     radius: number = 14
   ) {

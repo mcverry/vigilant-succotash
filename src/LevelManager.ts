@@ -56,7 +56,7 @@ export class LevelManager {
         );
 
         this.activeWorld = new ActiveWorldExt(
-            this.game, 
+            this.game,
             level,
             this.collisionManager,
             this.groupManager,
@@ -89,7 +89,9 @@ export class LevelManager {
         level.createElements(this.activeWorld);
         level.createForegroundElements(this.activeWorld);
 
-        this.cam.change(800 * 9, 800 * 10, true, 5000);
+        if (!FULL_DEBUG_MODE) {
+            this.cam.change(800 * 9, 800 * 10, true, 6000);
+        }
     }
 
     public getCat(): Cat {
@@ -211,7 +213,7 @@ class Level {
 
 
     public constructor(level: any) {
-        this.cat_startx = level.catstart.x;
+        this.cat_startx = level.catstart.x + ((9 - level.catstart.level) * 800);
         this.cat_starty = level.catstart.y;
 
         this.name = level.name;
