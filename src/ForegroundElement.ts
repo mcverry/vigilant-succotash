@@ -4,7 +4,6 @@ import { ZoneSensor } from "./Sensors";
 export class ForegroundElement extends Phaser.Sprite {
 	constructor(
 		game:Phaser.Game,
-		spriteGroup: Phaser.Group,
 		x:number,
 		y:number,
 		key:string,
@@ -21,11 +20,12 @@ export class ForegroundElement extends Phaser.Sprite {
 		}, this);
 
 		sensor.onCatLeft.add(function() {
+			console.log("leave");
 			this.setTransparent(false);
 		}, this);
 	}
 
 	public setTransparent(isTransparent:boolean) {
-		this.alpha = 0.4;
+		this.alpha = isTransparent ? 0.4 : 1;
 	}
 }

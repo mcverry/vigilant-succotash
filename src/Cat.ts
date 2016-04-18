@@ -1,6 +1,7 @@
 const DEBUG:boolean = false;
 
 import { CollisionManager } from "./CollisionManager";
+import { GroupManager } from "./GroupManager";
 import { Paw } from "./paw";
 import { CatTail } from "./Tail";
 import { CatHead } from "./Head";
@@ -20,6 +21,7 @@ export class Cat {
 	public constructor(
 		game: Phaser.Game,
 		clsn: CollisionManager,
+		grp: GroupManager,
 		x: number,
 		y: number,
 		width: number,
@@ -27,7 +29,7 @@ export class Cat {
 	) {
 		this.game = game;
 
-		this.spriteGroup = game.add.group(undefined	, 'cat', false);
+		this.spriteGroup = grp.catGroup;
 
 		this.catBody = new CatBody(game, this, clsn, x, y);
 
