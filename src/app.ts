@@ -42,12 +42,15 @@ class SimpleGame {
         this.catSpriteManager.loadSpritesForCat("hairless");
         
         this.game.load.image("background-1-1", "backgrounds/room-curtains.png");
+        this.game.load.image("background-1-2", "phaser.png");
+        
     }
 
     public create() {
 
         let worldW = 800 * 6;
         let worldH = 600;
+        
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.setImpactEvents(true);
         this.game.physics.p2.gravity.y = 200;
@@ -89,7 +92,7 @@ class SimpleGame {
         this.mouseBody.body.setCircle(10);
         this.mouseBody.body.data.shapes[0].sensor = true;
 
-        this.handle_bodies = this.levelManager.getCat().getHandles() || cat.getHandles();
+        this.handle_bodies = this.levelManager.getCat().getHandles();
         //this.handle_bodies = cat.getHandles();
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
@@ -100,7 +103,8 @@ class SimpleGame {
 
 function click(pointer) {
 
-        let bodies = this.game.physics.p2.hitTest(pointer.position, this.handle_bodies);
+        let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
+            
         if (bodies.length) {
             if('paw' in bodies[0].parent) {
               this.trackingBody = bodies[0].parent;
@@ -123,8 +127,8 @@ function move(pointer, x, y, isDown) {
           this.trackingBody.static = false;
           this.trackingBody.dynamic = true;
         }
-        this.mouseBody.body.x = x;
-        this.mouseBody.body.y = y;
+        this.mouseBody.body.x = x + this.game.camera.x;
+        this.mouseBody.body.y = y + this.game.camera.y;
         // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
     }
 
