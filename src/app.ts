@@ -84,29 +84,35 @@ class SimpleGame {
 
         /* Vase Level */
         this.game.load.image("vase_background", "levels/vase/vase_background.png");
+        this.game.load.image("vase_foreground", "levels/vase/vase_foreground.png");
         this.game.load.image("vase_sprites", "levels/vase/vase_sprites.png");
 
         /* Boot Level */
         this.game.load.image("boot_background", "levels/boot/boot_background.png");
+        this.game.load.image("boot_foreground", "levels/boot/boot_foreground.png");
         this.game.load.image("boot_sprites", "levels/boot/boot_sprites.png");
 
         /* Bar Level */
         this.game.load.image("bar_background", "levels/bar/bar_background.png");
+        this.game.load.image("bar_foreground", "levels/bar/bar_foreground.png");
         this.game.load.image("bar_sprites_stools", "levels/bar/bar_sprites_stools.png");
         this.game.load.image("bar_sprites_drinks", "levels/bar/bar_sprites_drinks.png");
 
         /* Outdoor 1 Level */
         this.game.load.image("outdoor_1_background", "levels/outdoor_1/outdoor_1_background.png");
+        this.game.load.image("outdoor_1_foreground_window", "levels/outdoor_1/outdoor_1_foreground_window.png");
         this.game.load.image("outdoor_1_sprites_main", "levels/outdoor_1/outdoor_1_sprites_main.png");
         this.game.load.image("outdoor_1_sprites_window_top", "levels/outdoor_1/outdoor_1_sprites_window_top.png");
 
         /* Outdoor 2 Level */
         this.game.load.image("outdoor_2_background", "levels/outdoor_2/outdoor_2_background.png");
         this.game.load.image("outdoor_2_sprites_main", "levels/outdoor_2/outdoor_2_sprites_main.png");
+        this.game.load.image("outdoor_2_foreground_trash", "levels/outdoor_2/outdoor_2_foreground_trash.png");
 
         /* Outdoor 3 Level */
         this.game.load.image("outdoor_3_background", "levels/outdoor_3/outdoor_3_background.png");
         this.game.load.image("outdoor_3_sprites_main", "levels/outdoor_3/outdoor_3_sprites_main.png");
+        this.game.load.image("outdoor_3_sprites_window_top", "levels/outdoor_3/outdoor_3_sprites_window_top.png");
 
         /* Fish Level */
         this.game.load.image("fish_sprite_table_and_bowl", "levels/fish/fish_sprite_table_and_bowl.png");
