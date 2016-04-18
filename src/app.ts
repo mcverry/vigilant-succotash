@@ -7,6 +7,7 @@ import { CatSpriteManager } from "./CatSpriteManager";
 import { LevelManager } from "./LevelManager";
 import { Treat } from "./Treat";
 import { ZoneSensor } from "./Sensors";
+import { Fishy } from "./Fishy";
 
 class SimpleGame {
 
@@ -19,8 +20,16 @@ class SimpleGame {
     private collisions: CollisionManager;
     private trackingBody: Phaser.Physics.P2.Body;
 
+    private fishy: Fishy;
+
     constructor() {
-        this.game = new Phaser.Game(800, 600, Phaser.CANVAS, "content", { preload: this.preload, create: this.create });
+        this.game
+          = new Phaser.Game(800, 600,
+              Phaser.CANVAS,
+              "content",
+              { preload: this.preload,
+                create: this.create
+              });
     }
 
     public preload() {
@@ -32,6 +41,7 @@ class SimpleGame {
 
         this.game.load.json("levels", "levels.json");
         this.game.load.image('cat_paw', 'cat-paw.png');
+        this.game.load.image('fishy', 'fish.png');
 
         this.catSpriteManager = new CatSpriteManager(this.game);
         this.catSpriteManager.loadSpritesForCat("brown");
@@ -89,6 +99,10 @@ class SimpleGame {
         this.levelManager = new LevelManager(this.game, this.collisions);
         this.levelManager.startLevel(0);
 
+        this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 50);
+        this.game.time.events.loop(Phaser.Timer.SECOND * (1 / 30), this.fishy.update, this.fishy);
+        //this.fishy.onEaten.add(function() {console.log("The fish has been eaten, you won!");});
+
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
         this.game.physics.p2.enable(this.mouseBody, true);
         this.mouseBody.body.static = true;
@@ -101,7 +115,6 @@ class SimpleGame {
         this.game.input.onUp.add(release, this);
         this.game.input.addMoveCallback(move, this);
     }
-
 }
 
 function click(pointer) {
