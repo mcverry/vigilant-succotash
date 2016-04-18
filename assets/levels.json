@@ -3,7 +3,7 @@
     "name": "Cat Nap",
     "worldlength": 1600,
     "catstart": {
-      "x": 1400,
+      "x": 7600,
       "y": 200
     },
     "stages": [
@@ -267,7 +267,7 @@
         "backgroundImage": "outdoor_3_background",
         "foregroundElements": [
           {
-            "x": 308,
+            "x": 452,
             "y": 148,
             "key": "outdoor_3_foreground_window"
           }
@@ -279,8 +279,8 @@
             "key": "outdoor_3_sprites_main"
           },
           {
-            "x": 400,
-            "y": 400,
+            "x": 462,
+            "y": 72,
             "key": "outdoor_3_sprites_window_top"
           }
         ],
@@ -289,8 +289,8 @@
             "key": "outdoor_3_foreground_window",
             "shape": "rectangle",
             "enabled": true,
-            "x1": 308,
-            "x2": 328,
+            "x1": 452,
+            "x2": 472,
             "y1": 148,
             "y2": 320,
             "from": -1,
@@ -302,7 +302,13 @@
         "name": "fish",
         "number": 9,
         "backgroundImage": "fish_background",
-        "foregroundElements": [],
+        "foregroundElements": [
+          {
+            "x": 452,
+            "y": 148,
+            "key": "fish_foreground_water"
+          }
+        ],
         "elements": [
           {
             "x": 400,
@@ -310,7 +316,18 @@
             "key": "fish_sprite_table_and_bowl"
           }
         ],
-        "zones": []
+        "zones": [
+          {
+            "key": "fish_foreground_water",
+            "shape": "circle",
+            "radius": 125,
+            "enabled": true,
+            "x": 360,
+            "y": 480,
+            "from": -1,
+            "to": -1
+          }
+        ]
       }
     ]
   }

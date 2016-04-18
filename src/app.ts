@@ -113,10 +113,13 @@ class SimpleGame {
         this.game.load.image("outdoor_3_background", "levels/outdoor_3/outdoor_3_background.png");
         this.game.load.image("outdoor_3_sprites_main", "levels/outdoor_3/outdoor_3_sprites_main.png");
         this.game.load.image("outdoor_3_sprites_window_top", "levels/outdoor_3/outdoor_3_sprites_window_top.png");
+        this.game.load.image("outdoor_3_foreground_window", "levels/outdoor_3/outdoor_3_foreground_window.png");
+
 
         /* Fish Level */
         this.game.load.image("fish_sprite_table_and_bowl", "levels/fish/fish_sprite_table_and_bowl.png");
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
+        this.game.load.image("fish_foreground_water", "levels/fish/fish_foreground_water.png");
 
         /* SOUNDS */
         this.game.load.audio("music", "audio/Heavy-Thoughts-Ludum-Dare-Edit.mp3");
