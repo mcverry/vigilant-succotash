@@ -137,6 +137,17 @@ export class Cat {
 		});
 	}
 
+	public anyPawsTouchy() : boolean {
+		let touchy: boolean = false;
+		this.legs.forEach(function(leg) {
+			if(leg.getPaw().isTouchy()) {
+				touchy = true;
+				return;
+			}
+		});
+		return touchy;
+	}
+
 	public getHandles(): Phaser.Physics.P2.Body[]
 	{
 		return this.legs.map(function(leg) { return leg.getHandle() });
