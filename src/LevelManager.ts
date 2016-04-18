@@ -7,7 +7,7 @@ import {ForegroundElement} from "./ForegroundElement";
 import {Element} from "./Element";
 
 const WALL_DEBUG = true;
-const FULL_DEBUG_MODE = true;
+const FULL_DEBUG_MODE = false;
 
 export class LevelManager
 {
@@ -78,17 +78,18 @@ export class LevelManager
         left_body.static = true;
         right_body.static = true;
 
+/*
         if (!FULL_DEBUG_MODE) {
             this.game.camera.focusOnXY(1200, 400);
             this.game.camera.follow(this.cat.catBody.chest);
         }
       
-
+*/
         level.createZones(this.activeWorld);
         level.createElements(this.activeWorld);
         level.createForegroundElements(this.activeWorld);
 
-        this.cam.change(800, 1600);
+        this.cam.change(800, 1600, true, 2000);
    }
 
    public getCat(): Cat {
@@ -157,7 +158,7 @@ class ActiveWorldExt extends ActiveWorld
 
         let goal = this.zoneToGoal[key];
         if (goal) {
-            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[0]].endX);
+            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[0]].endX, false);
         }
     }
 
@@ -166,27 +167,37 @@ class ActiveWorldExt extends ActiveWorld
         console.log(key);
         let goal = this.zoneToGoal[key]
         if (goal && this.cat.getX() <= this.level.stages[goal[1]].endX) {
-            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[1]].endX);
+            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[1]].endX, true);
         }
         
     }
 }
 
 class CameraManager {
-
     private game: Phaser.Game;
-    private levelManager: LevelManager
+    private levelManager: LevelManager;
     
-    public constructor(game:Phaser.Game, level:LevelManager){
+    
+    public constructor(game: Phaser.Game, level: LevelManager){
        this.game = game;
        this.levelManager = level;
     }
 
-    public change(x1: number, x2: number){
+    public change(x1: number, x2: number, room_lock: boolean, duration?: number) {
         this.levelManager.rightWall.body.x = x2;
         this.levelManager.leftWall.body.x = x1;
+
+       let dur = duration || 500;
+
         if (!FULL_DEBUG_MODE) {
-            this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
+            if (!room_lock){
+                this.game.camera.follow(this.levelManager.getCat().catBody.chest);
+                this.game.camera.deadzone = new Phaser.Rectangle(100, 100, 700, 600);
+            } else {
+                this.game.camera.follow(null);
+                let tween = this.game.add.tween(this.game.camera).to({"x" : x1}, dur, Phaser.Easing.Quadratic.InOut).start();
+                console.log(tween);
+            }
         }
     }
 }
