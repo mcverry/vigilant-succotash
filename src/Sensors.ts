@@ -8,6 +8,7 @@ export class ZoneSensor {
   private sprite: Phaser.Sprite;
   private myCollisions: CollisionManager;
   private entries: number = 0;
+  private enabled: boolean;
 
   public onCatEntered: Phaser.Signal = new Phaser.Signal();
   public onCatLeft: Phaser.Signal = new Phaser.Signal();
@@ -17,6 +18,7 @@ export class ZoneSensor {
     id: string,
     game: Phaser.Game,
     collisions: CollisionManager,
+    enabled: boolean,
     x: number = 0,
     y: number = 0,
     shape: p2.Shape = null
@@ -25,6 +27,7 @@ export class ZoneSensor {
     this.game = game;
     this.myCollisions = collisions;
     this.sprite = game.add.sprite(x, y, (SHOW_SENSORS ? "sensor" : "invisible"));
+    this.enabled = enabled;
 
     this.game.physics.p2.enable(this.sprite, DEBUG);
     if(shape != null) {
@@ -34,6 +37,13 @@ export class ZoneSensor {
 
     this.sprite.body.onBeginContact.add(this.catContacted, this, 0);
     this.sprite.body.onEndContact.add(this.catUnContacted, this, 0);
+  }
+
+  public setEnabled(e: boolean) {
+    this.enabled = e;
+    if(this.entries > 0) {
+      this.onCatEntered.dispatch(this.zoneID, null, null, null);
+    }
   }
 
   public setShape(shape: p2.Shape) {
@@ -71,7 +81,7 @@ export class ZoneSensor {
 
   public catContacted(otherBody, otherShape, myShape, contactEq) {
     if(otherBody != null) {
-      if(this.entries == 0) {
+      if(this.entries == 0 && this.enabled) {
         this.onCatEntered.dispatch(this.zoneID, otherBody, otherShape, myShape);
       }
       this.entries++;
@@ -81,7 +91,7 @@ export class ZoneSensor {
   public catUnContacted(otherBody, otherShape, myShape, contactEq) {
     if(otherBody != null) {
       --this.entries;
-      if(this.entries == 0) {
+      if(this.entries == 0 && this.enabled) {
         this.onCatLeft.dispatch(this.zoneID, otherBody, otherShape, myShape);
       }
     }
