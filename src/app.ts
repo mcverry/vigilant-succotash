@@ -28,7 +28,8 @@ class SimpleGame {
               Phaser.CANVAS,
               "content",
               { preload: this.preload,
-                create: this.create
+                create: this.create,
+                update: this.update,
               });
     }
 
@@ -118,6 +119,11 @@ class SimpleGame {
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
         this.game.input.addMoveCallback(move, this);
+    }
+    
+    public update() {
+        this.mouseBody.body.x = this.game.input.x + this.game.camera.x;
+        this.mouseBody.body.y = this.game.input.y + this.game.camera.y;
     }
 }
 

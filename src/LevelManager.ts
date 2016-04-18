@@ -14,12 +14,28 @@ export class LevelManager
     private collisionManager: CollisionManager;
     private levels: Level[] = [];
     private cam: CameraManager;
+    
+    private leftWall: Phaser.Sprite;
+    private rightWall: Phaser.Sprite;
 
     public constructor(game: Phaser.Game, collisionManager: CollisionManager)
     {
         this.game = game;
         this.collisionManager = collisionManager;
-        this.cam = new CameraManager(this.game);
+        
+        this.leftWall = this.game.add.sprite(0, 0, 'invisible');
+        this.rightWall = this.game.add.sprite(0, 0, 'invisible');
+        this.game.physics.p2.enable(this.leftWall, true);
+        this.game.physics.p2.enable(this.rightWall, true);
+        let left_body: Phaser.Physics.P2.Body = this.leftWall.body;
+        let right_body: Phaser.Physics.P2.Body = this.rightWall.body;
+        left_body.setCollisionGroup(collisionManager.vaseCollisionGroup);
+        right_body.setCollisionGroup(collisionManager.vaseCollisionGroup);
+        left_body.setRectangle(10, 600);
+        right_body.setRectangle(10, 600);
+        
+        
+        this.cam = new CameraManager(this.game, this.leftWall, this.rightWall);
         
         let json = game.cache.getJSON("levels");
 
@@ -49,8 +65,10 @@ export class LevelManager
       level.createZones(this.activeWorld);
       level.createForegroundElements(this.activeWorld);
       
-      this.cam.change(800, 1600);
 
+      
+      
+      this.cam.change(800, 1600);
    }
 
    public getCat(): Cat {
@@ -129,13 +147,22 @@ class ActiveWorldExt extends ActiveWorld
 class CameraManager {
     
     private game: Phaser.Game;
-    public constructor(game:Phaser.Game){
+    private leftWall: Phaser.Sprite;
+    private rightWall: Phaser.Sprite;
+    
+    public constructor(game:Phaser.Game, leftWall:Phaser.Sprite, rightWall: Phaser.Sprite){
        this.game = game;
+       this.leftWall = leftWall;
+       this.rightWall = rightWall;
     }
     
     public change(x1: number, x2: number){
-         //this.game.physics.p2.setBounds(x1, 0, x2 - x2, 600, true, true, true, true, true);
-         this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
+        this.rightWall.x = x2 + 1;
+        this.leftWall.x = x1 - 1;
+        
+        console.log(this.leftWall);
+        
+        this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
     }
 }
 
