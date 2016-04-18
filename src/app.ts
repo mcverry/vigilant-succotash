@@ -8,6 +8,7 @@ import { LevelManager } from "./LevelManager";
 import { Treat } from "./Treat";
 import { ZoneSensor } from "./Sensors";
 import { Fishy } from "./Fishy";
+import { SoundManager} from "./SoundManager";
 
 const FULL_DEBUG_MODE = false;
 
@@ -20,6 +21,7 @@ class SimpleGame {
     private catSpriteManager: CatSpriteManager;
     private levelManager: LevelManager;
     private collisions: CollisionManager;
+    private soundManager: SoundManager;
     private groupManager: GroupManager;
     private trackingBody: Phaser.Physics.P2.Body;
     private pawLock: string = null;
@@ -108,6 +110,10 @@ class SimpleGame {
         /* Fish Level */
         this.game.load.image("fish_sprite_table_and_bowl", "levels/fish/fish_sprite_table_and_bowl.png");
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
+        
+        /* SOUNDS */
+        this.game.load.audio("music", "audio/Heavy-Thoughts-1.1.mp3");
+        this.game.load.audio("meow", "audio/Cat-meow-1.mp3");
     }
 
     public create() {
@@ -122,9 +128,13 @@ class SimpleGame {
         this.game.world.setBounds(0, 0, worldW, worldH);
         this.game.camera.setBoundsToWorld();
 
-        this.collisions = new CollisionManager(this.game);
+        this.game.add.sound("music", 1, true).play();
 
-        let treat = new Treat("my_treat", this.game, this.collisions, 600, 500);
+        this.collisions = new CollisionManager(this.game);
+        this.soundManager = new SoundManager(this.game);
+        this.soundManager.addSound("meow");
+
+        let treat = new Treat("my_treat", this.game, this.collisions, this.soundManager,  600, 500);
         treat.onCatGotTreat.add(function(id) {console.log("You got the " + id + " treat!!");} );
         let zone = new ZoneSensor("my_zone", this.game, this.collisions, true);
         zone.asRectangle(0, 400, 800, 500);
@@ -143,7 +153,7 @@ class SimpleGame {
         zone.onCatLeft.add(function(id) { console.log("The cat has left zone " + id);} );
 
         this.groupManager = new GroupManager(this.game);
-        this.levelManager = new LevelManager(this.game, this.collisions, this.groupManager);
+        this.levelManager = new LevelManager(this.game, this.collisions, this.groupManager, this.soundManager);
         this.levelManager.startLevel(0);
 
         this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 50);
