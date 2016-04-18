@@ -8,7 +8,7 @@ import {Element} from "./Element";
 import {SoundManager} from "./SoundManager";
 
 const WALL_DEBUG = true;
-const FULL_DEBUG_MODE = true;
+const FULL_DEBUG_MODE = false;
 
 export class LevelManager {
     public leftWall: Phaser.Sprite;
@@ -55,7 +55,14 @@ export class LevelManager {
             30
         );
 
-        this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.cam, this.soundManager, this.cat);
+        this.activeWorld = new ActiveWorldExt(
+            this.game, 
+            level,
+            this.collisionManager,
+            this.groupManager,
+            this.cam,
+            this.soundManager,
+            this.cat);
         this.currentLevel = levelNumber;
 
         level.setBackground(this.activeWorld);
@@ -283,17 +290,15 @@ class Stage {
         this.endX = 800 * (10 - stage.number);
         this.backgroundImage = stage.backgroundImage;
 
-        let i = 0;
         if (stage.treats) {
             for (let treat of stage.treats) {
                 this.treats.push(new TreatSpec(treat, this.startX));
-                i++;
             }
         }
 
         if (stage.zones) {
             for (let zone of stage.zones) {
-                this.zones.push(ZoneSpecFactory.factory(zone, this.startX));
+                this.zones.push(ZoneSpecFactory.factory(zone, this.startX, stage.number));
             }
         }
 
@@ -389,15 +394,14 @@ class TreatSpec extends Spec {
 }
 
 class ZoneSpecFactory {
-    public static factory(zone: any, offsetx: number): ZoneSpec {
+    public static factory(zone: any, offsetx: number, stagenum: number): ZoneSpec {
 
-        let frm = zone.from;
-        if (frm === undefined || frm == null) {
-            frm = -1;
-        }
-        let to = zone.to;
-        if (to === undefined || to == null) {
-            to = -1;
+        let to = -1;
+        let frm = -1;
+        if (zone.goal)
+        {
+            to = stagenum + 1;
+            frm = stagenum;
         }
 
         if (zone.shape === "circle") {

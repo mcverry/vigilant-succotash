@@ -10,7 +10,7 @@ import { ZoneSensor } from "./Sensors";
 import { Fishy } from "./Fishy";
 import { SoundManager} from "./SoundManager";
 
-const FULL_DEBUG_MODE = true;
+const FULL_DEBUG_MODE = false;
 
 class SimpleGame {
 
