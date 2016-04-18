@@ -57,6 +57,7 @@ class SimpleGame {
         /* Box Level*/
         this.game.load.image("box_background", "levels/box/box_background.png");
         this.game.load.image("box_foreground_box", "levels/box/box_foreground_box.png");
+        this.game.load.image("box_sprite_box_and_ground", "levels/box/box_sprite_box_and_ground.png");
 
         /* Fish Level */
         this.game.load.image("fish_background", "levels/fish/fish_background.png");

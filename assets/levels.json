@@ -9,9 +9,16 @@
         "backgroundImage": "box_background",
         "foregroundElements": [
           {
-            "x": 273,
+            "x": 272,
             "y": 139,
             "key": "box_foreground_box"
+          }
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 370,
+            "key": "box_sprite_box_and_ground"
           }
         ],
         "zones": [
@@ -19,10 +26,10 @@
             "key": "box_foreground_box",
             "shape": "rectangle",
             "enabled" : true,
-            "x1": 273,
-            "x2": 520,
+            "x1": 272,
+            "x2": 653,
             "y1": 139,
-            "y2": 580
+            "y2": 538
           }
         ]
       },

@@ -3,6 +3,7 @@ import {Treat} from "./treat";
 import {ZoneSensor} from "./Sensors";
 import {CollisionManager} from "./CollisionManager";
 import {ForegroundElement} from "./ForegroundElement";
+import {Element} from "./Element";
 
 export class LevelManager
 {
@@ -40,6 +41,7 @@ export class LevelManager
       level.setBackground(this.activeWorld);
       level.createTreats(this.activeWorld);
       level.createZones(this.activeWorld);
+      level.createElements(this.activeWorld);
       level.createForegroundElements(this.activeWorld);
    }
 
@@ -62,6 +64,7 @@ export class ActiveWorld
 
     public treats: Treat[] = [];
     public zones: ZoneSensor[] = [];
+    public elements: Element[] = [];
     public foregroundElements: ForegroundElement[] = [];
 
     public constructor(game: Phaser.Game, cm: CollisionManager, catSpriteGroup: Phaser.Group)
@@ -146,6 +149,16 @@ class Level
         }
    }
 
+   public createElements(activeWorld: ActiveWorldExt) {
+       for (let stage of this.stages) {
+           stage.createElements(activeWorld);
+       }
+
+       for (let element of activeWorld.elements) {
+           activeWorld.catSpriteGroup.add(element);
+       }
+   }
+
    public createForegroundElements(activeWorld: ActiveWorldExt) {
        for (let stage of this.stages) {
            stage.createForegroundElements(activeWorld);
@@ -162,6 +175,7 @@ class Stage
     private treats: TreatSpec[] = [];
     private zones: ZoneSpec[] = [];
     private toys: ToySpec[] = [];
+    private elements: ElementSpec[] = [];
     private foregroundElements: ForegroundElementSpec[] = [];
 
     private name: String;
@@ -201,6 +215,14 @@ class Stage
             }
         }
 
+        if (stage.elements) {
+            for (let element of stage.elements) {
+                this.elements.push(
+                    new ElementSpec(element)
+                );
+            }
+        }
+
         if (stage.foregroundElements) {
             for (let foregroundElement of stage.foregroundElements) {
                 this.foregroundElements.push(
@@ -232,6 +254,13 @@ class Stage
         for (let toy of this.toys)
         {
             toy.init(activeWorld);
+        }
+    }
+
+    public createElements(activeWorld: ActiveWorld): void {
+        for (let element of this.elements) {
+            element.init(activeWorld);
+
         }
     }
 
@@ -282,8 +311,6 @@ class ZoneSpecFactory{
         }
     }
 }
-
-
 
 class ZoneSpec extends Spec {
     public init(activeWorld: ActiveWorld): void {}
@@ -371,6 +398,31 @@ class ToySpec extends Spec
     public init(activeWorld: ActiveWorld): void
     {
 
+    }
+}
+
+class ElementSpec extends Spec {
+    public x: number;
+    public y: number;
+    public key: string;
+
+    public init(activeWorld: ActiveWorld): void {
+        activeWorld.elements.push(
+            new Element(
+                activeWorld.game,
+                this.x,
+                this.y,
+                this.key,
+                activeWorld
+            )
+        );
+    }
+
+    constructor(element: any) {
+        super();
+        this.key = element.key;
+        this.x = element.x;
+        this.y = element.y;
     }
 }
 

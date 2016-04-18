@@ -17,6 +17,9 @@ export class CollisionManager {
 	//fish
 	public fishCollisionGroup: Phaser.Physics.P2.CollisionGroup;
 
+	//level elements (static)
+	public elementsCollisionGroup: Phaser.Physics.P2.CollisionGroup;
+
 	//Things the cat can collide with
 	public catCollidesWith: Array<Phaser.Physics.P2.CollisionGroup>;
 
@@ -27,11 +30,13 @@ export class CollisionManager {
 		this.sensorCollisionGroup = game.physics.p2.createCollisionGroup();
 		this.fishCollisionGroup = game.physics.p2.createCollisionGroup();
 		this.treatCollisionGroup = game.physics.p2.createCollisionGroup();
+		this.elementsCollisionGroup = game.physics.p2.createCollisionGroup();
 
 		this.catCollidesWith
 			= [this.vaseCollisionGroup,
 				this.treatCollisionGroup,
 				this.sensorCollisionGroup,
-				this.fishCollisionGroup];
+				this.fishCollisionGroup,
+				this.elementsCollisionGroup];
 	}
 }
