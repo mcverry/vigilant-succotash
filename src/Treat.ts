@@ -10,10 +10,10 @@ export class Treat {
   private TREAT_MASS: number = 15;
 
   public onCatGotTreat: Phaser.Signal = new Phaser.Signal();
-  public treatID: number;
+  public treatID: string;
 
   constructor(
-    id: number,
+    id: string,
     game: Phaser.Game,
     collisions: CollisionManager,
     x: number,
