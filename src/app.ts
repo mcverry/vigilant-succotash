@@ -1,5 +1,13 @@
 /// <reference path="../definitions/phaser.d.ts"/>
 
+/*
+HEY MAKE SURE TO CREDIT
+
+http://audiosoundclips.com/cat-sound-effects-sfx/
+
+FOR THE CAT SFX
+*/
+
 import { GroupManager } from "./GroupManager";
 import { CollisionManager } from "./CollisionManager";
 import { Cat } from "./Cat";
@@ -8,9 +16,8 @@ import { LevelManager } from "./LevelManager";
 import { Treat } from "./Treat";
 import { ZoneSensor } from "./Sensors";
 import { Fishy } from "./Fishy";
-import { SoundManager} from "./SoundManager";
 
-const FULL_DEBUG_MODE = false;
+const FULL_DEBUG_MODE = true;
 
 class SimpleGame {
 
@@ -21,7 +28,6 @@ class SimpleGame {
     private catSpriteManager: CatSpriteManager;
     private levelManager: LevelManager;
     private collisions: CollisionManager;
-    private soundManager: SoundManager;
     private groupManager: GroupManager;
     private trackingBody: Phaser.Physics.P2.Body;
     private pawLock: string = null;
@@ -83,37 +89,39 @@ class SimpleGame {
 
         /* Vase Level */
         this.game.load.image("vase_background", "levels/vase/vase_background.png");
+        this.game.load.image("vase_foreground", "levels/vase/vase_foreground.png");
         this.game.load.image("vase_sprites", "levels/vase/vase_sprites.png");
 
         /* Boot Level */
         this.game.load.image("boot_background", "levels/boot/boot_background.png");
+        this.game.load.image("boot_foreground", "levels/boot/boot_foreground.png");
         this.game.load.image("boot_sprites", "levels/boot/boot_sprites.png");
 
         /* Bar Level */
         this.game.load.image("bar_background", "levels/bar/bar_background.png");
+        this.game.load.image("bar_foreground", "levels/bar/bar_foreground.png");
         this.game.load.image("bar_sprites_stools", "levels/bar/bar_sprites_stools.png");
         this.game.load.image("bar_sprites_drinks", "levels/bar/bar_sprites_drinks.png");
 
         /* Outdoor 1 Level */
         this.game.load.image("outdoor_1_background", "levels/outdoor_1/outdoor_1_background.png");
+        this.game.load.image("outdoor_1_foreground_window", "levels/outdoor_1/outdoor_1_foreground_window.png");
         this.game.load.image("outdoor_1_sprites_main", "levels/outdoor_1/outdoor_1_sprites_main.png");
         this.game.load.image("outdoor_1_sprites_window_top", "levels/outdoor_1/outdoor_1_sprites_window_top.png");
 
         /* Outdoor 2 Level */
         this.game.load.image("outdoor_2_background", "levels/outdoor_2/outdoor_2_background.png");
         this.game.load.image("outdoor_2_sprites_main", "levels/outdoor_2/outdoor_2_sprites_main.png");
+        this.game.load.image("outdoor_2_foreground_trash", "levels/outdoor_2/outdoor_2_foreground_trash.png");
 
         /* Outdoor 3 Level */
         this.game.load.image("outdoor_3_background", "levels/outdoor_3/outdoor_3_background.png");
         this.game.load.image("outdoor_3_sprites_main", "levels/outdoor_3/outdoor_3_sprites_main.png");
+        this.game.load.image("outdoor_3_sprites_window_top", "levels/outdoor_3/outdoor_3_sprites_window_top.png");
 
         /* Fish Level */
         this.game.load.image("fish_sprite_table_and_bowl", "levels/fish/fish_sprite_table_and_bowl.png");
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
-        
-        /* SOUNDS */
-        this.game.load.audio("music", "audio/Heavy-Thoughts-1.1.mp3");
-        this.game.load.audio("meow", "audio/Cat-meow-1.mp3");
     }
 
     public create() {
@@ -128,13 +136,9 @@ class SimpleGame {
         this.game.world.setBounds(0, 0, worldW, worldH);
         this.game.camera.setBoundsToWorld();
 
-        this.game.add.sound("music", 1, true).play();
-
         this.collisions = new CollisionManager(this.game);
-        this.soundManager = new SoundManager(this.game);
-        this.soundManager.addSound("meow");
 
-        let treat = new Treat("my_treat", this.game, this.collisions, this.soundManager,  600, 500);
+        let treat = new Treat("my_treat", this.game, this.collisions, 600, 500);
         treat.onCatGotTreat.add(function(id) {console.log("You got the " + id + " treat!!");} );
         let zone = new ZoneSensor("my_zone", this.game, this.collisions, true);
         zone.asRectangle(0, 400, 800, 500);
@@ -153,7 +157,7 @@ class SimpleGame {
         zone.onCatLeft.add(function(id) { console.log("The cat has left zone " + id);} );
 
         this.groupManager = new GroupManager(this.game);
-        this.levelManager = new LevelManager(this.game, this.collisions, this.groupManager, this.soundManager);
+        this.levelManager = new LevelManager(this.game, this.collisions, this.groupManager);
         this.levelManager.startLevel(0);
 
         this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 50);

@@ -73,17 +73,17 @@ export class CatSpriteManager {
 			"cat_left_back_foot": "fat-left-back-foot.png",
 			"cat_left_back_shin": "fat-left-back-shin.png",
 			"cat_left_back_thigh": "fat-left-back-thigh.png",
-			"cat_left_back_toe": "fat-back-toe.png",
+			"cat_left_back_toe": "fat-left-toe.png",
 			"cat_right_back_foot": "fat-right-back-foot.png",
 			"cat_right_back_shin": "fat-right-back-shin.png",
 			"cat_right_back_thigh": "fat-right-back-thigh.png",
-			"cat_right_back_toe": "fat-back-toe.png",
+			"cat_right_back_toe": "fat-right-toe.png",
 			"cat_left_front_shin": "fat-left-front-shin.png",
 			"cat_left_front_thigh": "fat-left-front-thigh.png",
-			"cat_left_front_toe": "fat-front-toe.png",
+			"cat_left_front_toe": "fat-left-toe.png",
 			"cat_right_front_shin": "fat-right-front-shin.png",
 			"cat_right_front_thigh": "fat-right-front-thigh.png",
-			"cat_right_front_toe": "fat-front-toe.png"
+			"cat_right_front_toe": "fat-right-toe.png"
 		},
 		"calico": {
 			"cat_head": "calico-head.png",

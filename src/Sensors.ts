@@ -1,7 +1,7 @@
 import { CollisionManager } from "./CollisionManager"
 
 const DEBUG = true;
-const SHOW_SENSORS = true;
+const SHOW_SENSORS = false;
 
 export class ZoneSensor {
   private game: Phaser.Game;
