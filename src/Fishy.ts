@@ -32,14 +32,20 @@ export class Fishy {
     this.speed = speed;
 
     this.sprite = this.game.add.sprite(this.xFrom, this.yFrom, "fishy");
-    this.game.physics.p2.enable(this.sprite);
+    this.game.physics.p2.enable(this.sprite, false);
     this.sprite.body.setCollisionGroup(this.myCollisions.fishCollisionGroup);
     this.sprite.body.collides(this.myCollisions.catCollisionGroup, this.touchy, this);
+    this.sprite.body.kinematic = true;
   }
 
   public touchy(myBody, otherBody, myShape, otherShape) {
     if(otherBody.sprite.key == "cat_head") {
       this.onEaten.dispatch();
     }
+  }
+
+  public update(time: number) {
+    let dx: number = this.xTo - this.xFrom;
+    this.sprite.x += time;
   }
 }

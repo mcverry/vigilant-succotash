@@ -20,6 +20,8 @@ class SimpleGame {
     private collisions: CollisionManager;
     private trackingBody: Phaser.Physics.P2.Body;
 
+    private fishy: Fishy;
+
     constructor() {
         this.game
           = new Phaser.Game(800, 600,
@@ -38,6 +40,7 @@ class SimpleGame {
 
         this.game.load.image('invisible', 'invisible.png');
         this.game.load.image('cat_paw', 'cat-paw.png');
+        this.game.load.image('fishy', 'fish.png');
 
         this.catSpriteManager = new CatSpriteManager(this.game);
         //this.catSpriteManager.loadSpritesForCat("brown");
@@ -73,6 +76,8 @@ class SimpleGame {
         zone.onCatLeft.add(function(id) { console.log("The cat has left zone " + id);} );
         let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
 
+        this.fishy = new Fishy(this.game, this.collisions, 100, 400, 300, 500, 20);
+
         this.levelManager = new LevelManager(this.game, cat);
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
@@ -88,9 +93,9 @@ class SimpleGame {
         this.game.input.addMoveCallback(move, this);
     }
 
-    public update()
+    public update(time: number)
     {
-        this.levelManager.testForProgress();
+        //this.levelManager.testForProgress();
     }
 }
 
