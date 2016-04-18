@@ -36,7 +36,7 @@ export class Treat {
     this.sprite.body.mass = this.TREAT_MASS;
     this.sprite.body.setCircle(this.treatRadius);
     this.sprite.body.setCollisionGroup(collisions.treatCollisionGroup);
-    this.sprite.body.collides([collisions.catCollisionGroup], this.catCollided, this);
+    this.sprite.body.collides([collisions.catCollisionGroup, collisions.elementsCollisionGroup, collisions.wallsCollisionGroup], this.catCollided, this);
   }
 
   public catCollided(myBody, otherBody, myShape, otherShape) {

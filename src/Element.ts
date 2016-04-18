@@ -1,4 +1,4 @@
-const DEBUG = true;
+const DEBUG = false;
 import { CollisionManager } from "./CollisionManager";
 import { ActiveWorld } from "./LevelManager";
 
@@ -24,6 +24,6 @@ export class Element extends Phaser.Sprite {
 		body.loadPolygon('physics', key);
 		body.static = true;
 		body.setCollisionGroup(collisions.elementsCollisionGroup);
-		body.collides([collisions.catCollisionGroup], function(){}, this);
+		body.collides([collisions.catCollisionGroup, collisions.treatCollisionGroup], function(){}, this);
 	}
 }

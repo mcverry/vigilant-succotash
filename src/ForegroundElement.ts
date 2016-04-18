@@ -4,7 +4,6 @@ import { ZoneSensor } from "./Sensors";
 export class ForegroundElement extends Phaser.Sprite {
 	constructor(
 		game:Phaser.Game,
-		spriteGroup: Phaser.Group,
 		x:number,
 		y:number,
 		key:string,

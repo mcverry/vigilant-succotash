@@ -1,8 +1,8 @@
 /// <reference path="../definitions/phaser.d.ts"/>
 
+import { GroupManager } from "./GroupManager";
 import { CollisionManager } from "./CollisionManager";
 import { Cat } from "./Cat";
-import { Vase } from "./Vase";
 import { CatSpriteManager } from "./CatSpriteManager";
 import { LevelManager } from "./LevelManager";
 import { Treat } from "./Treat";
@@ -18,6 +18,7 @@ class SimpleGame {
     private catSpriteManager: CatSpriteManager;
     private levelManager: LevelManager;
     private collisions: CollisionManager;
+    private groupManager: GroupManager;
     private trackingBody: Phaser.Physics.P2.Body;
 
     private fishy: Fishy;
@@ -33,8 +34,6 @@ class SimpleGame {
     }
 
     public preload() {
-        this.game.load.image('really_crappy_vase_sprite', 'really-crappy-vase-sprite.png');
-        this.game.load.image('super-crappy-tall-vase', 'super-crappy-tall-vase.png');
         this.game.load.physics('physics', 'cat-physics.json');
 
         this.game.load.image('invisible', 'invisible.png');
@@ -57,6 +56,7 @@ class SimpleGame {
 
         /* Start Level */
         this.game.load.image("start_background", "levels/start/start_background.png");
+        this.game.load.image("start_sprite_floor", "levels/start/start_sprite_floor.png");
 
         /* Box Level*/
         this.game.load.image("box_background", "levels/box/box_background.png");
@@ -71,7 +71,7 @@ class SimpleGame {
 
         let worldW = 800 * 6;
         let worldH = 600;
-        
+
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.setImpactEvents(true);
         this.game.physics.p2.gravity.y = 200;
@@ -81,7 +81,6 @@ class SimpleGame {
 
         this.collisions = new CollisionManager(this.game);
 
-        //let vase = new Vase(this.game, 400, 500, 'super-crappy-tall-vase', this.collisions);
         let treat = new Treat("my_treat", this.game, this.collisions, 600, 500);
         treat.onCatGotTreat.add(function(id) {console.log("You got the " + id + " treat!!");} );
         let zone = new ZoneSensor("my_zone", this.game, this.collisions, true);
@@ -101,7 +100,8 @@ class SimpleGame {
         });
         zone.onCatLeft.add(function(id) { console.log("The cat has left zone " + id);} );
 
-        this.levelManager = new LevelManager(this.game, this.collisions);
+        this.groupManager = new GroupManager(this.game);
+        this.levelManager = new LevelManager(this.game, this.collisions, this.groupManager);
         this.levelManager.startLevel(0);
 
         this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 50);
@@ -119,13 +119,18 @@ class SimpleGame {
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
         this.game.input.addMoveCallback(move, this);
+
+        this.groupManager.getAllGroups().forEach(function(group) {
+            this.game.add.existing(group);
+        }, this);
+
     }
 }
 
 function click(pointer) {
 
         let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
-            
+
         if (bodies.length) {
             if('paw' in bodies[0].parent) {
               this.trackingBody = bodies[0].parent;

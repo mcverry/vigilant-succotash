@@ -3,10 +3,13 @@ export class CollisionManager {
 	public catCollisionGroup: Phaser.Physics.P2.CollisionGroup;
 
 	//vase
-	public vaseCollisionGroup: Phaser.Physics.P2.CollisionGroup;
+	//public wallsCollisionGroup: Phaser.Physics.P2.CollisionGroup;
 
 	//dragable
 	public pawCollisionGroup: Phaser.Physics.P2.CollisionGroup;
+
+	//walls
+	public wallsCollisionGroup: Phaser.Physics.P2.CollisionGroup;
 
 	//treat
 	public treatCollisionGroup: Phaser.Physics.P2.CollisionGroup;
@@ -25,7 +28,7 @@ export class CollisionManager {
 
 	constructor(game: Phaser.Game) {
 		this.catCollisionGroup = game.physics.p2.createCollisionGroup();
-		this.vaseCollisionGroup = game.physics.p2.createCollisionGroup();
+		this.wallsCollisionGroup = game.physics.p2.createCollisionGroup();
 		this.pawCollisionGroup = game.physics.p2.createCollisionGroup();
 		this.sensorCollisionGroup = game.physics.p2.createCollisionGroup();
 		this.fishCollisionGroup = game.physics.p2.createCollisionGroup();
@@ -33,7 +36,7 @@ export class CollisionManager {
 		this.elementsCollisionGroup = game.physics.p2.createCollisionGroup();
 
 		this.catCollidesWith
-			= [this.vaseCollisionGroup,
+			= [this.wallsCollisionGroup,
 				this.treatCollisionGroup,
 				this.sensorCollisionGroup,
 				this.fishCollisionGroup,

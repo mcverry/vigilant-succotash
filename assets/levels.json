@@ -2,7 +2,7 @@
   {
     "name": "Cat Nap",
     "worldlength" : 1600,
-    "catstart" : {"x": 1400, "y": 200},
+    "catstart" : {"x": 1400, "y": 450},
     "stages": [
       {
         "name": "box",
@@ -29,7 +29,7 @@
             "shape": "rectangle",
             "enabled" : true,
             "x1": 272,
-            "x2": 653,
+            "x2": 528,
             "y1": 139,
             "y2": 580,
             "from": -1,
@@ -53,6 +53,13 @@
             "enabled" : false,
             "from": 1,
             "to": 0
+          }
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 590,
+            "key": "start_sprite_floor"
           }
         ],
         "treats": [
