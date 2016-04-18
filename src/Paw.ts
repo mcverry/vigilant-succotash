@@ -80,7 +80,7 @@ export class Paw {
    }
 
    public isTouchy() : boolean {
-     return this.inContact;
+     return this.inContact || this.sprite.body.static;
    }
 
    public getHandle(): Phaser.Physics.P2.Body
