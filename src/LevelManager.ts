@@ -7,7 +7,7 @@ import {ForegroundElement} from "./ForegroundElement";
 import {Element} from "./Element";
 
 const WALL_DEBUG = true;
-const FULL_DEBUG_MODE = false;
+const FULL_DEBUG_MODE = true;
 
 export class LevelManager
 {
@@ -301,7 +301,7 @@ class Stage
         if (stage.zones){
             for (let zone of stage.zones)
             {
-                this.zones.push(ZoneSpecFactory.factory(zone));
+                this.zones.push(ZoneSpecFactory.factory(zone, this.startX));
             }
         }
 
@@ -403,7 +403,7 @@ class TreatSpec extends Spec
 }
 
 class ZoneSpecFactory{
-    public static factory(zone:any): ZoneSpec{
+    public static factory(zone:any, offsetx: number): ZoneSpec{
 
         let frm = zone.from;
         if (frm === undefined || frm == null) {
@@ -415,10 +415,10 @@ class ZoneSpecFactory{
         }
 
         if (zone.shape === "circle") {
-            return new CircleZoneSpec(zone.key, zone.x, zone.y, zone.raidus, zone.enabled, frm, to);
+            return new CircleZoneSpec(zone.key, zone.x + offsetx, zone.y, zone.raidus, zone.enabled, frm, to);
         }
         else {
-            return new RectangleZoneSpec(zone.key, zone.x1, zone.x2, zone.y1, zone.y2, zone.enabled, frm, to);
+            return new RectangleZoneSpec(zone.key, zone.x1 + offsetx, zone.x2 + offsetx, zone.y1, zone.y2, zone.enabled, frm, to);
         }
     }
 }

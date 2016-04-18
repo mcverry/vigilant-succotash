@@ -9,7 +9,7 @@ import { Treat } from "./Treat";
 import { ZoneSensor } from "./Sensors";
 import { Fishy } from "./Fishy";
 
-const FULL_DEBUG_MODE = false;
+const FULL_DEBUG_MODE = true;
 
 class SimpleGame {
 
