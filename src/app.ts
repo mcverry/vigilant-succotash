@@ -30,13 +30,14 @@ class SimpleGame {
 
     constructor() {
         this.game
-          = new Phaser.Game(FULL_DEBUG_MODE ? 8000 : 800, 600,
-              Phaser.CANVAS,
-              "content",
-              { preload: this.preload,
-                create: this.create,
-                update: this.update,
-              });
+            = new Phaser.Game(FULL_DEBUG_MODE ? 8000 : 800, 600,
+                Phaser.CANVAS,
+                "content",
+                {
+                    preload: this.preload,
+                    create: this.create,
+                    update: this.update,
+                });
     }
 
     public preload() {
@@ -110,7 +111,7 @@ class SimpleGame {
         /* Fish Level */
         this.game.load.image("fish_sprite_table_and_bowl", "levels/fish/fish_sprite_table_and_bowl.png");
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
-        
+
         /* SOUNDS */
         this.game.load.audio("music", "audio/Heavy-Thoughts-1.1.mp3");
         this.game.load.audio("meow", "audio/Cat-meow-1.mp3");
@@ -134,23 +135,23 @@ class SimpleGame {
         this.soundManager = new SoundManager(this.game);
         this.soundManager.addSound("meow");
 
-        let treat = new Treat("my_treat", this.game, this.collisions, this.soundManager,  600, 500);
-        treat.onCatGotTreat.add(function(id) {console.log("You got the " + id + " treat!!");} );
+        let treat = new Treat("my_treat", this.game, this.collisions, this.soundManager, 600, 500);
+        treat.onCatGotTreat.add(function(id) { console.log("You got the " + id + " treat!!"); });
         let zone = new ZoneSensor("my_zone", this.game, this.collisions, true);
         zone.asRectangle(0, 400, 800, 500);
 
-        zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
-        zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
+        zone.onCatEntered.add(function(id) { alert("The cat has entered zone " + id); });
+        zone.onCatLeft.add(function(id) { alert("The cat has left zone " + id); });
 
         //let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
         //zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
         //zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
 
         zone.onCatEntered.add(function(id) {
-          console.log("The cat has entered zone " + id);
-          zone.setEnabled(false);
+            console.log("The cat has entered zone " + id);
+            zone.setEnabled(false);
         });
-        zone.onCatLeft.add(function(id) { console.log("The cat has left zone " + id);} );
+        zone.onCatLeft.add(function(id) { console.log("The cat has left zone " + id); });
 
         this.groupManager = new GroupManager(this.game);
         this.levelManager = new LevelManager(this.game, this.collisions, this.groupManager, this.soundManager);
@@ -191,64 +192,64 @@ class SimpleGame {
 
 function click(pointer) {
 
-        let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
+    let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
 
-        if (bodies.length) {
-            if(this.levelManager.cat != null && this.levelManager.cat.anyPawsTouchy()) {
-              if('paw' in bodies[0].parent) {
+    if (bodies.length) {
+        if (this.levelManager.cat != null && this.levelManager.cat.anyPawsTouchy()) {
+            if ('paw' in bodies[0].parent) {
                 this.trackingBody = bodies[0].parent;
                 bodies[0].parent.paw.beginDrag();
-              }
-              this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 500, 1);
             }
+            this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 500, 1);
         }
     }
+}
 
 function release() {
-        this.game.physics.p2.removeSpring(this.mouseSpring);
-        if(this.trackingBody != null) {
-          this.trackingBody.paw.endDrag();
-        }
-        this.trackingBody = null;
+    this.game.physics.p2.removeSpring(this.mouseSpring);
+    if (this.trackingBody != null) {
+        this.trackingBody.paw.endDrag();
     }
+    this.trackingBody = null;
+}
 
 function move(pointer, x, y, isDown) {
-      if(this.levelManager.cat != null && !this.levelManager.cat.anyPawsTouchy()) {
+    if (this.levelManager.cat != null && !this.levelManager.cat.anyPawsTouchy()) {
         this.game.physics.p2.removeSpring(this.mouseSpring);
-        if(this.trackingBody != null) {
-          this.trackingBody.paw.endDrag();
+        if (this.trackingBody != null) {
+            this.trackingBody.paw.endDrag();
         }
         this.trackingBody = null;
-      } else {
-        if(this.trackingBody != null) {
-          this.trackingBody.static = false;
-          this.trackingBody.dynamic = true;
+    } else {
+        if (this.trackingBody != null) {
+            this.trackingBody.static = false;
+            this.trackingBody.dynamic = true;
         }
         this.mouseBody.body.x = x + this.game.camera.x;
         this.mouseBody.body.y = y + this.game.camera.y;
         // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
-      }
     }
+}
 
 function frontClawsIn() {
-  if(this.levelManager.cat != null && this.pawLock != 'back') {
-    this.levelManager.cat.enablePaws("front", true);
-    this.pawLock = 'front';
-  }
+    if (this.levelManager.cat != null && this.pawLock != 'back') {
+        this.levelManager.cat.enablePaws("front", true);
+        this.pawLock = 'front';
+    }
 }
 
 function frontClawsOut() {
-  if(this.levelManager.cat != null && this.pawLock == 'front') {
-    this.levelManager.cat.enablePaws("front", false);
-    this.pawLock = null;
-  }
+    if (this.levelManager.cat != null && this.pawLock == 'front') {
+        this.levelManager.cat.enablePaws("front", false);
+        this.pawLock = null;
+    }
 }
 
 function backClawsIn() {
-  if(this.levelManager.cat != null && this.pawLock != 'front') {
-    this.levelManager.cat.enablePaws("back", true);
-    this.pawLock = 'back';
-  }
+    if (this.levelManager.cat != null && this.pawLock != 'front') {
+        this.levelManager.cat.enablePaws("back", true);
+        this.pawLock = 'back';
+    }
 }
 
 function backClawsOut() {

@@ -20,7 +20,7 @@ export class Treat {
     id: string,
     game: Phaser.Game,
     collisions: CollisionManager,
-    sounds: SoundManager, 
+    sounds: SoundManager,
     x: number,
     y: number,
     image: string = "treat_img",
@@ -32,7 +32,7 @@ export class Treat {
     this.myCollisions = collisions;
     this.edible = edible;
     this.treatRadius = radius;
-    
+
     this.soundManager = sounds;
 
     this.sprite = game.add.sprite(x, y, image);
@@ -45,7 +45,7 @@ export class Treat {
   }
 
   public catCollided(myBody, otherBody, myShape, otherShape) {
-    if(otherBody.sprite.key == "cat_head") {
+    if (otherBody.sprite.key == "cat_head") {
       this.onCatGotTreat.dispatch(this.treatID, myBody, otherBody, myShape, otherShape);
       this.soundManager.playSound("meow");
       this.sprite.destroy();
