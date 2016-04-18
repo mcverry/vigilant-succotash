@@ -78,6 +78,15 @@ class SimpleGame {
         this.game.load.image("vase_background", "levels/vase/vase_background.png");
         this.game.load.image("vase_sprites", "levels/vase/vase_sprites.png");
 
+        /* Boot Level */
+        this.game.load.image("boot_background", "levels/boot/boot_background.png");
+        this.game.load.image("boot_sprites", "levels/boot/boot_sprites.png");
+
+        /* Bar Level */
+        this.game.load.image("bar_background", "levels/bar/bar_background.png");
+        this.game.load.image("bar_sprites_stools", "levels/bar/bar_sprites_stools.png");
+        this.game.load.image("bar_sprites_drinks", "levels/bar/bar_sprites_drinks.png");
+
         /* Fish Level */
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
     }

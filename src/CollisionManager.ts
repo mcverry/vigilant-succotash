@@ -37,6 +37,6 @@ export class CollisionManager {
 				this.treatCollisionGroup,
 				this.sensorCollisionGroup,
 				this.fishCollisionGroup,
-				this.elementsCollisionGroup];
+				this.elementsCollisionGroup]
 	}
 }

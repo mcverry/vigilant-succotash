@@ -111,6 +111,47 @@
         "zones": [
 
         ]
+      },
+      {
+        "name": "boot",
+        "number" : 4,
+        "backgroundImage": "boot_background",
+        "foregroundElements": [
+
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 400,
+            "key": "boot_sprites"
+          }
+        ],
+        "zones": [
+
+        ]
+      },
+      {
+        "name": "bar",
+        "number" : 5,
+        "backgroundImage": "bar_background",
+        "foregroundElements": [
+
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 400,
+            "key": "bar_sprites_stools"
+          },
+          {
+            "x": 400,
+            "y": 400,
+            "key": "bar_sprites_drinks"
+          }
+        ],
+        "zones": [
+
+        ]
       }
     ]
   }
