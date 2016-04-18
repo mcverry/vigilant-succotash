@@ -62,10 +62,15 @@ class SimpleGame {
         //treat.onCatGotTreat.add(function(id) {alert("You got the " + id + " treat!!");} );
         let zone = new ZoneSensor(0, this.game, this.collisions);
         zone.asRectangle(0, 400, 800, 500);
+
         zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
         zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
         
         //let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
+        //zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
+        //zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
+        let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
+
 
         this.levelManager = new LevelManager(this.game, this.collisions);
 

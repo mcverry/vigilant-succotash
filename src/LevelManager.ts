@@ -8,7 +8,7 @@ export class LevelManager
     private currentLevel: number;
 
     private game: Phaser.Game;
-    private activeWorld: ActiveWorld;
+    private activeWorld: ActiveWorldExt;
     private collisionManager: CollisionManager;
     private levels: Level[] = [];
 
@@ -24,11 +24,10 @@ export class LevelManager
         }
     }
 
-   
-   public startLevel(levelNumber:number)
+   public startLevel(levelNumber: number)
    {
       let level: Level = this.levels[levelNumber];
-      this.activeWorld = new ActiveWorld(this.game, this.collisionManager);
+      this.activeWorld = new ActiveWorldExt(this.game, this.collisionManager);
       this.currentLevel = levelNumber;
 
       this.game.world.removeAll(true, true);
@@ -42,9 +41,14 @@ export class LevelManager
        return this.cat;
    }
    
+   public getActiveWorld(): ActiveWorld{
+       return this.activeWorld;
+   }
+   
 }
 
-class ActiveWorld
+
+export class ActiveWorld
 {
     public game: Phaser.Game;
     public collisionManager: CollisionManager;
@@ -58,7 +62,27 @@ class ActiveWorld
         this.collisionManager = cm;
     }
     
-    public onTreat(id: number): void {
+    public getZone(id: string): ZoneSensor
+    {
+        for(let zone of this.zones)
+        {
+            if (zone.zoneID === id)
+            {
+                return zone;
+            }
+        }
+        return null;
+    }
+}
+
+class ActiveWorldExt extends ActiveWorld
+{
+    public constructor(game: Phaser.Game, cm: CollisionManager)
+    {
+        super(game, cm);
+    }
+    
+    private onTreat(id: number): void {
         
     }
     
@@ -69,8 +93,6 @@ class ActiveWorld
     public onZoneLeave(id: number): void {
         
     }
-    
-
 }
 
 class Level
