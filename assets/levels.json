@@ -2,7 +2,7 @@
   {
     "name": "Cat Nap",
     "worldlength" : 1600,
-    "catstart" : {"x": 1400, "y": 200},
+    "catstart" : {"x": 7600, "y": 200},
     "stages": [
       {
         "name": "start",
@@ -30,7 +30,7 @@
         ],
         "treats": [
           {
-            "x": 1050,
+            "x": 200,
             "y": 300,
             "key": "first_treat",
             "enable_zone" : "first_exit"

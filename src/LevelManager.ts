@@ -5,9 +5,10 @@ import {CollisionManager} from "./CollisionManager";
 import {GroupManager} from "./GroupManager";
 import {ForegroundElement} from "./ForegroundElement";
 import {Element} from "./Element";
+import {SoundManager} from "./SoundManager";
 
 const WALL_DEBUG = true;
-const FULL_DEBUG_MODE = true;
+const FULL_DEBUG_MODE = false;
 
 export class LevelManager
 {
@@ -17,6 +18,7 @@ export class LevelManager
     private cat: Cat;
     private currentLevel: number;
 
+    private soundManager: SoundManager;
     private game: Phaser.Game;
     private activeWorld: ActiveWorldExt;
     private groupManager: GroupManager;
@@ -24,11 +26,12 @@ export class LevelManager
     private levels: Level[] = [];
     private cam: CameraManager;
 
-    public constructor(game: Phaser.Game, collisionManager: CollisionManager, groupManager: GroupManager)
+    public constructor(game: Phaser.Game, collisionManager: CollisionManager, groupManager: GroupManager, soundManager: SoundManager)
     {
         this.game = game;
         this.collisionManager = collisionManager;
-
+        this.soundManager = soundManager;
+        
         this.cam = new CameraManager(this.game, this);
 
         this.groupManager = groupManager;
@@ -55,7 +58,7 @@ export class LevelManager
             30
         );
 
-        this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.cam, this.cat);
+        this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.cam, this.soundManager, this.cat);
         this.currentLevel = levelNumber;
 
         level.setBackground(this.activeWorld);
@@ -82,7 +85,7 @@ export class LevelManager
         level.createElements(this.activeWorld);
         level.createForegroundElements(this.activeWorld);
 
-        this.cam.change(800, 1600, true, 2000);
+        this.cam.change(800 * 9, 800 * 10, true, 5000);
    }
 
    public getCat(): Cat {
@@ -102,6 +105,7 @@ export class ActiveWorld
     public level: Level;
     public collisionManager: CollisionManager;
     public groupManager: GroupManager;
+    public soundManager: SoundManager;
 
     public treats: Treat[] = [];
     public zones: ZoneSensor[] = [];
@@ -111,11 +115,12 @@ export class ActiveWorld
     public treatToZones: {[key: string]: string} = {};
     public zoneToGoal: {[key: string]: number[]} = {};
 
-    public constructor(game: Phaser.Game, level: Level, cm: CollisionManager, gm: GroupManager){
+    public constructor(game: Phaser.Game, level: Level, cm: CollisionManager, gm: GroupManager, sm: SoundManager){
         this.level = level;
         this.game = game;
         this.collisionManager = cm;
         this.groupManager = gm;
+        this.soundManager = sm;
     }
 
     public getZone(key: string): ZoneSensor {
@@ -132,9 +137,9 @@ class ActiveWorldExt extends ActiveWorld
 {
     private cam: CameraManager;
     private cat: Cat;
-    public constructor(game: Phaser.Game, level: Level, cm: CollisionManager, grp:GroupManager, cam: CameraManager, cat: Cat)
+    public constructor(game: Phaser.Game, level: Level, cm: CollisionManager, grp:GroupManager, cam: CameraManager, soundManager: SoundManager, cat: Cat)
     {
-        super(game, level, cm, grp);
+        super(game, level, cm, grp, soundManager);
         this.cam = cam;
         this.cat = cat;
     }
@@ -178,8 +183,11 @@ class CameraManager {
     public change(x1: number, x2: number, room_lock: boolean, duration?: number) {
         this.levelManager.rightWall.body.x = x2;
         this.levelManager.leftWall.body.x = x1;
+        
+        let ease = (duration === undefined) ? Phaser.Easing.Quadratic.InOut :  Phaser.Easing.Linear.None;
+        
 
-       let dur = duration || 500;
+        let dur = duration || 500;
 
         if (!FULL_DEBUG_MODE) {
             if (!room_lock){
@@ -187,7 +195,7 @@ class CameraManager {
                 this.game.camera.deadzone = new Phaser.Rectangle(100, 100, 700, 600);
             } else {
                 this.game.camera.follow(null);
-                let tween = this.game.add.tween(this.game.camera).to({"x" : x1}, dur, Phaser.Easing.Quadratic.InOut).start();
+                let tween = this.game.add.tween(this.game.camera).to({"x" : x1}, dur, ease).start();
                 console.log(tween);
             }
         }
@@ -293,7 +301,7 @@ class Stage
         {
             for (let treat of stage.treats)
             {
-                this.treats.push(new TreatSpec(treat));
+                this.treats.push(new TreatSpec(treat, this.startX));
                 i++;
             }
         }
@@ -381,9 +389,9 @@ class TreatSpec extends Spec
     private key: string;
     private enable_zone_key: string;
 
-    public constructor(treat: any){
+    public constructor(treat: any, offsetX: number){
         super();
-        this.x = treat.x;
+        this.x = treat.x + offsetX;
         this.y = treat.y;
         this.enable_zone_key = treat.enable_zone || null;
         this.key = treat.key;
@@ -391,7 +399,7 @@ class TreatSpec extends Spec
 
     public init(activeWorld: ActiveWorld): void {
         activeWorld.treats.push(
-            new Treat(this.key, activeWorld.game, activeWorld.collisionManager, this.x, this.y)
+            new Treat(this.key, activeWorld.game, activeWorld.collisionManager, activeWorld.soundManager, this.x, this.y)
         );
 
         if (this.enable_zone_key) {
