@@ -39,6 +39,8 @@ class SimpleGame {
         this.game.load.physics('physics', 'cat-physics.json');
 
         this.game.load.image('invisible', 'invisible.png');
+        
+        this.game.load.json("levels", "levels.json");
         this.game.load.image('cat_paw', 'cat-paw.png');
         this.game.load.image('fishy', 'fish.png');
 
@@ -49,6 +51,8 @@ class SimpleGame {
         //this.catSpriteManager.loadSpritesForCat("calico");
         // this.catSpriteManager.loadSpritesForCat("black");
         this.catSpriteManager.loadSpritesForCat("hairless");
+        
+        this.game.load.image("background-1-1", "backgrounds/room-curtains.png");
     }
 
     public create() {
@@ -69,16 +73,29 @@ class SimpleGame {
         treat.onCatGotTreat.add(function(id) {console.log("You got the " + id + " treat!!");} );
         let zone = new ZoneSensor("my_zone", this.game, this.collisions, true);
         zone.asRectangle(0, 400, 800, 500);
+
+
+        zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
+        zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
+        
+        //let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
+        //zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
+        //zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
+
         zone.onCatEntered.add(function(id) {
           console.log("The cat has entered zone " + id);
           zone.setEnabled(false);
         });
         zone.onCatLeft.add(function(id) { console.log("The cat has left zone " + id);} );
-        let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
 
+        //let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
         this.fishy = new Fishy(this.game, this.collisions, 100, 400, 300, 500, 20);
 
         this.levelManager = new LevelManager(this.game, cat);
+
+
+        this.levelManager = new LevelManager(this.game, this.collisions);
+        this.levelManager.startLevel(0);
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
         this.game.physics.p2.enable(this.mouseBody, true);
@@ -86,8 +103,8 @@ class SimpleGame {
         this.mouseBody.body.setCircle(10);
         this.mouseBody.body.data.shapes[0].sensor = true;
 
-        this.handle_bodies = cat.getHandles();
-
+        this.handle_bodies = this.levelManager.getCat().getHandles() || cat.getHandles();
+        //this.handle_bodies = cat.getHandles();
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
         this.game.input.addMoveCallback(move, this);
