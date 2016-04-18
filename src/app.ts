@@ -10,7 +10,7 @@ import { ZoneSensor } from "./Sensors";
 import { Fishy } from "./Fishy";
 import { SoundManager} from "./SoundManager";
 
-const FULL_DEBUG_MODE = false;
+const FULL_DEBUG_MODE = true;
 
 class SimpleGame {
 
@@ -113,7 +113,7 @@ class SimpleGame {
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
 
         /* SOUNDS */
-        this.game.load.audio("music", "audio/Heavy-Thoughts-1.1.mp3");
+        this.game.load.audio("music", "audio/Heavy-Thoughts-Ludum-Dare-Edit.mp3");
         this.game.load.audio("meow", "audio/Cat-meow-1.mp3");
     }
 

@@ -8,7 +8,7 @@ import {Element} from "./Element";
 import {SoundManager} from "./SoundManager";
 
 const WALL_DEBUG = true;
-const FULL_DEBUG_MODE = false;
+const FULL_DEBUG_MODE = true;
 
 export class LevelManager {
     public leftWall: Phaser.Sprite;
@@ -401,7 +401,7 @@ class ZoneSpecFactory {
         }
 
         if (zone.shape === "circle") {
-            return new CircleZoneSpec(zone.key, zone.x + offsetx, zone.y, zone.raidus, zone.enabled, frm, to);
+            return new CircleZoneSpec(zone.key, zone.x + offsetx, zone.y, zone.radius, zone.enabled, frm, to);
         }
         else {
             return new RectangleZoneSpec(zone.key, zone.x1 + offsetx, zone.x2 + offsetx, zone.y1, zone.y2, zone.enabled, frm, to);
