@@ -35,28 +35,21 @@
         "backgroundImage": "start_background",
         "zones": [
           {
-            "key" : "future",
-            "shape": "circle",
-            "radius": 60,
-            "x": 100,
-            "y": 100,
-            "treat": 0
-          },
-          {
-            "key" : "future_2",
+            "key" : "first_exit",
             "shape": "rectangle",
-            "x1": 600,
-            "x2": 800,
+            "x1": 800,
+            "x2": 1000,
             "y1": 0,
-            "y2": 600,
-            "goto": 1
+            "y2": 60,
+            "enabled" : false
           }
         ],
         "treats": [
           {
-            "x": 200,
-            "y": 200,
-            "id": "treat1"
+            "x": 10s00,
+            "y": 300,
+            "key": "first_treat",
+            "enable-zone" : "first_exit"
           }
         ],
         "toys": [
