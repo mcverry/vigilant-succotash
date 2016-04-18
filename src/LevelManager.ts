@@ -39,8 +39,13 @@ export class LevelManager
 
       level.setBackground(this.activeWorld);
       level.createTreats(this.activeWorld);
+
+      this.cat = new Cat(this.game, this.collisionManager, level.cat_startx, level.cat_starty, 100, 30);
+      this.game.camera.focusOnXY(1200, 400);
+
       level.createZones(this.activeWorld);
       level.createForegroundElements(this.activeWorld);
+
    }
 
    public getCat(): Cat {
@@ -106,9 +111,14 @@ class Level
 {
    private name: String;
    private stages: Stage[] = [];
-
+   public cat_startx: number;
+   public cat_starty: number;
+   
    public constructor(level : any)
    {
+       this.cat_startx = level.catstart.x;
+       this.cat_starty = level.catstart.y;
+        
        this.name = level.name;
        for(let stage of level.stages)
        {

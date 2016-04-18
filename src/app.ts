@@ -48,6 +48,10 @@ class SimpleGame {
         //this.catSpriteManager.loadSpritesForCat("orange");
         //this.catSpriteManager.loadSpritesForCat("fat");
         //this.catSpriteManager.loadSpritesForCat("calico");
+
+        // this.catSpriteManager.loadSpritesForCat("black");
+        // this.catSpriteManager.loadSpritesForCat("hairless");
+
         //this.catSpriteManager.loadSpritesForCat("black");
         //this.catSpriteManager.loadSpritesForCat("hairless");
 
@@ -60,13 +64,13 @@ class SimpleGame {
 
         /* Fish Level */
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
-
     }
 
     public create() {
 
         let worldW = 800 * 6;
         let worldH = 600;
+        
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.setImpactEvents(true);
         this.game.physics.p2.gravity.y = 200;
@@ -119,7 +123,8 @@ class SimpleGame {
 
 function click(pointer) {
 
-        let bodies = this.game.physics.p2.hitTest(pointer.position, this.handle_bodies);
+        let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
+            
         if (bodies.length) {
             if('paw' in bodies[0].parent) {
               this.trackingBody = bodies[0].parent;
@@ -142,8 +147,8 @@ function move(pointer, x, y, isDown) {
           this.trackingBody.static = false;
           this.trackingBody.dynamic = true;
         }
-        this.mouseBody.body.x = x;
-        this.mouseBody.body.y = y;
+        this.mouseBody.body.x = x + this.game.camera.x;
+        this.mouseBody.body.y = y + this.game.camera.y;
         // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
     }
 

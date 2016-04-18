@@ -27,7 +27,7 @@ export class Cat {
 	) {
 		this.game = game;
 
-		this.spriteGroup = game.add.group(undefined, 'cat', true);
+		this.spriteGroup = game.add.group(undefined	, 'cat', false);
 
 		this.catBody = new CatBody(game, this, clsn, x, y);
 
