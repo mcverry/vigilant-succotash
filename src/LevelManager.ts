@@ -7,7 +7,7 @@ import {ForegroundElement} from "./ForegroundElement";
 import {Element} from "./Element";
 
 const WALL_DEBUG = true;
-const FULL_DEBUG_MODE = true;
+const FULL_DEBUG_MODE = false;
 
 export class LevelManager
 {
@@ -82,7 +82,7 @@ export class LevelManager
         level.createElements(this.activeWorld);
         level.createForegroundElements(this.activeWorld);
 
-        this.cam.change(800, 1600, true, 2000);
+        this.cam.change(800 * 9, 800 * 10, true, 5000);
    }
 
    public getCat(): Cat {
@@ -178,8 +178,11 @@ class CameraManager {
     public change(x1: number, x2: number, room_lock: boolean, duration?: number) {
         this.levelManager.rightWall.body.x = x2;
         this.levelManager.leftWall.body.x = x1;
+        
+        let ease = (duration === undefined) ? Phaser.Easing.Quadratic.InOut :  Phaser.Easing.Linear.None;
+        
 
-       let dur = duration || 500;
+        let dur = duration || 500;
 
         if (!FULL_DEBUG_MODE) {
             if (!room_lock){
@@ -187,7 +190,7 @@ class CameraManager {
                 this.game.camera.deadzone = new Phaser.Rectangle(100, 100, 700, 600);
             } else {
                 this.game.camera.follow(null);
-                let tween = this.game.add.tween(this.game.camera).to({"x" : x1}, dur, Phaser.Easing.Quadratic.InOut).start();
+                let tween = this.game.add.tween(this.game.camera).to({"x" : x1}, dur, ease).start();
                 console.log(tween);
             }
         }

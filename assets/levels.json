@@ -2,7 +2,7 @@
   {
     "name": "Cat Nap",
     "worldlength" : 1600,
-    "catstart" : {"x": 1400, "y": 200},
+    "catstart" : {"x": 6800, "y": 200},
     "stages": [
       {
         "name": "start",
