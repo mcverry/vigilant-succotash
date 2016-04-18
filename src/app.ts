@@ -7,6 +7,7 @@ import { CatSpriteManager } from "./CatSpriteManager";
 import { LevelManager } from "./LevelManager";
 import { Treat } from "./Treat";
 import { ZoneSensor } from "./Sensors";
+import { Fishy } from "./Fishy";
 
 class SimpleGame {
 
@@ -20,7 +21,14 @@ class SimpleGame {
     private trackingBody: Phaser.Physics.P2.Body;
 
     constructor() {
-        this.game = new Phaser.Game(800, 600, Phaser.CANVAS, "content", { preload: this.preload, create: this.create });
+        this.game
+          = new Phaser.Game(800, 600,
+              Phaser.CANVAS,
+              "content",
+              { preload: this.preload,
+                create: this.create,
+                update: this.update
+              });
     }
 
     public preload() {
