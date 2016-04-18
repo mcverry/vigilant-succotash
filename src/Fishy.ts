@@ -46,7 +46,6 @@ export class Fishy {
     let len: number = Math.sqrt(dx*dx + dy*dy);
     dx = dx / len;
     dy = dy / len;
-    console.log("dx: " + dx + "; dy: " + dy);
     this.sprite.body.velocity.x = dx*speed;
     this.sprite.body.velocity.y = dy*speed;
 

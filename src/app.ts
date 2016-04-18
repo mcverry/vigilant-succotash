@@ -92,7 +92,7 @@ class SimpleGame {
 
         this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 50);
         this.game.time.events.loop(Phaser.Timer.SECOND * (1 / 30), this.fishy.update, this.fishy);
-        this.fishy.onEaten.add(function() {console.log("The fish has been eaten, you won!");});
+        //this.fishy.onEaten.add(function() {console.log("The fish has been eaten, you won!");});
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
         this.game.physics.p2.enable(this.mouseBody, true);
