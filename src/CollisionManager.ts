@@ -2,9 +2,6 @@ export class CollisionManager {
 	//cat
 	public catCollisionGroup: Phaser.Physics.P2.CollisionGroup;
 
-	//vase
-	//public wallsCollisionGroup: Phaser.Physics.P2.CollisionGroup;
-
 	//dragable
 	public pawCollisionGroup: Phaser.Physics.P2.CollisionGroup;
 

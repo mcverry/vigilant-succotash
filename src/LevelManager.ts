@@ -6,6 +6,8 @@ import {GroupManager} from "./GroupManager";
 import {ForegroundElement} from "./ForegroundElement";
 import {Element} from "./Element";
 
+const WALL_DEBUG = true;
+
 export class LevelManager
 {
     private cat: Cat;
@@ -17,7 +19,7 @@ export class LevelManager
     private collisionManager: CollisionManager;
     private levels: Level[] = [];
     private cam: CameraManager;
-    
+
     private leftWall: Phaser.Sprite;
     private rightWall: Phaser.Sprite;
 
@@ -25,15 +27,28 @@ export class LevelManager
     {
         this.game = game;
         this.collisionManager = collisionManager;
-        
-        this.leftWall = this.game.add.sprite(0, 0, 'invisible');
-        this.rightWall = this.game.add.sprite(0, 0, 'invisible');
-        this.game.physics.p2.enable(this.leftWall, true);
-        this.game.physics.p2.enable(this.rightWall, true);
+
+        this.leftWall = new Phaser.Sprite(game, 800, 300, WALL_DEBUG ? 'debug_wall' : 'invisible');
+        this.rightWall = new Phaser.Sprite(game, 1200, 300, WALL_DEBUG ? 'debug_wall' : 'invisible');
+
+        this.game.physics.p2.enable(this.leftWall, WALL_DEBUG);
+        this.game.physics.p2.enable(this.rightWall, WALL_DEBUG);
+
+        this.game.add.existing(this.leftWall);
+        this.game.add.existing(this.rightWall);
+
         let left_body: Phaser.Physics.P2.Body = this.leftWall.body;
         let right_body: Phaser.Physics.P2.Body = this.rightWall.body;
+
+        left_body.static = true;
+        right_body.static = true;
+
         left_body.setCollisionGroup(collisionManager.wallsCollisionGroup);
         right_body.setCollisionGroup(collisionManager.wallsCollisionGroup);
+
+        left_body.collides([collisionManager.catCollisionGroup]);
+        right_body.collides([collisionManager.catCollisionGroup]);
+
         left_body.setRectangle(10, 600);
         right_body.setRectangle(10, 600);
 
@@ -76,10 +91,6 @@ export class LevelManager
       level.createElements(this.activeWorld);
       level.createForegroundElements(this.activeWorld);
 
-
-      this.cam.change(800, 1600);
-      
-      
       this.cam.change(800, 1600);
    }
 
@@ -161,7 +172,7 @@ class CameraManager {
     private game: Phaser.Game;
     private leftWall: Phaser.Sprite;
     private rightWall: Phaser.Sprite;
-    
+
     public constructor(game:Phaser.Game, leftWall:Phaser.Sprite, rightWall: Phaser.Sprite){
        this.game = game;
        this.leftWall = leftWall;
@@ -172,9 +183,9 @@ class CameraManager {
 
         this.rightWall.x = x2 + 1;
         this.leftWall.x = x1 - 1;
-        
+
         console.log(this.leftWall);
-        
+
         this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
     }
 }

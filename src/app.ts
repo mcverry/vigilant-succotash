@@ -55,6 +55,9 @@ class SimpleGame {
         //this.catSpriteManager.loadSpritesForCat("black");
         //this.catSpriteManager.loadSpritesForCat("hairless");
 
+        /* Debug Sprites */
+        this.game.load.image("debug_wall", "debug_wall.png");
+
         /* Start Level */
         this.game.load.image("start_background", "levels/start/start_background.png");
         this.game.load.image("start_sprite_floor", "levels/start/start_sprite_floor.png");
@@ -126,7 +129,7 @@ class SimpleGame {
         }, this);
 
     }
-    
+
     public update() {
         this.mouseBody.body.x = this.game.input.x + this.game.camera.x;
         this.mouseBody.body.y = this.game.input.y + this.game.camera.y;
