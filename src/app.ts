@@ -28,8 +28,7 @@ class SimpleGame {
               Phaser.CANVAS,
               "content",
               { preload: this.preload,
-                create: this.create,
-                update: this.update
+                create: this.create
               });
     }
 
@@ -91,7 +90,9 @@ class SimpleGame {
         this.levelManager = new LevelManager(this.game, this.collisions);
         this.levelManager.startLevel(0);
 
-        //this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 20);
+        this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 50);
+        this.game.time.events.loop(Phaser.Timer.SECOND * (1 / 30), this.fishy.update, this.fishy);
+        this.fishy.onEaten.add(function() {console.log("The fish has been eaten, you won!");});
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
         this.game.physics.p2.enable(this.mouseBody, true);
@@ -104,11 +105,6 @@ class SimpleGame {
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
         this.game.input.addMoveCallback(move, this);
-    }
-
-    public update(time: number)
-    {
-        //this.levelManager.testForProgress();
     }
 }
 
