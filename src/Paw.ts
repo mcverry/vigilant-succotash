@@ -25,7 +25,7 @@ export class Paw {
 
        this.game = game;
 
-       this.sprite = new Phaser.Sprite(game, x, y, "cat_paw");
+       this.sprite = new Phaser.Sprite(game, x, y, "cat_paw_blue");
        cat.getSpriteGroup().add(this.sprite);
        this.myCollisions = collisions;
        this.game.physics.p2.enable(this.sprite, DEBUG);
@@ -45,22 +45,31 @@ export class Paw {
      this.sprite.body.velocity.x = 0;
      this.sprite.body.velocity.y = 0;
      this.sprite.body.angularVelocity = 0;
+     this.sprite.loadTexture("cat_paw_black");
    }
 
    private unstick() {
+     this.sprite.loadTexture("cat_paw_blue");
      this.sprite.body.static = false;
      this.sprite.body.dynamic = true;
    }
 
-   public beginDrag() {
+   public beginDrag(isMouse : boolean = false) {
      this.stopOnContact = false;
      this.unstick();
+     this.sprite.loadTexture((isMouse ? "cat_paw_green" : "cat_paw_red"));
    }
 
    public endDrag() {
      this.stopOnContact = true;
      if(this.inContact) {
        this.stick();
+     } else {
+       if(this.isTouchy()) {
+         this.sprite.loadTexture("cat_paw_black");
+       } else {
+         this.sprite.loadTexture("cat_paw_blue");
+       }
      }
    }
 

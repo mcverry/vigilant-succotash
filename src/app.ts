@@ -47,6 +47,10 @@ class SimpleGame {
 
         this.game.load.json("levels", "levels.json");
         this.game.load.image('cat_paw', 'cat-paw.png');
+        this.game.load.image('cat_paw_red', 'cat-paw-red.png');
+        this.game.load.image('cat_paw_blue', 'cat-paw-blue.png');
+        this.game.load.image('cat_paw_green', 'cat-paw-green.png');
+        this.game.load.image('cat_paw_black', 'cat-paw-black.png');
         this.game.load.image('fishy', 'fish.png');
 
         this.catSpriteManager = new CatSpriteManager(this.game);
@@ -212,7 +216,7 @@ function click(pointer) {
         if (this.levelManager.cat != null && this.levelManager.cat.anyPawsTouchy()) {
             if ('paw' in bodies[0].parent) {
                 this.trackingBody = bodies[0].parent;
-                bodies[0].parent.paw.beginDrag();
+                bodies[0].parent.paw.beginDrag(true);
             }
             this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 500, 1);
         }
@@ -235,12 +239,21 @@ function move(pointer, x, y, isDown) {
         }
         this.trackingBody = null;
     } else {
+        this.mouseBody.body.x = x + this.game.camera.x;
+        this.mouseBody.body.y = y + this.game.camera.y;
         if (this.trackingBody != null) {
             this.trackingBody.static = false;
             this.trackingBody.dynamic = true;
-        }
-        this.mouseBody.body.x = x + this.game.camera.x;
-        this.mouseBody.body.y = y + this.game.camera.y;
+        }/* else { // Hover color
+          let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
+
+            if (bodies.length && this.levelManager.cat != null) {
+              if ('paw' in bodies[0].parent) {
+                  this.trackingBody = bodies[0].parent;
+                  bodies[0].parent.paw.beginDrag();
+              }
+            }
+        }*/
         // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
     }
 }
