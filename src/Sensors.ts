@@ -1,6 +1,6 @@
 import { CollisionManager } from "./CollisionManager"
 
-const DEBUG = false;
+const DEBUG = true;
 const SHOW_SENSORS = true;
 
 export class ZoneSensor {

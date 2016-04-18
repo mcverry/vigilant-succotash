@@ -24,7 +24,9 @@
             "x1": 273,
             "x2": 520,
             "y1": 139,
-            "y2": 580
+            "y2": 580,
+            "from": -1,
+            "to": -1
           }
         ]
       },
@@ -38,18 +40,20 @@
             "key" : "first_exit",
             "shape": "rectangle",
             "x1": 800,
-            "x2": 1000,
+            "x2": 900,
             "y1": 0,
-            "y2": 60,
-            "enabled" : false
+            "y2": 600,
+            "enabled" : false,
+            "from": 1,
+            "to": 0
           }
         ],
         "treats": [
           {
-            "x": 10s00,
+            "x": 1050,
             "y": 300,
             "key": "first_treat",
-            "enable-zone" : "first_exit"
+            "enable_zone" : "first_exit"
           }
         ],
         "toys": [

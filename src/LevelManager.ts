@@ -13,12 +13,14 @@ export class LevelManager
     private activeWorld: ActiveWorldExt;
     private collisionManager: CollisionManager;
     private levels: Level[] = [];
+    private cam: CameraManager;
 
     public constructor(game: Phaser.Game, collisionManager: CollisionManager)
     {
         this.game = game;
         this.collisionManager = collisionManager;
-
+        this.cam = new CameraManager(this.game);
+        
         let json = game.cache.getJSON("levels");
 
         for (let level of json){
@@ -33,7 +35,7 @@ export class LevelManager
       this.cat = new Cat(this.game, this.collisionManager, 400, Math.random() * 100, 100, 30);
 
       let level: Level = this.levels[levelNumber];
-      this.activeWorld = new ActiveWorldExt(this.game, this.collisionManager, this.cat.getSpriteGroup());
+      this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.cam, this.cat.getSpriteGroup());
       this.currentLevel = levelNumber;
 
 
@@ -42,9 +44,12 @@ export class LevelManager
 
       this.cat = new Cat(this.game, this.collisionManager, level.cat_startx, level.cat_starty, 100, 30);
       this.game.camera.focusOnXY(1200, 400);
+      this.game.camera.follow(this.cat.catBody.chest);
 
       level.createZones(this.activeWorld);
       level.createForegroundElements(this.activeWorld);
+      
+      this.cam.change(800, 1600);
 
    }
 
@@ -62,22 +67,25 @@ export class LevelManager
 export class ActiveWorld
 {
     public game: Phaser.Game;
+    public level: Level;
     public collisionManager: CollisionManager;
     public catSpriteGroup: Phaser.Group;
 
     public treats: Treat[] = [];
     public zones: ZoneSensor[] = [];
     public foregroundElements: ForegroundElement[] = [];
+    
+    public treatToZones: {[key: string]: string} = {};
+    public zoneToGoal: {[key: string]: number[]} = {};
 
-    public constructor(game: Phaser.Game, cm: CollisionManager, catSpriteGroup: Phaser.Group)
-    {
+    public constructor(game: Phaser.Game, level: Level, cm: CollisionManager, catSpriteGroup: Phaser.Group){
+        this.level = level;
         this.game = game;
         this.collisionManager = cm;
         this.catSpriteGroup = catSpriteGroup; //for foregroundelement
     }
 
-    public getZone(key: string): ZoneSensor
-    {
+    public getZone(key: string): ZoneSensor {
         for(let zone of this.zones) {
             if (zone.zoneKey === key) {
                 return zone;
@@ -89,30 +97,55 @@ export class ActiveWorld
 
 class ActiveWorldExt extends ActiveWorld
 {
-    public constructor(game: Phaser.Game, cm: CollisionManager, catSpriteGroup:Phaser.Group)
+    private cam: CameraManager;
+    public constructor(game: Phaser.Game, level: Level, cm: CollisionManager, cam: CameraManager, catSpriteGroup:Phaser.Group)
     {
-        super(game, cm, catSpriteGroup);
+        super(game, level, cm, catSpriteGroup);
+        this.cam = cam;
     }
 
-    public onTreat(id: number): void {
+    public onTreat(key: string): void {
 
+        let zonekey = this.treatToZones[key];
+        if(zonekey){
+            this.getZone(zonekey).setEnabled(true);
+        }
     }
 
-    public onZoneEnter(id: number): void {
-
+    public onZoneEnter(key: string): void {
+       
+        let goal = this.zoneToGoal[key];
+        console.log(this.zoneToGoal);
+        if (goal) {
+            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[0]].endX);
+        }
     }
 
-    public onZoneLeave(id: number): void {
+    public onZoneLeave(key: string): void {
 
+    }
+}
+
+class CameraManager {
+    
+    private game: Phaser.Game;
+    public constructor(game:Phaser.Game){
+       this.game = game;
+    }
+    
+    public change(x1: number, x2: number){
+         //this.game.physics.p2.setBounds(x1, 0, x2 - x2, 600, true, true, true, true, true);
+         this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
     }
 }
 
 class Level
 {
-   private name: String;
-   private stages: Stage[] = [];
    public cat_startx: number;
    public cat_starty: number;
+   public name: String;
+   public stages: Stage[] = [];
+
    
    public constructor(level : any)
    {
@@ -169,16 +202,18 @@ class Level
 
 class Stage
 {
+    public startX: number;
+    public endX: number;
+    
     private treats: TreatSpec[] = [];
     private zones: ZoneSpec[] = [];
     private toys: ToySpec[] = [];
     private foregroundElements: ForegroundElementSpec[] = [];
 
     private name: String;
-    private startX: number;
-    private endX: number;
     private backgroundImage: String;
     private game: Phaser.Game;
+
 
     public constructor(stage: any)
     {
@@ -262,33 +297,47 @@ class TreatSpec extends Spec
 {
     private x: number;
     private y: number;
-    private hidden: boolean;
-    private id: string;
+    private key: string;
+    private enable_zone_key: string;
 
     public constructor(treat: any){
         super();
         this.x = treat.x;
         this.y = treat.y;
-        this.hidden = treat.hidden;
-        this.id = treat.id;
+        this.enable_zone_key = treat.enable_zone || null;
+        this.key = treat.key;
     }
 
-    public init(activeWorld: ActiveWorld): void
-    {
+    public init(activeWorld: ActiveWorld): void {
         activeWorld.treats.push(
-            new Treat(this.id, activeWorld.game, activeWorld.collisionManager, this.x, this.y)
+            new Treat(this.key, activeWorld.game, activeWorld.collisionManager, this.x, this.y)
         );
+        
+        if (this.enable_zone_key) {
+            activeWorld.treatToZones[this.key] = this.enable_zone_key;
+        }
+ 
     }
 
 }
 
 class ZoneSpecFactory{
     public static factory(zone:any): ZoneSpec{
+        
+        let frm = zone.from;
+        if (frm === undefined || frm == null) {
+            frm = -1;
+        }
+        let to = zone.to;
+        if (to === undefined || to == null) {
+            to = -1;
+        }
+        
         if (zone.shape === "circle") {
-            return new CircleZoneSpec(zone.key, zone.x, zone.y, zone.raidus, zone.enabled);
+            return new CircleZoneSpec(zone.key, zone.x, zone.y, zone.raidus, zone.enabled, frm, to);
         }
         else {
-            return new RectangleZoneSpec(zone.key, zone.x1, zone.x2, zone.y1, zone.y2, zone.enabled);
+            return new RectangleZoneSpec(zone.key, zone.x1, zone.x2, zone.y1, zone.y2, zone.enabled, frm, to);
         }
     }
 }
@@ -296,7 +345,24 @@ class ZoneSpecFactory{
 
 
 class ZoneSpec extends Spec {
-    public init(activeWorld: ActiveWorld): void {}
+    protected key: string;
+    private frm: number;
+    private to: number;
+
+    public constructor(key: string, frm: number, to: number) {
+        super();
+        this.frm = frm;
+        this.to = to;
+        this.key = key;
+    }
+    
+    public init(activeWorld: ActiveWorld): void {
+        console.log(this.frm, this.to);
+        if (this.frm >= 0 && this.to >= 0)
+        {
+            activeWorld.zoneToGoal[this.key] = [this.frm, this.to];
+        }
+    }
 }
 
 class RectangleZoneSpec extends ZoneSpec {
@@ -304,21 +370,23 @@ class RectangleZoneSpec extends ZoneSpec {
     private x2: number;
     private y1: number;
     private y2: number;
-    private key: string;
     private enabled: boolean;
 
-    public constructor(key: string, x1: number, x2: number, y1: number, y2: number, enabled : boolean)
+
+    public constructor(key: string, x1: number, x2: number, y1: number, y2: number, enabled : boolean, from: number, to: number)
     {
-        super();
+        super(key, from, to);
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
-        this.key = key;
         this.enabled = enabled;
     }
 
     public init(activeWorld: ActiveWorld): void {
+        
+        super.init(activeWorld);
+        
         let x = new ZoneSensor(this.key, activeWorld.game, activeWorld.collisionManager, this.enabled)
         x.asRectangle(this.x1, this.y1, this.x2, this.y2);
         activeWorld.zones.push(x);
@@ -327,23 +395,24 @@ class RectangleZoneSpec extends ZoneSpec {
 
 class CircleZoneSpec extends ZoneSpec
 {
-    private key: string;
     private x: number;
     private y: number;
     private radius: number;
     private enabled: boolean;
-
-    public constructor(key: string, x: number, y: number, radius: number, enabled: boolean)
+    private goto: number;
+    
+    public constructor(key: string, x: number, y: number, radius: number, enabled: boolean, from:number, to:number)
     {
-        super();
+        super(key, from, to);
         this.x = x
         this.y = y;
         this.radius = radius;
-        this.key = key;
         this.enabled = enabled;
     }
 
     public init(activeWorld: ActiveWorld): void {
+        super.init(activeWorld);
+        
         let x = new ZoneSensor(this.key, activeWorld.game, activeWorld.collisionManager, this.enabled)
         x.asCircle(this.x, this.y, this.radius);
         activeWorld.zones.push(x);
