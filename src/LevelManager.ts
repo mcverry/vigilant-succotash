@@ -6,6 +6,9 @@ import {GroupManager} from "./GroupManager";
 import {ForegroundElement} from "./ForegroundElement";
 import {Element} from "./Element";
 
+const WALL_DEBUG = true;
+const FULL_DEBUG_MODE = true;
+
 export class LevelManager
 {
     public leftWall: Phaser.Sprite;
@@ -55,11 +58,8 @@ export class LevelManager
         this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.cam, this.cat);
         this.currentLevel = levelNumber;
 
-
         level.setBackground(this.activeWorld);
         level.createTreats(this.activeWorld);
-
-
         
         this.leftWall = this.game.add.sprite(0, 300, 'debug_wall');
         this.rightWall = this.game.add.sprite(0, 300, 'debug_wall');
@@ -74,15 +74,15 @@ export class LevelManager
         
         left_body.collides([this.collisionManager.catCollisionGroup, this.collisionManager.treatCollisionGroup]);
         right_body.collides([this.collisionManager.catCollisionGroup, this.collisionManager.treatCollisionGroup]);
-        
-   
-        
+     
         left_body.static = true;
         right_body.static = true;
-      
 
-        this.game.camera.focusOnXY(1200, 400);
-        this.game.camera.follow(this.cat.catBody.chest);
+        if (!FULL_DEBUG_MODE) {
+            this.game.camera.focusOnXY(1200, 400);
+            this.game.camera.follow(this.cat.catBody.chest);
+        }
+      
 
         level.createZones(this.activeWorld);
         level.createElements(this.activeWorld);
@@ -183,13 +183,11 @@ class CameraManager {
     }
 
     public change(x1: number, x2: number){
-
-        console.log(x1, x2);
         this.levelManager.rightWall.body.x = x2;
         this.levelManager.leftWall.body.x = x1;
-        console.log(this.levelManager.rightWall);
-        
-        this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
+        if (!FULL_DEBUG_MODE) {
+            this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
+        }
     }
 }
 
@@ -283,8 +281,8 @@ class Stage
     public constructor(stage: any)
     {
         this.name = stage.name;
-        this.startX = stage.startX;
-        this.endX = stage.endX;
+        this.startX = 800 * (9 - stage.number);
+        this.endX = 800 * (10 - stage.number);
         this.backgroundImage = stage.backgroundImage;
 
         let i = 0;

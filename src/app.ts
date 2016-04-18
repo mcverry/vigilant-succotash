@@ -9,6 +9,8 @@ import { Treat } from "./Treat";
 import { ZoneSensor } from "./Sensors";
 import { Fishy } from "./Fishy";
 
+const FULL_DEBUG_MODE = true;
+
 class SimpleGame {
 
     private game: Phaser.Game;
@@ -25,7 +27,7 @@ class SimpleGame {
 
     constructor() {
         this.game
-          = new Phaser.Game(800, 600,
+          = new Phaser.Game(FULL_DEBUG_MODE ? 8000 : 800, 600,
               Phaser.CANVAS,
               "content",
               { preload: this.preload,
@@ -67,13 +69,30 @@ class SimpleGame {
         this.game.load.image("box_foreground_box", "levels/box/box_foreground_box.png");
         this.game.load.image("box_sprite_box_and_ground", "levels/box/box_sprite_box_and_ground.png");
 
+        /* Post Level */
+        this.game.load.image("post_background", "levels/post/post_background.png");
+        this.game.load.image("post_sprites", "levels/post/post_sprites.png");
+
+        /* Vase Level */
+        this.game.load.image("vase_background", "levels/vase/vase_background.png");
+        this.game.load.image("vase_sprites", "levels/vase/vase_sprites.png");
+
+        /* Boot Level */
+        this.game.load.image("boot_background", "levels/boot/boot_background.png");
+        this.game.load.image("boot_sprites", "levels/boot/boot_sprites.png");
+
+        /* Bar Level */
+        this.game.load.image("bar_background", "levels/bar/bar_background.png");
+        this.game.load.image("bar_sprites_stools", "levels/bar/bar_sprites_stools.png");
+        this.game.load.image("bar_sprites_drinks", "levels/bar/bar_sprites_drinks.png");
+
         /* Fish Level */
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
     }
 
     public create() {
 
-        let worldW = 800 * 6;
+        let worldW = 800 * 10;
         let worldH = 600;
 
         this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -89,7 +108,6 @@ class SimpleGame {
         treat.onCatGotTreat.add(function(id) {console.log("You got the " + id + " treat!!");} );
         let zone = new ZoneSensor("my_zone", this.game, this.collisions, true);
         zone.asRectangle(0, 400, 800, 500);
-
 
         zone.onCatEntered.add(function(id) {alert ("The cat has entered zone " + id);});
         zone.onCatLeft.add(function(id) {alert ("The cat has left zone " + id);});
