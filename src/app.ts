@@ -165,11 +165,13 @@ function click(pointer) {
         let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
 
         if (bodies.length) {
-            if('paw' in bodies[0].parent) {
-              this.trackingBody = bodies[0].parent;
-              bodies[0].parent.paw.beginDrag();
+            if(this.levelManager.cat != null && this.levelManager.cat.anyPawsTouchy()) {
+              if('paw' in bodies[0].parent) {
+                this.trackingBody = bodies[0].parent;
+                bodies[0].parent.paw.beginDrag();
+              }
+              this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 500, 1);
             }
-            this.mouseSpring = this.game.physics.p2.createSpring(this.mouseBody, bodies[0], 0, 500, 1);
         }
     }
 
@@ -182,6 +184,13 @@ function release() {
     }
 
 function move(pointer, x, y, isDown) {
+      if(this.levelManager.cat != null && !this.levelManager.cat.anyPawsTouchy()) {
+        this.game.physics.p2.removeSpring(this.mouseSpring);
+        if(this.trackingBody != null) {
+          this.trackingBody.paw.endDrag();
+        }
+        this.trackingBody = null;
+      } else {
         if(this.trackingBody != null) {
           this.trackingBody.static = false;
           this.trackingBody.dynamic = true;
@@ -189,6 +198,7 @@ function move(pointer, x, y, isDown) {
         this.mouseBody.body.x = x + this.game.camera.x;
         this.mouseBody.body.y = y + this.game.camera.y;
         // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
+      }
     }
 
 function frontClawsIn() {
