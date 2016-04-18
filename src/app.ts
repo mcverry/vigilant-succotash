@@ -91,13 +91,15 @@ class SimpleGame {
         this.levelManager = new LevelManager(this.game, this.collisions);
         this.levelManager.startLevel(0);
 
+        //this.fishy = new Fishy(this.game, this.collisions, 100, 400, 400, 500, 20);
+
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
         this.game.physics.p2.enable(this.mouseBody, true);
         this.mouseBody.body.static = true;
         this.mouseBody.body.setCircle(10);
         this.mouseBody.body.data.shapes[0].sensor = true;
 
-        this.handle_bodies = this.levelManager.getCat().getHandles() || cat.getHandles();
+        this.handle_bodies = this.levelManager.getCat().getHandles();
         //this.handle_bodies = cat.getHandles();
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
