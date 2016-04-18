@@ -9,6 +9,8 @@ export class Treat {
   private treatRadius: number = 14;
   private TREAT_MASS: number = 15;
 
+  private edible = true;
+
   public onCatGotTreat: Phaser.Signal = new Phaser.Signal();
   public treatID: string;
 
@@ -17,20 +19,24 @@ export class Treat {
     game: Phaser.Game,
     collisions: CollisionManager,
     x: number,
-    y: number
+    y: number,
+    image: string = "treat_img",
+    edible: boolean = true,
+    radius: number = 14
   ) {
     this.treatID = id;
     this.game = game;
     this.myCollisions = collisions;
+    this.edible = edible;
+    this.treatRadius = radius;
 
-    this.sprite = game.add.sprite(x, y, "treat_img");
+    this.sprite = game.add.sprite(x, y, image);
     this.game.physics.p2.enable(this.sprite, DEBUG);
 
     this.sprite.body.mass = this.TREAT_MASS;
     this.sprite.body.setCircle(this.treatRadius);
     this.sprite.body.setCollisionGroup(collisions.treatCollisionGroup);
     this.sprite.body.collides([collisions.catCollisionGroup], this.catCollided, this);
-    //this.sprite.body.static = true;
   }
 
   public catCollided(myBody, otherBody, myShape, otherShape) {
