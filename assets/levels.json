@@ -2,7 +2,7 @@
   {
     "name": "Cat Nap",
     "worldlength" : 1600,
-    "catstart" : {"x": 1400, "y": 450},
+    "catstart" : {"x": 1400, "y": 200},
     "stages": [
       {
         "name": "start",
@@ -147,6 +147,94 @@
             "x": 400,
             "y": 400,
             "key": "bar_sprites_drinks"
+          }
+        ],
+        "zones": [
+
+        ]
+      },
+      {
+        "name": "outdoor_1",
+        "number" : 6,
+        "backgroundImage": "outdoor_1_background",
+        "foregroundElements": [
+
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 400,
+            "key": "outdoor_1_sprites_main"
+          },
+          {
+            "x": 400,
+            "y": 400,
+            "key": "outdoor_1_sprites_window_top"
+          }
+
+        ],
+        "zones": [
+
+        ]
+      },
+      {
+        "name": "outdoor_2",
+        "number" : 7,
+        "backgroundImage": "outdoor_2_background",
+        "foregroundElements": [
+
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 400,
+            "key": "outdoor_2_sprites_main"
+          },
+          {
+            "x": 400,
+            "y": 400,
+            "key": "outdoor_1_sprites_window_top"
+          }
+        ],
+        "zones": [
+
+        ]
+      },
+      {
+        "name": "outdoor_3",
+        "number" : 8,
+        "backgroundImage": "outdoor_3_background",
+        "foregroundElements": [
+
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 400,
+            "key": "outdoor_3_sprites_main"
+          },
+          {
+            "x": 400,
+            "y": 400,
+            "key": "outdoor_1_sprites_window_top"
+          }
+        ],
+        "zones": [
+
+        ]
+      },
+      {
+        "name": "fish",
+        "number" : 9,
+        "backgroundImage": "fish_background",
+        "foregroundElements": [
+
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 400,
+            "key": "fish_sprite_table_and_bowl"
           }
         ],
         "zones": [

@@ -13,7 +13,7 @@ export class LevelManager
 {
     public leftWall: Phaser.Sprite;
     public rightWall: Phaser.Sprite;
-    
+
     private cat: Cat;
     private currentLevel: number;
 
@@ -30,7 +30,7 @@ export class LevelManager
         this.collisionManager = collisionManager;
 
         this.cam = new CameraManager(this.game, this);
-        
+
         this.groupManager = groupManager;
         let json = game.cache.getJSON("levels");
 
@@ -44,7 +44,7 @@ export class LevelManager
         this.game.world.removeAll(true, true);
 
         let level: Level = this.levels[levelNumber];
-        
+
         this.cat = new Cat(
             this.game,
             this.collisionManager,
@@ -54,13 +54,13 @@ export class LevelManager
             100,
             30
         );
-        
+
         this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.cam, this.cat);
         this.currentLevel = levelNumber;
 
         level.setBackground(this.activeWorld);
         level.createTreats(this.activeWorld);
-        
+
         this.leftWall = this.game.add.sprite(0, 300, 'debug_wall');
         this.rightWall = this.game.add.sprite(0, 300, 'debug_wall');
         this.game.physics.p2.enable(this.leftWall, true);
@@ -71,10 +71,10 @@ export class LevelManager
         right_body.setRectangle(10, 600);
         left_body.setCollisionGroup(this.collisionManager.wallsCollisionGroup);
         right_body.setCollisionGroup(this.collisionManager.wallsCollisionGroup);
-        
+
         left_body.collides([this.collisionManager.catCollisionGroup, this.collisionManager.treatCollisionGroup]);
         right_body.collides([this.collisionManager.catCollisionGroup, this.collisionManager.treatCollisionGroup]);
-     
+
         left_body.static = true;
         right_body.static = true;
 
@@ -82,7 +82,7 @@ export class LevelManager
             this.game.camera.focusOnXY(1200, 400);
             this.game.camera.follow(this.cat.catBody.chest);
         }
-      
+
 
         level.createZones(this.activeWorld);
         level.createElements(this.activeWorld);
@@ -162,13 +162,13 @@ class ActiveWorldExt extends ActiveWorld
     }
 
     public onZoneLeave(key: string): void {
-        
+
         console.log(key);
         let goal = this.zoneToGoal[key]
         if (goal && this.cat.getX() <= this.level.stages[goal[1]].endX) {
             this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[1]].endX);
         }
-        
+
     }
 }
 
@@ -176,7 +176,7 @@ class CameraManager {
 
     private game: Phaser.Game;
     private levelManager: LevelManager
-    
+
     public constructor(game:Phaser.Game, level:LevelManager){
        this.game = game;
        this.levelManager = level;
@@ -320,7 +320,7 @@ class Stage
         if (stage.foregroundElements) {
             for (let foregroundElement of stage.foregroundElements) {
                 this.foregroundElements.push(
-                    new ForegroundElementSpec(foregroundElement)
+                    new ForegroundElementSpec(foregroundElement, this.startX)
                 );
             }
         }
@@ -570,10 +570,10 @@ class ForegroundElementSpec extends Spec {
         );
     }
 
-    constructor(foregroundElement: any) {
+    constructor(foregroundElement: any, offsetX: number) {
         super();
         this.key = foregroundElement.key;
-        this.x = foregroundElement.x;
+        this.x = foregroundElement.x + offsetX;
         this.y = foregroundElement.y;
     }
 }
