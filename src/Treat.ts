@@ -40,7 +40,6 @@ export class Treat {
   }
 
   public catCollided(myBody, otherBody, myShape, otherShape) {
-    //console.log(otherBody.sprite.key);
     if(otherBody.sprite.key == "cat_head") {
       this.onCatGotTreat.dispatch(this.treatID, myBody, otherBody, myShape, otherShape);
       this.sprite.destroy();

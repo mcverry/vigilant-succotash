@@ -20,7 +20,6 @@ export class ForegroundElement extends Phaser.Sprite {
 		}, this);
 
 		sensor.onCatLeft.add(function() {
-			console.log("leave");
 			this.setTransparent(false);
 		}, this);
 	}

@@ -5,42 +5,8 @@
     "catstart" : {"x": 1400, "y": 450},
     "stages": [
       {
-        "name": "box",
-        "startX": 0,
-        "endX": 800,
-        "backgroundImage": "box_background",
-        "foregroundElements": [
-          {
-            "x": 272,
-            "y": 139,
-            "key": "box_foreground_box"
-          }
-        ],
-        "elements" : [
-          {
-            "x": 400,
-            "y": 370,
-            "key": "box_sprite_box_and_ground"
-          }
-        ],
-        "zones": [
-          {
-            "key": "box_foreground_box",
-            "shape": "rectangle",
-            "enabled" : true,
-            "x1": 272,
-            "x2": 528,
-            "y1": 139,
-            "y2": 580,
-            "from": -1,
-            "to": -1
-          }
-        ]
-      },
-      {
         "name": "start",
-        "startX": 800,
-        "endX": 1600,
+        "number" : 0,
         "backgroundImage": "start_background",
         "zones": [
           {
@@ -77,7 +43,76 @@
             "y": 300
           }
         ]
+      },
+      {
+        "name": "box",
+        "number": 1,
+        "backgroundImage": "box_background",
+        "foregroundElements": [
+          {
+            "x": 272,
+            "y": 139,
+            "key": "box_foreground_box"
+          }
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 370,
+            "key": "box_sprite_box_and_ground"
+          }
+        ],
+        "zones": [
+          {
+            "key": "box_foreground_box",
+            "shape": "rectangle",
+            "enabled" : true,
+            "x1": 272,
+            "x2": 528,
+            "y1": 139,
+            "y2": 580,
+            "from": -1,
+            "to": -1
+          }
+        ]
+      },
+      {
+        "name": "post",
+        "number" : 2,
+        "backgroundImage": "post_background",
+        "foregroundElements": [
+
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 370,
+            "key": "post_sprites"
+          }
+        ],
+        "zones": [
+
+        ]
+      },
+      {
+        "name": "vase",
+        "number" : 3,
+        "backgroundImage": "vase_background",
+        "foregroundElements": [
+
+        ],
+        "elements" : [
+          {
+            "x": 400,
+            "y": 400,
+            "key": "vase_sprites"
+          }
+        ],
+        "zones": [
+
+        ]
       }
     ]
   }
 ]
+

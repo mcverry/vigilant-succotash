@@ -7,6 +7,7 @@ import {ForegroundElement} from "./ForegroundElement";
 import {Element} from "./Element";
 
 const WALL_DEBUG = true;
+const FULL_DEBUG_MODE = true;
 
 export class LevelManager
 {
@@ -70,7 +71,6 @@ export class LevelManager
       this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.cam);
       this.currentLevel = levelNumber;
 
-
       level.setBackground(this.activeWorld);
       level.createTreats(this.activeWorld);
 
@@ -84,8 +84,10 @@ export class LevelManager
           30
       );
 
-      this.game.camera.focusOnXY(1200, 400);
-      this.game.camera.follow(this.cat.catBody.chest);
+      if (!FULL_DEBUG_MODE) {
+          this.game.camera.focusOnXY(1200, 400);
+          this.game.camera.follow(this.cat.catBody.chest);
+      }
 
       level.createZones(this.activeWorld);
       level.createElements(this.activeWorld);
@@ -184,9 +186,9 @@ class CameraManager {
         this.rightWall.x = x2 + 1;
         this.leftWall.x = x1 - 1;
 
-        console.log(this.leftWall);
-
-        this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
+        if (!FULL_DEBUG_MODE) {
+            this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
+        }
     }
 }
 
@@ -280,8 +282,8 @@ class Stage
     public constructor(stage: any)
     {
         this.name = stage.name;
-        this.startX = stage.startX;
-        this.endX = stage.endX;
+        this.startX = 800 * (9 - stage.number);
+        this.endX = 800 * (10 - stage.number);
         this.backgroundImage = stage.backgroundImage;
 
         let i = 0;
