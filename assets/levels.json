@@ -1,11 +1,13 @@
 [
     {
-        "name" : "Cat Nap", 
+        "name" : "Cat Nap",
         "stages" : [
-            {   
-               "name" : "Stage 1", "startX" : 0, "endX" : 800,
-               "backgroundImage" : "background-1-1",
-               "zones" : [ 
+            {
+               "name" : "start",
+               "startX" : 0,
+               "endX" : 800,
+               "backgroundImage" : "levels/start/start_background.png",
+               "zones" : [
                     {"shape" : "circle", "radius": 60, "x": 100, "y" : 100, "treat" : 0},
                     {"shape" : "rectangle", "x1": 600, "x2": 800, "y1": 0, "y2": 600, "goto" : 1}
                ],
@@ -14,13 +16,13 @@
                    {"type" : "ball", "x" : 400, "y" : 300}
                ]
             },
-            {   
-               "name" : "Stage 2", "startX" : 0, "endX" : 800, 
-               "zones" : [ 
+            {
+               "name" : "Stage 2", "startX" : 0, "endX" : 800,
+               "zones" : [
                     {"shape" : "rectangle", "x1": 800, "x2": 100, "y1": 0, "y2": 600, "goto" : 0}
                ],
                "treats" : []
-            }            
+            }
         ]
     }
 ]
