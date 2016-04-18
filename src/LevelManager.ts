@@ -78,7 +78,7 @@ export class LevelManager
           this.game,
           this.collisionManager,
           this.groupManager,
-          level.cat_startx,
+          800*8 + 700,
           level.cat_starty,
           100,
           30
