@@ -31,7 +31,7 @@ export class LevelManager
       this.currentLevel = levelNumber;
 
       this.game.world.removeAll(true, true);
-      level.setBackground();
+      level.setBackground(this.activeWorld);
       level.createTreats(this.activeWorld);
       
       this.cat = new Cat(this.game, this.collisionManager, 400, Math.random() * 100, 100, 30);
@@ -82,7 +82,7 @@ class ActiveWorldExt extends ActiveWorld
         super(game, cm);
     }
     
-    private onTreat(id: number): void {
+    public onTreat(id: number): void {
         
     }
     
@@ -105,17 +105,17 @@ class Level
        this.name = level.name;
        for(let stage of level.stages)
        {
-           this.stages.push(stage);
+           this.stages.push(new Stage(stage));
        }
    }
    
-   public setBackground(){
+   public setBackground(activeWorld: ActiveWorld){
       for (let stage of this.stages){
-          stage.setBackgound();
+          stage.setBackgound(activeWorld);
       }
    }
    
-   public createTreats(activeWorld: ActiveWorld){
+   public createTreats(activeWorld: ActiveWorldExt){
       for (let stage of this.stages){
           stage.createTreats(activeWorld);
       }
@@ -126,7 +126,7 @@ class Level
       }
    }
    
-   public createZones(activeWorld: ActiveWorld){
+   public createZones(activeWorld: ActiveWorldExt){
        
         for (let stage of this.stages){
             stage.createZones(activeWorld);
@@ -159,25 +159,32 @@ class Stage
         this.backgroundImage = stage.backgroundImage;
         
         let i = 0;
-        for (let treat of stage.treats)
+        if(stage.treats)
         {
-            this.treats.push(new TreatSpec(treat, i));
-            i++;
+            for (let treat of stage.treats)
+            {
+                this.treats.push(new TreatSpec(treat));
+                i++;
+            }
         }
         
-        for (let zone of stage.zones)
-        {
-            this.zones.push(ZoneSpecFactory.factory(i, zone));
+        if (stage.zones){
+            for (let zone of stage.zones)
+            {
+                this.zones.push(ZoneSpecFactory.factory(zone));
+            }
         }
         
-        for (let toy of stage.toys)
-        {
-            this.toys.push(new ToySpec(toy));
+        if (stage.toys){
+            for (let toy of stage.toys)
+            {
+                this.toys.push(new ToySpec(toy));
+            }
         }
     }
     
-    public setBackgound(): void {
-        this.game.add.sprite(this.startX, 0, this.backgroundImage);
+    public setBackgound(activeWorld: ActiveWorld): void {
+        activeWorld.game.add.sprite(this.startX, 0, this.backgroundImage);
     }
     
     public createTreats(activeWorld: ActiveWorld): void{
@@ -212,14 +219,14 @@ class TreatSpec extends Spec
     private x: number;
     private y: number;
     private hidden: boolean;
-    private id: number;
+    private id: string;
     
-    public constructor(treat: any, id: number){
+    public constructor(treat: any){
         super();
         this.x = treat.x;
         this.y = treat.y;
         this.hidden = treat.hidden;
-        this.id = id;
+        this.id = treat.id;
     }
     
     public init(activeWorld: ActiveWorld): void
@@ -232,12 +239,12 @@ class TreatSpec extends Spec
 }
 
 class ZoneSpecFactory{
-    public static factory(id:number, zone:any): ZoneSpec{
+    public static factory(zone:any): ZoneSpec{
         if (zone.shape === "circle") {
-            return new CircleZoneSpec(id, zone.x, zone.y, zone.raidus)
+            return new CircleZoneSpec(zone.id, zone.x, zone.y, zone.raidus, zone.enabled);
         }
         else {
-            return new RectangleZoneSpec(id, zone.x1, zone.x2, zone.y1, zone.y2);
+            return new RectangleZoneSpec(zone.id, zone.x1, zone.x2, zone.y1, zone.y2, zone.enabled);
         }
     }
 }
@@ -255,44 +262,48 @@ class RectangleZoneSpec extends ZoneSpec
     private x2: number;
     private y1: number;
     private y2: number;
-    private id: number;
-    
-    public constructor(id: number, x1: number, x2: number, y1: number, y2: number)
+    private id: string;
+    private enabled: boolean;
+ 
+    public constructor(id: string, x1: number, x2: number, y1: number, y2: number, enabled : boolean)
     {
         super();
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
+        this.enabled = enabled;
     }
 
     public init(activeWorld: ActiveWorld): void {
-        activeWorld.zones.push(
-            new ZoneSensor(this.id, activeWorld.game, activeWorld.collisionManager)
-                .asRectangle(this.x1, this.y1, this.x2, this.y2));
+        let x = new ZoneSensor(this.id, activeWorld.game, activeWorld.collisionManager, this.enabled)
+        x.asRectangle(this.x1, this.y1, this.x2, this.y2);
+        activeWorld.zones.push(x);
     }
 }
 
 class CircleZoneSpec extends ZoneSpec
 {
-    private id: number;
+    private id: string;
     private x: number;
     private y: number;
     private radius: number;
+    private enabled: boolean;
     
-    public constructor(id: number, x: number, y: number, radius: number)
+    public constructor(id: string, x: number, y: number, radius: number, enabled: boolean)
     {
         super();
         this.x = x
         this.y = y;
         this.radius = radius;
         this.id = id;
+        this.enabled = enabled;
     }
     
     public init(activeWorld: ActiveWorld): void {
-        activeWorld.zones.push(
-            new ZoneSensor(this.id, activeWorld.game, activeWorld.collisionManager)
-                .asCircle(this.x, this.y, this.radius));
+        let x = new ZoneSensor(this.id, activeWorld.game, activeWorld.collisionManager, this.enabled)
+        x.asCircle(this.x, this.y, this.radius);
+        activeWorld.zones.push(x);
     }
 }
 
@@ -300,13 +311,15 @@ class ToySpec extends Spec
 {
     private x: number;
     private y: number;
-    private type: String;
+    private type: string;
+    private id: string; 
     
     public constructor(toy: any){
         super()
         this.x = toy.x;
         this.y = toy.y;
         this.type = toy.type;
+        this.id = toy.id;
     }
     
     public getX(): number {
@@ -317,10 +330,11 @@ class ToySpec extends Spec
         return this.y;
     }
     
-    public getHidden(): String{
+    public getType(): String{
         return this.type;
     }
     
+   
     public init(activeWorld: ActiveWorld): void
     {
         

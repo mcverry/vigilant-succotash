@@ -9,7 +9,7 @@
                     {"shape" : "circle", "radius": 60, "x": 100, "y" : 100, "treat" : 0},
                     {"shape" : "rectangle", "x1": 600, "x2": 800, "y1": 0, "y2": 600, "goto" : 1}
                ],
-               "treats" : [{"x" : 200, "y" : 200, "hidden" : true}],
+               "treats" : [{"x" : 200, "y" : 200, "id": "treat1"}],
                "toys" : [
                    {"type" : "ball", "x" : 400, "y" : 300}
                ]

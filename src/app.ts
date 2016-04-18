@@ -41,7 +41,7 @@ class SimpleGame {
         // this.catSpriteManager.loadSpritesForCat("black");
         this.catSpriteManager.loadSpritesForCat("hairless");
         
-        this.game.load.image("background-1-1", "room-curtains.png");
+        this.game.load.image("background-1-1", "backgrounds/room-curtains.png");
     }
 
     public create() {
@@ -77,11 +77,10 @@ class SimpleGame {
         });
         zone.onCatLeft.add(function(id) { console.log("The cat has left zone " + id);} );
 
-        let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
+        //let cat = new Cat(this.game, this.collisions, 400, Math.random() * 100, 100, 30);
 
 
         this.levelManager = new LevelManager(this.game, this.collisions);
-
         this.levelManager.startLevel(0);
 
         this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
@@ -90,8 +89,8 @@ class SimpleGame {
         this.mouseBody.body.setCircle(10);
         this.mouseBody.body.data.shapes[0].sensor = true;
 
-        this.handle_bodies = this.levelManager.getCat().getHandles();
-
+        this.handle_bodies = this.levelManager.getCat().getHandles() || cat.getHandles();
+        //this.handle_bodies = cat.getHandles();
         this.game.input.onDown.add(click, this);
         this.game.input.onUp.add(release, this);
         this.game.input.addMoveCallback(move, this);
