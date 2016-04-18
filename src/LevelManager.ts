@@ -58,7 +58,7 @@ export class LevelManager
             30
         );
 
-        this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.soundManager this.cam, this.cat);
+        this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.cam, this.soundManager, this.cat);
         this.currentLevel = levelNumber;
 
         level.setBackground(this.activeWorld);
@@ -301,7 +301,7 @@ class Stage
         {
             for (let treat of stage.treats)
             {
-                this.treats.push(new TreatSpec(treat));
+                this.treats.push(new TreatSpec(treat, this.startX));
                 i++;
             }
         }
@@ -389,9 +389,9 @@ class TreatSpec extends Spec
     private key: string;
     private enable_zone_key: string;
 
-    public constructor(treat: any){
+    public constructor(treat: any, offsetX: number){
         super();
-        this.x = treat.x;
+        this.x = treat.x + offsetX;
         this.y = treat.y;
         this.enable_zone_key = treat.enable_zone || null;
         this.key = treat.key;
