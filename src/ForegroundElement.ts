@@ -1,9 +1,10 @@
 import { ActiveWorld } from "./LevelManager";
 import { ZoneSensor } from "./Sensors";
 
-class ForegroundElement extends Phaser.Sprite {
+export class ForegroundElement extends Phaser.Sprite {
 	constructor(
 		game:Phaser.Game,
+		spriteGroup: Phaser.Group,
 		x:number,
 		y:number,
 		key:string,
@@ -11,7 +12,10 @@ class ForegroundElement extends Phaser.Sprite {
 	) {
 		super(game, x, y, key);
 
+		this.z = 30; //see Cat.sortSprites
+
 		let sensor:ZoneSensor = activeWorld.getZone(key);
+
 		sensor.onCatEntered.add(function() {
 			this.setTransparent(true);
 		}, this);

@@ -1,28 +1,70 @@
 [
-    {
-        "name" : "Cat Nap",
-        "stages" : [
-            {
-               "name" : "start",
-               "startX" : 0,
-               "endX" : 800,
-               "backgroundImage" : "levels/start/start_background.png",
-               "zones" : [
-                    {"shape" : "circle", "radius": 60, "x": 100, "y" : 100, "treat" : 0},
-                    {"shape" : "rectangle", "x1": 600, "x2": 800, "y1": 0, "y2": 600, "goto" : 1}
-               ],
-               "treats" : [{"x" : 200, "y" : 200, "id": "treat1"}],
-               "toys" : [
-                   {"type" : "ball", "x" : 400, "y" : 300}
-               ]
-            },
-            {
-               "name" : "Stage 2", "startX" : 0, "endX" : 800,
-               "zones" : [
-                    {"shape" : "rectangle", "x1": 800, "x2": 100, "y1": 0, "y2": 600, "goto" : 0}
-               ],
-               "treats" : []
-            }
+  {
+    "name": "Cat Nap",
+    "stages": [
+      {
+        "name": "box",
+        "startX": 0,
+        "endX": 800,
+        "backgroundImage": "box_background",
+        "foregroundElements": [
+          {
+            "x": 273,
+            "y": 139,
+            "key": "box_foreground_box"
+          }
+        ],
+        "zones": [
+          {
+            "key": "box_foreground_box",
+            "shape": "rectangle",
+            "enabled" : true,
+            "x1": 273,
+            "x2": 520,
+            "y1": 139,
+            "y2": 580
+          }
         ]
-    }
+      },
+      {
+        "name": "start",
+        "startX": 800,
+        "endX": 1600,
+        "backgroundImage": "start_background",
+        "zones": [
+          {
+            "key" : "future",
+            "shape": "circle",
+            "radius": 60,
+            "x": 100,
+            "y": 100,
+            "treat": 0
+          },
+          {
+            "key" : "future_2",
+            "shape": "rectangle",
+            "x1": 600,
+            "x2": 800,
+            "y1": 0,
+            "y2": 600,
+            "goto": 1
+          }
+        ],
+        "treats": [
+          {
+            "x": 200,
+            "y": 200,
+            "id": "treat1"
+          }
+        ],
+        "toys": [
+          {
+            "type": "ball",
+            "x": 400,
+            "y": 300
+          }
+        ]
+      }
+    ]
+  }
 ]

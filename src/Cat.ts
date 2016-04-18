@@ -95,6 +95,7 @@ export class Cat {
 	}
 
 	private sortSprites() : void {
+		//foreground elements = 30
 		//paw = 10
 		//left legs = 9
 		//head = 8

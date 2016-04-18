@@ -44,14 +44,23 @@ class SimpleGame {
         this.game.load.image('fishy', 'fish.png');
 
         this.catSpriteManager = new CatSpriteManager(this.game);
-        //this.catSpriteManager.loadSpritesForCat("brown");
+        this.catSpriteManager.loadSpritesForCat("brown");
         //this.catSpriteManager.loadSpritesForCat("orange");
         //this.catSpriteManager.loadSpritesForCat("fat");
         //this.catSpriteManager.loadSpritesForCat("calico");
-        // this.catSpriteManager.loadSpritesForCat("black");
-        this.catSpriteManager.loadSpritesForCat("hairless");
+        //this.catSpriteManager.loadSpritesForCat("black");
+        //this.catSpriteManager.loadSpritesForCat("hairless");
 
-        this.game.load.image("background-1-1", "backgrounds/room-curtains.png");
+        /* Start Level */
+        this.game.load.image("start_background", "levels/start/start_background.png");
+
+        /* Box Level*/
+        this.game.load.image("box_background", "levels/box/box_background.png");
+        this.game.load.image("box_foreground_box", "levels/box/box_foreground_box.png");
+
+        /* Fish Level */
+        this.game.load.image("fish_background", "levels/fish/fish_background.png");
+
     }
 
     public create() {
