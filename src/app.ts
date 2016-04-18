@@ -87,7 +87,21 @@ class SimpleGame {
         this.game.load.image("bar_sprites_stools", "levels/bar/bar_sprites_stools.png");
         this.game.load.image("bar_sprites_drinks", "levels/bar/bar_sprites_drinks.png");
 
+        /* Outdoor 1 Level */
+        this.game.load.image("outdoor_1_background", "levels/outdoor_1/outdoor_1_background.png");
+        this.game.load.image("outdoor_1_sprites_main", "levels/outdoor_1/outdoor_1_sprites_main.png");
+        this.game.load.image("outdoor_1_sprites_window_top", "levels/outdoor_1/outdoor_1_sprites_window_top.png");
+
+        /* Outdoor 2 Level */
+        this.game.load.image("outdoor_2_background", "levels/outdoor_2/outdoor_2_background.png");
+        this.game.load.image("outdoor_2_sprites_main", "levels/outdoor_2/outdoor_2_sprites_main.png");
+
+        /* Outdoor 3 Level */
+        this.game.load.image("outdoor_3_background", "levels/outdoor_3/outdoor_3_background.png");
+        this.game.load.image("outdoor_3_sprites_main", "levels/outdoor_3/outdoor_3_sprites_main.png");
+
         /* Fish Level */
+        this.game.load.image("fish_sprite_table_and_bowl", "levels/fish/fish_sprite_table_and_bowl.png");
         this.game.load.image("fish_background", "levels/fish/fish_background.png");
     }
 

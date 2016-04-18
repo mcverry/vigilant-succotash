@@ -13,7 +13,7 @@ export class LevelManager
 {
     public leftWall: Phaser.Sprite;
     public rightWall: Phaser.Sprite;
-    
+
     private cat: Cat;
     private currentLevel: number;
 
@@ -30,7 +30,7 @@ export class LevelManager
         this.collisionManager = collisionManager;
 
         this.cam = new CameraManager(this.game, this);
-        
+
         this.groupManager = groupManager;
         let json = game.cache.getJSON("levels");
 
@@ -44,7 +44,7 @@ export class LevelManager
         this.game.world.removeAll(true, true);
 
         let level: Level = this.levels[levelNumber];
-        
+
         this.cat = new Cat(
             this.game,
             this.collisionManager,
@@ -54,13 +54,13 @@ export class LevelManager
             100,
             30
         );
-        
+
         this.activeWorld = new ActiveWorldExt(this.game, level, this.collisionManager, this.groupManager, this.cam, this.cat);
         this.currentLevel = levelNumber;
 
         level.setBackground(this.activeWorld);
         level.createTreats(this.activeWorld);
-        
+
         this.leftWall = this.game.add.sprite(0, 300, 'debug_wall');
         this.rightWall = this.game.add.sprite(0, 300, 'debug_wall');
         this.game.physics.p2.enable(this.leftWall, true);
@@ -71,24 +71,18 @@ export class LevelManager
         right_body.setRectangle(10, 600);
         left_body.setCollisionGroup(this.collisionManager.wallsCollisionGroup);
         right_body.setCollisionGroup(this.collisionManager.wallsCollisionGroup);
-        
+
         left_body.collides([this.collisionManager.catCollisionGroup, this.collisionManager.treatCollisionGroup]);
         right_body.collides([this.collisionManager.catCollisionGroup, this.collisionManager.treatCollisionGroup]);
-     
+
         left_body.static = true;
         right_body.static = true;
-
-        if (!FULL_DEBUG_MODE) {
-            this.game.camera.focusOnXY(1200, 400);
-            this.game.camera.follow(this.cat.catBody.chest);
-        }
-      
 
         level.createZones(this.activeWorld);
         level.createElements(this.activeWorld);
         level.createForegroundElements(this.activeWorld);
 
-        this.cam.change(800, 1600);
+        this.cam.change(800, 1600, true, 2000);
    }
 
    public getCat(): Cat {
@@ -157,36 +151,45 @@ class ActiveWorldExt extends ActiveWorld
 
         let goal = this.zoneToGoal[key];
         if (goal) {
-            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[0]].endX);
+            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[0]].endX, false);
         }
     }
 
     public onZoneLeave(key: string): void {
-        
+
         console.log(key);
         let goal = this.zoneToGoal[key]
         if (goal && this.cat.getX() <= this.level.stages[goal[1]].endX) {
-            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[1]].endX);
+            this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[1]].endX, true);
         }
-        
+
     }
 }
 
 class CameraManager {
-
     private game: Phaser.Game;
-    private levelManager: LevelManager
-    
-    public constructor(game:Phaser.Game, level:LevelManager){
+    private levelManager: LevelManager;
+
+    public constructor(game: Phaser.Game, level: LevelManager){
        this.game = game;
        this.levelManager = level;
     }
 
-    public change(x1: number, x2: number){
+    public change(x1: number, x2: number, room_lock: boolean, duration?: number) {
         this.levelManager.rightWall.body.x = x2;
         this.levelManager.leftWall.body.x = x1;
+
+       let dur = duration || 500;
+
         if (!FULL_DEBUG_MODE) {
-            this.game.camera.bounds.setTo(x1, 0, x2 - x1, 600);
+            if (!room_lock){
+                this.game.camera.follow(this.levelManager.getCat().catBody.chest);
+                this.game.camera.deadzone = new Phaser.Rectangle(100, 100, 700, 600);
+            } else {
+                this.game.camera.follow(null);
+                let tween = this.game.add.tween(this.game.camera).to({"x" : x1}, dur, Phaser.Easing.Quadratic.InOut).start();
+                console.log(tween);
+            }
         }
     }
 }
@@ -298,7 +301,7 @@ class Stage
         if (stage.zones){
             for (let zone of stage.zones)
             {
-                this.zones.push(ZoneSpecFactory.factory(zone));
+                this.zones.push(ZoneSpecFactory.factory(zone, this.startX));
             }
         }
 
@@ -320,7 +323,7 @@ class Stage
         if (stage.foregroundElements) {
             for (let foregroundElement of stage.foregroundElements) {
                 this.foregroundElements.push(
-                    new ForegroundElementSpec(foregroundElement)
+                    new ForegroundElementSpec(foregroundElement, this.startX)
                 );
             }
         }
@@ -400,7 +403,7 @@ class TreatSpec extends Spec
 }
 
 class ZoneSpecFactory{
-    public static factory(zone:any): ZoneSpec{
+    public static factory(zone:any, offsetx: number): ZoneSpec{
 
         let frm = zone.from;
         if (frm === undefined || frm == null) {
@@ -412,10 +415,10 @@ class ZoneSpecFactory{
         }
 
         if (zone.shape === "circle") {
-            return new CircleZoneSpec(zone.key, zone.x, zone.y, zone.raidus, zone.enabled, frm, to);
+            return new CircleZoneSpec(zone.key, zone.x + offsetx, zone.y, zone.raidus, zone.enabled, frm, to);
         }
         else {
-            return new RectangleZoneSpec(zone.key, zone.x1, zone.x2, zone.y1, zone.y2, zone.enabled, frm, to);
+            return new RectangleZoneSpec(zone.key, zone.x1 + offsetx, zone.x2 + offsetx, zone.y1, zone.y2, zone.enabled, frm, to);
         }
     }
 }
@@ -570,10 +573,10 @@ class ForegroundElementSpec extends Spec {
         );
     }
 
-    constructor(foregroundElement: any) {
+    constructor(foregroundElement: any, offsetX: number) {
         super();
         this.key = foregroundElement.key;
-        this.x = foregroundElement.x;
+        this.x = foregroundElement.x + offsetX;
         this.y = foregroundElement.y;
     }
 }
