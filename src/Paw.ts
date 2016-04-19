@@ -9,8 +9,9 @@ export class Paw {
    private MAX_FORCE = 20000;
    private myCollisions: CollisionManager;
 
-   private stopOnContact: boolean = true;
    private inContact: boolean = false;
+   private hasMouse: boolean = false;
+   private dragCount: number = 0;
 
    public constructor(
        game: Phaser.Game,
@@ -25,7 +26,7 @@ export class Paw {
 
        this.game = game;
 
-       this.sprite = new Phaser.Sprite(game, x, y, "cat_paw");
+       this.sprite = new Phaser.Sprite(game, x, y, "cat_paw_blue");
        cat.getSpriteGroup().add(this.sprite);
        this.myCollisions = collisions;
        this.game.physics.p2.enable(this.sprite, DEBUG);
@@ -45,29 +46,46 @@ export class Paw {
      this.sprite.body.velocity.x = 0;
      this.sprite.body.velocity.y = 0;
      this.sprite.body.angularVelocity = 0;
+     this.sprite.loadTexture("cat_paw_black");
    }
 
    private unstick() {
+     this.sprite.loadTexture("cat_paw_blue");
      this.sprite.body.static = false;
      this.sprite.body.dynamic = true;
    }
 
-   public beginDrag() {
-     this.stopOnContact = false;
+   public beginDrag(isMouse : boolean = false) {
+     this.dragCount++;
      this.unstick();
+     if(isMouse) {
+       this.hasMouse = true;
+     }
+     this.sprite.loadTexture((this.hasMouse ? "cat_paw_green" : "cat_paw_red"));
    }
 
-   public endDrag() {
-     this.stopOnContact = true;
+   public endDrag(isMouse: boolean = false) {
+     this.dragCount--;
      if(this.inContact) {
        this.stick();
+     } else {
+       if(isMouse) {
+         this.hasMouse = false;
+       }
+       if(this.dragCount > 0) {
+         this.sprite.loadTexture(this.hasMouse ? "cat_paw_green" : "cat_paw_red");
+       } else if(this.isTouchy()) {
+         this.sprite.loadTexture("cat_paw_black");
+       } else {
+         this.sprite.loadTexture("cat_paw_blue");
+       }
      }
    }
 
    public contactBegan(otherBody, otherShape, myShape, contactEq) {
      if(otherBody != null) {
        this.inContact = true;
-       if(this.stopOnContact) {
+       if(this.dragCount <= 0) {
          this.stick();
        }
      }
