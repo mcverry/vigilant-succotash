@@ -61,20 +61,13 @@ class SimpleGame {
 
         this.catSpriteManager = new CatSpriteManager(this.game);
 
-        let randCat = Math.random();
-        if (randCat < 0.25) {
-            this.catSpriteManager.loadSpritesForCat("brown");
-        } else if (randCat < 0.5) {
-            this.catSpriteManager.loadSpritesForCat("orange");
-        } else if (randCat < 0.75) {
-            this.catSpriteManager.loadSpritesForCat("fat");
-        } else /*if (randCat < 0.64)*/ {
-            this.catSpriteManager.loadSpritesForCat("calico");
-        } /*else if (randCat < 0.80) {
-            this.catSpriteManager.loadSpritesForCat("black");
-        } else {
-            this.catSpriteManager.loadSpritesForCat("hairless");
-        } */
+        //let randCat = Math.random();
+        this.catSpriteManager.loadSpritesForCat("brown");
+        this.catSpriteManager.loadSpritesForCat("orange");
+        this.catSpriteManager.loadSpritesForCat("fat");
+        this.catSpriteManager.loadSpritesForCat("calico");
+        this.catSpriteManager.loadSpritesForCat("black");
+        this.catSpriteManager.loadSpritesForCat("hairless");
 
         /* Title Splash */
         this.game.load.image("title", "floppy-cat-title.png");
@@ -216,6 +209,43 @@ class SimpleGame {
         xKey.onDown.add(backClawsIn, this);
         xKey.onUp.add(backClawsOut, this);
 
+        let oneKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        let twoKey = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        let threeKey = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        let fourKey = this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+        let fiveKey = this.game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        let sixKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SIX);
+        oneKey.onDown.add(function() {
+          if(this.levelManager.cat != null) {
+            this.levelManager.cat.loadCat('brown/');
+          }
+        }, this);
+        twoKey.onDown.add(function() {
+          if(this.levelManager.cat != null) {
+            this.levelManager.cat.loadCat('orange/');
+          }
+        }, this);
+        threeKey.onDown.add(function() {
+          if(this.levelManager.cat != null) {
+            this.levelManager.cat.loadCat('fat/');
+          }
+        }, this);
+        fourKey.onDown.add(function() {
+          if(this.levelManager.cat != null) {
+            this.levelManager.cat.loadCat('calico/');
+          }
+        }, this);
+        fiveKey.onDown.add(function() {
+          if(this.levelManager.cat != null) {
+            this.levelManager.cat.loadCat('black/');
+          }
+        }, this);
+        sixKey.onDown.add(function() {
+          if(this.levelManager.cat != null) {
+            this.levelManager.cat.loadCat('hairless/');
+          }
+        }, this);
+
         this.groupManager.getAllGroups().forEach(function(group) {
             this.game.add.existing(group);
         }, this);
@@ -271,7 +301,7 @@ function move(pointer, x, y, isDown) {
     if (this.levelManager.cat != null && !this.levelManager.cat.anyPawsTouchy() && !DEBUG_CAT_FLY) {
         this.game.physics.p2.removeSpring(this.mouseSpring);
         if (this.trackingBody != null) {
-            this.trackingBody.paw.endDrag();
+            this.trackingBody.paw.endDrag(true);
         }
         this.trackingBody = null;
     } else {

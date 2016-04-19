@@ -181,7 +181,7 @@ export class CatSpriteManager {
 		let cat = this.CAT_SPRITES[catname];
 		for (let key in cat) {
 			if (cat.hasOwnProperty(key)) {
-				this.game.load.image(key, "cat-parts/" + cat[key]);
+				this.game.load.image(catname + "/" + key, "cat-parts/" + cat[key]);
 			}
 		}
 	}

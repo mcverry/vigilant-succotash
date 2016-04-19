@@ -45,7 +45,7 @@ export class Treat {
   }
 
   public catCollided(myBody, otherBody, myShape, otherShape) {
-    if (otherBody.sprite.key == "cat_head") {
+    if (otherBody.sprite.key.contains("cat_head")) {
       this.onCatGotTreat.dispatch(this.treatID, myBody, otherBody, myShape, otherShape);
       this.soundManager.playSound("meow");
       this.sprite.destroy();
