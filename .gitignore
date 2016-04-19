@@ -9,3 +9,4 @@ envconfig/**
 dist/
 build/
 deploy/
+assets/raw_assets/*
