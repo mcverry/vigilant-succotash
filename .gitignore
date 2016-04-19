@@ -2,7 +2,7 @@
 node_modules/
 envconfig/**
 !envconfig/myconfig.template.json
-**/*.js
+XX**/*.js
 !index.js
 **/*.js.map
 !libs/**/*.js
