@@ -1,0 +1,481 @@
+[
+  {
+    "name": "Cat Nap",
+    "catstart": {
+      "level": 0,
+      "x": 600,
+      "y": 130
+    },
+    "stages": [
+      {
+        "name": "start",
+        "number": 0,
+        "backgroundImage": "start_background",
+        "zones": [
+          {
+            "key": "start_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 590,
+            "key": "start_sprite_floor"
+          },
+          {
+            "x": 600,
+            "y": 570,
+            "key": "start_sprite_bed"
+          },
+          {
+            "x": 570,
+            "y": 220,
+            "key": "start_sprite_curtains"
+          }
+        ],
+        "treats": [
+          {
+            "x": 300,
+            "y": 300,
+            "key": "start_treat",
+            "enable_zone": "start_exit"
+          }
+        ]
+      },
+      {
+        "name": "box",
+        "number": 1,
+        "backgroundImage": "box_background",
+        "foregroundElements": [
+          {
+            "x": 272,
+            "y": 139,
+            "key": "box_foreground_box"
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 370,
+            "key": "box_sprite_box_and_ground"
+          }
+        ],
+        "zones": [
+          {
+            "key": "box_foreground_box",
+            "shape": "rectangle",
+            "enabled": true,
+            "x1": 272,
+            "x2": 528,
+            "y1": 139,
+            "y2": 580,
+            "from": -1,
+            "to": -1
+          },
+          {
+            "key": "box_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 400,
+            "y": 300,
+            "key": "box_treat",
+            "enable_zone": "box_exit"
+          }
+        ]
+      },
+      {
+        "name": "post",
+        "number": 2,
+        "backgroundImage": "post_background",
+        "foregroundElements": [],
+        "elements": [
+          {
+            "x": 400,
+            "y": 372,
+            "key": "post_sprites"
+          }
+        ],
+        "zones": [
+          {
+            "key": "post_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 250,
+            "y": 0,
+            "key": "post_treat",
+            "enable_zone": "post_exit"
+          }
+        ]
+      },
+      {
+        "name": "vase",
+        "number": 3,
+        "backgroundImage": "vase_background",
+        "foregroundElements": [
+          {
+            "x": 268,
+            "y": 201,
+            "key": "vase_foreground"
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 410,
+            "key": "vase_sprites"
+          }
+        ],
+        "zones": [
+          {
+            "key": "vase_foreground",
+            "shape": "circle",
+            "radius": 130,
+            "enabled": true,
+            "x": 400,
+            "y": 420,
+            "from": -1,
+            "to": -1
+          },
+          {
+            "key": "vase_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 400,
+            "y": 0,
+            "key": "vase_treat",
+            "enable_zone": "vase_exit"
+          }
+        ]
+      },
+      {
+        "name": "boot",
+        "number": 4,
+        "backgroundImage": "boot_background",
+        "foregroundElements": [
+          {
+            "x": 210,
+            "y": 277,
+            "key": "boot_foreground"
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 439,
+            "key": "boot_sprites"
+          }
+        ],
+        "zones": [
+          {
+            "key": "boot_foreground",
+            "shape": "circle",
+            "radius": 125,
+            "enabled": true,
+            "x": 360,
+            "y": 480,
+            "from": -1,
+            "to": -1
+          },
+          {
+            "key": "boot_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 500,
+            "y": 500,
+            "key": "boot_treat",
+            "enable_zone": "boot_exit"
+          }
+        ]
+      },
+      {
+        "name": "bar",
+        "number": 5,
+        "backgroundImage": "bar_background",
+        "foregroundElements": [
+          {
+            "x": 26,
+            "y": 130,
+            "key": "bar_foreground"
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 463,
+            "key": "bar_sprites_stools"
+          },
+          {
+            "x": 270,
+            "y": 228,
+            "key": "bar_sprites_drinks"
+          }
+        ],
+        "zones": [
+          {
+            "key": "bar_foreground",
+            "shape": "rectangle",
+            "enabled": true,
+            "x1": 60,
+            "x2": 135,
+            "y1": 148,
+            "y2": 318,
+            "from": -1,
+            "to": -1
+          },
+          {
+            "key": "bar_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 100,
+            "y": 100,
+            "key": "bar_treat",
+            "enable_zone": "bar_exit"
+          }
+        ]
+      },
+      {
+        "name": "outdoor_1",
+        "number": 6,
+        "backgroundImage": "outdoor_1_background",
+        "foregroundElements": [
+          {
+            "x": 308,
+            "y": 148,
+            "key": "outdoor_1_foreground_window"
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 454,
+            "key": "outdoor_1_sprites_main"
+          },
+          {
+            "x": 319,
+            "y": 72,
+            "key": "outdoor_1_sprites_window_top"
+          }
+        ],
+        "zones": [
+          {
+            "key": "outdoor_1_foreground_window",
+            "shape": "rectangle",
+            "enabled": true,
+            "x1": 308,
+            "x2": 328,
+            "y1": 148,
+            "y2": 320,
+            "from": -1,
+            "to": -1
+          },
+          {
+            "key": "outdoor_1_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 200,
+            "y": 400,
+            "key": "outdoor_1_treat",
+            "enable_zone": "outdoor_1_exit"
+          }
+        ]
+      },
+      {
+        "name": "outdoor_2",
+        "number": 7,
+        "backgroundImage": "outdoor_2_background",
+        "foregroundElements": [
+          {
+            "x": 220,
+            "y": 400,
+            "key": "outdoor_2_foreground_trash"
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 301,
+            "key": "outdoor_2_sprites_main"
+          }
+        ],
+        "zones": [
+          {
+            "key": "outdoor_2_foreground_trash",
+            "shape": "rectangle",
+            "enabled": true,
+            "x1": 233,
+            "x2": 335,
+            "y1": 420,
+            "y2": 560,
+            "from": -1,
+            "to": -1
+          },
+          {
+            "key": "outdoor_2_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 200,
+            "y": 400,
+            "key": "outdoor_2_treat",
+            "enable_zone": "outdoor_2_exit"
+          }
+        ]
+      },
+      {
+        "name": "outdoor_3",
+        "number": 8,
+        "backgroundImage": "outdoor_3_background",
+        "foregroundElements": [
+          {
+            "x": 452,
+            "y": 148,
+            "key": "outdoor_3_foreground_window"
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 464,
+            "key": "outdoor_3_sprites_main"
+          },
+          {
+            "x": 462,
+            "y": 72,
+            "key": "outdoor_3_sprites_window_top"
+          }
+        ],
+        "zones": [
+          {
+            "key": "outdoor_3_foreground_window",
+            "shape": "rectangle",
+            "enabled": true,
+            "x1": 452,
+            "x2": 472,
+            "y1": 148,
+            "y2": 320,
+            "from": -1,
+            "to": -1
+          },
+          {
+            "key": "outdoor_3_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 420,
+            "y": 420,
+            "key": "outdoor_3_treat",
+            "enable_zone": "outdoor_3_exit"
+          }
+        ]
+      },
+      {
+        "name": "fish",
+        "number": 9,
+        "backgroundImage": "fish_background",
+        "foregroundElements": [
+          {
+            "x": 298,
+            "y": 180,
+            "key": "fish_foreground_water"
+          }
+        ],
+        "elements": [
+          {
+            "x": 400,
+            "y": 405,
+            "key": "fish_sprite_table_and_bowl"
+          }
+        ],
+        "zones": [
+          {
+            "key": "fish_foreground_water",
+            "shape": "circle",
+            "radius": 90,
+            "enabled": true,
+            "x": 400,
+            "y": 270,
+            "from": -1,
+            "to": -1
+          }
+        ]
+      }
+    ]
+  }
+]

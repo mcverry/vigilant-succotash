@@ -6,7 +6,9 @@ envconfig/**
 **/*.js.map
 !libs/**/*.js
 .vscode/
-dist/
-build/
-deploy/
+
+XXdist/
+XXbuild/
+XXdeploy/
+
 assets/raw_assets/*
