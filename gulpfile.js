@@ -38,7 +38,7 @@ function swallowError (error) {
   // If you want details of the error in the console
   console.log(error.toString());
   //this.emit('error');
-}    
+}
 
 
 //******************************************************************************
@@ -97,13 +97,13 @@ gulp.task("bundle", function() {
 });
 
 gulp.task("deploy", function() {
-    
+
     if (deploydir === null)
     {
         console.log("Can't deploy, no target deploy folder 'deploydir' in config");
         return;
     }
-    
+
     return gulp.src(destdir + "/**/**")
         .pipe(gulp.dest(deploydir))
 });

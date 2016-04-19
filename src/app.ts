@@ -11,6 +11,10 @@ import { Fishy } from "./Fishy";
 import { SoundManager} from "./SoundManager";
 
 const FULL_DEBUG_MODE = false;
+const DEBUG = false;
+
+var DEBUG_ALLOW_CAT_FLY = false;
+var DEBUG_CAT_FLY = false;
 
 class SimpleGame {
 
@@ -25,6 +29,8 @@ class SimpleGame {
     private groupManager: GroupManager;
     private trackingBody: Phaser.Physics.P2.Body;
     private pawLock: string = null;
+
+    private splash: Phaser.Sprite;
 
     private fishy: Fishy;
 
@@ -63,6 +69,12 @@ class SimpleGame {
         this.catSpriteManager.loadSpritesForCat("black");
         this.catSpriteManager.loadSpritesForCat("hairless");
 
+        /* Title Splash */
+        this.game.load.image("title", "floppy-cat-title.png");
+
+        /* Credits */
+        this.game.load.image("credits", "credits.png");
+
         /* Treat */
         this.game.load.image("fish_treat", "fish_treat.png");
 
@@ -70,7 +82,7 @@ class SimpleGame {
         this.game.load.image("debug_wall", "debug_wall.png");
 
         /* Start Level */
-        this.game.load.image("start_background", "levels/start/start_background.png");
+        this.game.load.image("start_background", "levels/start/start_background_mona_inst.png");
         this.game.load.image("start_sprite_floor", "levels/start/start_sprite_floor.png");
         this.game.load.image("start_sprite_bed", "levels/start/start_sprite_bed.png");
         this.game.load.image("start_sprite_curtains", "levels/start/start_sprite_curtains.png");
@@ -112,7 +124,7 @@ class SimpleGame {
         this.game.load.image("outdoor_2_foreground_trash", "levels/outdoor_2/outdoor_2_foreground_trash.png");
 
         /* Outdoor 3 Level */
-        this.game.load.image("outdoor_3_background", "levels/outdoor_3/outdoor_3_background.png");
+        this.game.load.image("outdoor_3_background", "levels/outdoor_3/outdoor_3_background_lunch.png");
         this.game.load.image("outdoor_3_sprites_main", "levels/outdoor_3/outdoor_3_sprites_main.png");
         this.game.load.image("outdoor_3_sprites_window_top", "levels/outdoor_3/outdoor_3_sprites_window_top.png");
         this.game.load.image("outdoor_3_foreground_window", "levels/outdoor_3/outdoor_3_foreground_window.png");
@@ -169,10 +181,12 @@ class SimpleGame {
         this.levelManager.startLevel(0);
 
         this.fishy = new Fishy(this.game, this.collisions, 350, 250, 450, 270, 20);
-        //this.fishy.onEaten.add(function() {console.log("The fish has been eaten, you won!");});
+        this.fishy.onEaten.add(function() {
+            let credits = this.game.add.sprite(0, 0, "credits");
+        }, this);
 
-        this.mouseBody = this.game.add.sprite(100, 100, 'cursor');
-        this.game.physics.p2.enable(this.mouseBody, true);
+        this.mouseBody = this.game.add.sprite(100, 100, 'invisible');
+        this.game.physics.p2.enable(this.mouseBody, DEBUG);
         this.mouseBody.body.static = true;
         this.mouseBody.body.setCircle(10);
         this.mouseBody.body.data.shapes[0].sensor = true;
@@ -184,6 +198,12 @@ class SimpleGame {
         this.game.input.addMoveCallback(move, this);
         let zKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
         let xKey = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+
+        if (DEBUG_ALLOW_CAT_FLY) {
+            let flyKey = this.game.input.keyboard.addKey(Phaser.Keyboard.L);
+            flyKey.onDown.add(makeCatFly, this);
+        }
+
         zKey.onDown.add(frontClawsIn, this);
         zKey.onUp.add(frontClawsOut, this);
         xKey.onDown.add(backClawsIn, this);
@@ -230,6 +250,12 @@ class SimpleGame {
             this.game.add.existing(group);
         }, this);
 
+        /* Splash */
+        this.splash = new Phaser.Sprite(this.game, 35, 200, 'title');
+        this.splash.fixedToCamera = true;
+        this.game.add.existing(this.splash);
+
+
     }
 
     public update() {
@@ -240,10 +266,20 @@ class SimpleGame {
 
 function click(pointer) {
 
+    if (this.splash) {
+        this.splash.destroy();
+        this.splash = null;
+        this.levelManager.cam.change(800 * 9, 800 * 10, true, 6000);
+        return;
+    }
+
     let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
 
     if (bodies.length) {
-        if (this.levelManager.cat != null && this.levelManager.cat.anyPawsTouchy()) {
+        if (this.levelManager.cat != null && (
+                this.levelManager.cat.anyPawsTouchy()
+                || DEBUG_CAT_FLY
+            )) {
             if ('paw' in bodies[0].parent) {
                 this.trackingBody = bodies[0].parent;
                 bodies[0].parent.paw.beginDrag(true);
@@ -262,7 +298,7 @@ function release() {
 }
 
 function move(pointer, x, y, isDown) {
-    if (this.levelManager.cat != null && !this.levelManager.cat.anyPawsTouchy()) {
+    if (this.levelManager.cat != null && !this.levelManager.cat.anyPawsTouchy() && !DEBUG_CAT_FLY) {
         this.game.physics.p2.removeSpring(this.mouseSpring);
         if (this.trackingBody != null) {
             this.trackingBody.paw.endDrag();
@@ -274,17 +310,24 @@ function move(pointer, x, y, isDown) {
         if (this.trackingBody != null) {
             this.trackingBody.static = false;
             this.trackingBody.dynamic = true;
-        }/* else { // Hover color
-          let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
+        } /*else { // Hover color
+            let bodies = this.game.physics.p2.hitTest(this.mouseBody.body, this.handle_bodies);
 
             if (bodies.length && this.levelManager.cat != null) {
-              if ('paw' in bodies[0].parent) {
-                  this.trackingBody = bodies[0].parent;
-                  bodies[0].parent.paw.beginDrag();
-              }
+                if ('paw' in bodies[0].parent) {
+                    this.trackingBody = bodies[0].parent;
+                    bodies[0].parent.paw.beginDrag();
+                }
             }
         }*/
-        // line.setTo(cow.x, cow.y, mouseBody.x, mouseBody.y);
+    }
+}
+
+function makeCatFly() {
+    DEBUG_CAT_FLY = true;
+    if (this.levelManager.cat != null) {
+        this.levelManager.cat.enablePaws("front", true);
+        this.levelManager.cat.enablePaws("back", true);
     }
 }
 
