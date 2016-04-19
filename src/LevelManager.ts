@@ -7,7 +7,7 @@ import {ForegroundElement} from "./ForegroundElement";
 import {Element} from "./Element";
 import {SoundManager} from "./SoundManager";
 
-const WALL_DEBUG = true;
+const WALL_DEBUG = false;
 const FULL_DEBUG_MODE = false;
 
 export class LevelManager {
@@ -68,10 +68,10 @@ export class LevelManager {
         level.setBackground(this.activeWorld);
         level.createTreats(this.activeWorld);
 
-        this.leftWall = this.game.add.sprite(0, 300, 'debug_wall');
-        this.rightWall = this.game.add.sprite(0, 300, 'debug_wall');
-        this.game.physics.p2.enable(this.leftWall, true);
-        this.game.physics.p2.enable(this.rightWall, true);
+        this.leftWall = this.game.add.sprite(0, 300, 'invisible');
+        this.rightWall = this.game.add.sprite(0, 300, 'invisible');
+        this.game.physics.p2.enable(this.leftWall, WALL_DEBUG);
+        this.game.physics.p2.enable(this.rightWall, WALL_DEBUG);
         let left_body: Phaser.Physics.P2.Body = this.leftWall.body;
         let right_body: Phaser.Physics.P2.Body = this.rightWall.body;
         left_body.setRectangle(10, 600);
@@ -88,10 +88,6 @@ export class LevelManager {
         level.createZones(this.activeWorld);
         level.createElements(this.activeWorld);
         level.createForegroundElements(this.activeWorld);
-
-        if (!FULL_DEBUG_MODE) {
-            this.cam.change(800 * 9, 800 * 10, true, 6000);
-        }
     }
 
     public getCat(): Cat {
@@ -164,8 +160,6 @@ class ActiveWorldExt extends ActiveWorld {
     }
 
     public onZoneLeave(key: string): void {
-
-        console.log(key);
         let goal = this.zoneToGoal[key]
         if (goal && this.cat.getX() <= this.level.stages[goal[1]].endX) {
             this.cam.change(this.level.stages[goal[1]].startX, this.level.stages[goal[1]].endX, true);
@@ -195,11 +189,10 @@ class CameraManager {
         if (!FULL_DEBUG_MODE) {
             if (!room_lock) {
                 this.game.camera.follow(this.levelManager.getCat().catBody.chest);
-                this.game.camera.deadzone = new Phaser.Rectangle(100, 100, 700, 600);
+                this.game.camera.deadzone = new Phaser.Rectangle(200, 100, 700, 600);
             } else {
                 this.game.camera.follow(null);
                 let tween = this.game.add.tween(this.game.camera).to({ "x": x1 }, dur, ease).start();
-                console.log(tween);
             }
         }
     }

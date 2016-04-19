@@ -39,7 +39,7 @@ export class Treat {
     this.game.physics.p2.enable(this.sprite, DEBUG);
 
     this.sprite.body.mass = this.TREAT_MASS;
-    this.sprite.body.setCircle(this.treatRadius);
+    this.sprite.body.setRectangle(49, 23);
     this.sprite.body.setCollisionGroup(collisions.treatCollisionGroup);
     this.sprite.body.collides([collisions.catCollisionGroup, collisions.elementsCollisionGroup, collisions.wallsCollisionGroup], this.catCollided, this);
   }

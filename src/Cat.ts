@@ -125,6 +125,10 @@ export class Cat {
 		return this.catBody.belly.y;
 	}
 
+	public getHead() {
+		return this.head;
+	}
+
 	public enablePaws(frontBack: string, e: boolean) {
 		this.legs.forEach(function(leg) {
 			if(leg.getFrontBack() == frontBack) {

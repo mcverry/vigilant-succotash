@@ -2,9 +2,9 @@
   {
     "name": "Cat Nap",
     "catstart": {
-        "level" : 0,
-        "x" : 600,
-        "y" : 430
+      "level": 0,
+      "x": 600,
+      "y": 130
     },
     "stages": [
       {
@@ -13,14 +13,14 @@
         "backgroundImage": "start_background",
         "zones": [
           {
-            "key": "first_exit",
+            "key": "start_exit",
             "shape": "rectangle",
             "x1": 0,
             "x2": 100,
             "y1": 0,
             "y2": 600,
             "enabled": false,
-            "goal" : true
+            "goal": true
           }
         ],
         "elements": [
@@ -44,15 +44,8 @@
           {
             "x": 300,
             "y": 300,
-            "key": "first_treat",
-            "enable_zone": "first_exit"
-          }
-        ],
-        "toys": [
-          {
-            "type": "ball",
-            "x": 400,
-            "y": 300
+            "key": "start_treat",
+            "enable_zone": "start_exit"
           }
         ]
       },
@@ -87,22 +80,22 @@
             "to": -1
           },
           {
-            "key": "second_exit",
+            "key": "box_exit",
             "shape": "rectangle",
             "x1": 0,
             "x2": 100,
             "y1": 0,
             "y2": 600,
             "enabled": false,
-            "goal" : true
+            "goal": true
           }
         ],
         "treats": [
           {
             "x": 400,
             "y": 300,
-            "key": "second_treat",
-            "enable_zone": "second_exit"
+            "key": "box_treat",
+            "enable_zone": "box_exit"
           }
         ]
       },
@@ -114,11 +107,30 @@
         "elements": [
           {
             "x": 400,
-            "y": 342,
+            "y": 372,
             "key": "post_sprites"
           }
         ],
-        "zones": []
+        "zones": [
+          {
+            "key": "post_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 250,
+            "y": 0,
+            "key": "post_treat",
+            "enable_zone": "post_exit"
+          }
+        ]
       },
       {
         "name": "vase",
@@ -148,6 +160,24 @@
             "y": 420,
             "from": -1,
             "to": -1
+          },
+          {
+            "key": "vase_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 400,
+            "y": 0,
+            "key": "vase_treat",
+            "enable_zone": "vase_exit"
           }
         ]
       },
@@ -179,6 +209,24 @@
             "y": 480,
             "from": -1,
             "to": -1
+          },
+          {
+            "key": "boot_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 500,
+            "y": 500,
+            "key": "boot_treat",
+            "enable_zone": "boot_exit"
           }
         ]
       },
@@ -216,6 +264,24 @@
             "y2": 270,
             "from": -1,
             "to": -1
+          },
+          {
+            "key": "bar_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 100,
+            "y": 100,
+            "key": "bar_treat",
+            "enable_zone": "bar_exit"
           }
         ]
       },
@@ -253,6 +319,24 @@
             "y2": 320,
             "from": -1,
             "to": -1
+          },
+          {
+            "key": "outdoor_1_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 200,
+            "y": 400,
+            "key": "outdoor_1_treat",
+            "enable_zone": "outdoor_1_exit"
           }
         ]
       },
@@ -264,7 +348,7 @@
           {
             "x": 220,
             "y": 400,
-            "key" : "outdoor_2_foreground_trash"
+            "key": "outdoor_2_foreground_trash"
           }
         ],
         "elements": [
@@ -285,6 +369,24 @@
             "y2": 560,
             "from": -1,
             "to": -1
+          },
+          {
+            "key": "outdoor_2_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 200,
+            "y": 400,
+            "key": "outdoor_2_treat",
+            "enable_zone": "outdoor_2_exit"
           }
         ]
       },
@@ -322,6 +424,24 @@
             "y2": 320,
             "from": -1,
             "to": -1
+          },
+          {
+            "key": "outdoor_3_exit",
+            "shape": "rectangle",
+            "x1": 0,
+            "x2": 100,
+            "y1": 0,
+            "y2": 600,
+            "enabled": false,
+            "goal": true
+          }
+        ],
+        "treats": [
+          {
+            "x": 420,
+            "y": 420,
+            "key": "outdoor_3_treat",
+            "enable_zone": "outdoor_3_exit"
           }
         ]
       },
