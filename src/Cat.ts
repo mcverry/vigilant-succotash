@@ -11,7 +11,7 @@ import { CatBody } from "./Body";
 export class Cat {
 	public catBody: CatBody;
 	private game: Phaser.Game;
-	public catName: string = "fat/";
+	public catName: string = "brown/";
 
 	private spriteGroup: Phaser.Group;
 
