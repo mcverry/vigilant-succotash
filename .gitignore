@@ -12,4 +12,4 @@ XXdist/
 XXbuild/
 XXdeploy/
 
-assets/raw_assets/*
+raw_assets/
