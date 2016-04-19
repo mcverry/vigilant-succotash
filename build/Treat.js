@@ -23,7 +23,7 @@ var Treat = (function () {
         this.sprite.body.collides([collisions.catCollisionGroup, collisions.elementsCollisionGroup, collisions.wallsCollisionGroup], this.catCollided, this);
     }
     Treat.prototype.catCollided = function (myBody, otherBody, myShape, otherShape) {
-        if (otherBody.sprite.key.contains("cat_head")) {
+        if (otherBody.sprite.key.indexOf("cat_head") >= 0) {
             this.onCatGotTreat.dispatch(this.treatID, myBody, otherBody, myShape, otherShape);
             this.soundManager.playSound("meow");
             this.sprite.destroy();
