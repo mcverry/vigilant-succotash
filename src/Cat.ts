@@ -11,6 +11,7 @@ import { CatBody } from "./Body";
 export class Cat {
 	public catBody: CatBody;
 	private game: Phaser.Game;
+	public catName: string = "fat/";
 
 	private spriteGroup: Phaser.Group;
 
@@ -94,6 +95,16 @@ export class Cat {
 		this.head.collides(clsn.catCollidesWith);
 
 		this.sortSprites();
+	}
+
+	public loadCat(catName: string) {
+		this.catName = catName;
+		this.catBody.loadCat(catName);
+		this.legs.forEach(function(leg) {
+			leg.loadCat(catName);
+		});
+		this.tail.loadCat(catName);
+		this.head.loadCat(catName);
 	}
 
 	private sortSprites() : void {

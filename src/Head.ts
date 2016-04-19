@@ -19,7 +19,7 @@ export class CatHead {
 	) {
 		x += attach.getHeadAttachPoint()[0];
 		y += attach.getHeadAttachPoint()[1];
-		this.headSprite = new Phaser.Sprite(game, x, y, "cat_head", 1);
+		this.headSprite = new Phaser.Sprite(game, x, y, cat.catName + "cat_head", 1);
 
 		game.physics.p2.enable(this.headSprite, DEBUG);
 
@@ -39,6 +39,10 @@ export class CatHead {
 				attach.getHeadAttachPoint(),
 				this.MAX_FORCE);
 		neck.setLimits(-Math.PI / 4, Math.PI / 4);
+	}
+
+	public loadCat(catName: string) {
+		this.headSprite.loadTexture(catName + "cat_head");
 	}
 
 	public setZIndex(zIndex:number) {

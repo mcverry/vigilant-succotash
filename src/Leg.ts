@@ -45,13 +45,13 @@ export class CatLeg {
 
 		let isFrontLeg = frontBack == "front";
 
-		this.thighBone = new Phaser.Sprite(game, x, y + (this.THIGH_BONE_LENGTH / 2), 'cat_' + leftRight + "_" + frontBack + '_thigh', 1);
-		this.shinBone = new Phaser.Sprite(game, this.thighBone.x, this.thighBone.y + (this.thighBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_shin', 1);
+		this.thighBone = new Phaser.Sprite(game, x, y + (this.THIGH_BONE_LENGTH / 2), cat.catName + 'cat_' + leftRight + "_" + frontBack + '_thigh', 1);
+		this.shinBone = new Phaser.Sprite(game, this.thighBone.x, this.thighBone.y + (this.thighBone.height / 2), cat.catName + 'cat_' + leftRight + "_" + frontBack + '_shin', 1);
 		if (!isFrontLeg) {
-			this.footBone = new Phaser.Sprite(game, this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_foot', 1);
-			this.toeBone = new Phaser.Sprite(game, this.footBone.x, this.footBone.y + (this.footBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_toe', 1);
+			this.footBone = new Phaser.Sprite(game, this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), cat.catName + 'cat_' + leftRight + "_" + frontBack + '_foot', 1);
+			this.toeBone = new Phaser.Sprite(game, this.footBone.x, this.footBone.y + (this.footBone.height / 2), cat.catName + 'cat_' + leftRight + "_" + frontBack + '_toe', 1);
 		} else {
-			this.toeBone = new Phaser.Sprite(game, this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), 'cat_' + leftRight + "_" + frontBack + '_toe', 1);
+			this.toeBone = new Phaser.Sprite(game, this.shinBone.x, this.shinBone.y + (this.shinBone.height / 2), cat.catName + 'cat_' + leftRight + "_" + frontBack + '_toe', 1);
 		}
 
 		cat.getSpriteGroup().add(this.thighBone);
@@ -154,6 +154,17 @@ export class CatLeg {
 			this.toeBone,
 			0, 0
 		);
+	}
+
+	public loadCat(catName: string) {
+		this.thighBone.loadTexture(catName + 'cat_' + this.leftRight + "_" + this.frontBack + '_thigh');
+		this.shinBone.loadTexture(catName + 'cat_' + this.leftRight + "_" + this.frontBack + '_shin');
+		if (this.frontBack != 'front') {
+			this.footBone.loadTexture(catName + 'cat_' + this.leftRight + "_" + this.frontBack + '_foot');
+			this.toeBone.loadTexture(catName + 'cat_' + this.leftRight + "_" + this.frontBack + '_toe');
+		} else {
+			this.toeBone.loadTexture(catName + 'cat_' + this.leftRight + "_" + this.frontBack + '_toe');
+		}
 	}
 
 	public setCollisionGroup(collisionGroup: Phaser.Physics.P2.CollisionGroup) {

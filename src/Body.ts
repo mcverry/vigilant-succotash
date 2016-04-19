@@ -5,7 +5,13 @@ const DEBUG = false;
 
 export class CatBodyPart extends Phaser.Sprite {
 	private radius: number;
-	constructor(game: Phaser.Game, x:number, y:number, key:string, radius:number, clsn:CollisionManager) {
+	constructor(
+		game: Phaser.Game,
+		x:number,
+		y:number,
+		key:string,
+		radius:number,
+		clsn:CollisionManager) {
 		super(game, x, y, key);
 		this.radius = radius;
 
@@ -48,9 +54,9 @@ export class CatBody {
 		startX: number,
 		startY: number
 	) {
-		this.chest = new CatBodyPart(game, startX, startY, DEBUG ? '' : 'cat_chest', this.RADIUS, clsn);
-		this.belly = new CatBodyPart(game, startX + this.SEPERATION, startY, DEBUG ? '' : 'cat_belly', this.RADIUS, clsn);
-		this.butt = new CatBodyPart(game, startX + (this.SEPERATION * 2), startY, DEBUG ? '' : 'cat_butt', this.RADIUS, clsn);
+		this.chest = new CatBodyPart(game, startX, startY, DEBUG ? '' : cat.catName + 'cat_chest', this.RADIUS, clsn);
+		this.belly = new CatBodyPart(game, startX + this.SEPERATION, startY, DEBUG ? '' : cat.catName + 'cat_belly', this.RADIUS, clsn);
+		this.butt = new CatBodyPart(game, startX + (this.SEPERATION * 2), startY, DEBUG ? '' : cat.catName + 'cat_butt', this.RADIUS, clsn);
 
 		let parts: Phaser.Sprite[] = [this.chest, this.belly, this.butt];
 
@@ -67,6 +73,12 @@ export class CatBody {
 				this.MAX_FORCE);
 			joint.setLimits(-Math.PI / 6, Math.PI / 6)
 		}
+	}
+
+	public loadCat(catName: string) {
+		this.chest.loadTexture(catName + 'cat_chest');
+		this.belly.loadTexture(catName + 'cat_belly');
+		this.butt.loadTexture(catName + 'cat_butt');
 	}
 
 	setZIndex(zIndex:number) :void {

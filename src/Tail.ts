@@ -25,7 +25,7 @@ export class CatTail {
 	) {
 		x += attach.getTailAttachPoint()[0];
 		y += attach.getTailAttachPoint()[1];
-		let joint: Phaser.Sprite = new Phaser.Sprite(game, x + this.jointLength*0.5, y, "cat_tail_0", 1);
+		let joint: Phaser.Sprite = new Phaser.Sprite(game, x + this.jointLength*0.5, y, cat.catName + "cat_tail_0", 1);
 		cat.getSpriteGroup().add(joint);
 		game.physics.p2.enable(joint, DEBUG);
 		joint.body.setRectangle(this.jointLength, this.jointWidth);
@@ -45,7 +45,7 @@ export class CatTail {
 			x -= this.jointLength;
 
 			let lastJoint: Phaser.Sprite = this.tailJoints[i-1];
-			joint = new Phaser.Sprite(game, x + this.jointLength*0.5, y + this.jointWidth*0.5, "cat_tail_" + i, 1);
+			joint = new Phaser.Sprite(game, x + this.jointLength*0.5, y + this.jointWidth*0.5, cat.catName + "cat_tail_" + i, 1);
 			cat.getSpriteGroup().add(joint)
 			game.physics.p2.enable(joint, DEBUG);
 			let tailConstraint: Phaser.Physics.P2.RevoluteConstraint
@@ -59,6 +59,12 @@ export class CatTail {
 			joint.body.mass = this.JOINT_MASS;
 			tailConstraint.setLimits(this.tailFlexMin, this.tailFlexMax);
 			this.tailJoints.push(joint);
+		}
+	}
+
+	public loadCat(catName: string) {
+		for(let i: number = 0; i < this.tailJoints.length; ++i) {
+			this.tailJoints[i].loadTexture(catName + "cat_tail_" + i);
 		}
 	}
 
