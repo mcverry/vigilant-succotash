@@ -237,7 +237,7 @@
         "foregroundElements": [
           {
             "x": 26,
-            "y": 82,
+            "y": 130,
             "key": "bar_foreground"
           }
         ],
@@ -249,7 +249,7 @@
           },
           {
             "x": 270,
-            "y": 180,
+            "y": 228,
             "key": "bar_sprites_drinks"
           }
         ],
@@ -260,8 +260,8 @@
             "enabled": true,
             "x1": 60,
             "x2": 135,
-            "y1": 100,
-            "y2": 270,
+            "y1": 148,
+            "y2": 318,
             "from": -1,
             "to": -1
           },

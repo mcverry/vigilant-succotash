@@ -13,7 +13,7 @@ import { SoundManager} from "./SoundManager";
 const FULL_DEBUG_MODE = false;
 const DEBUG = false;
 
-var DEBUG_ALLOW_CAT_FLY = true;
+var DEBUG_ALLOW_CAT_FLY = false;
 var DEBUG_CAT_FLY = false;
 
 class SimpleGame {
