@@ -226,7 +226,7 @@ function click(pointer) {
 function release() {
     this.game.physics.p2.removeSpring(this.mouseSpring);
     if (this.trackingBody != null) {
-        this.trackingBody.paw.endDrag();
+        this.trackingBody.paw.endDrag(true);
     }
     this.trackingBody = null;
 }

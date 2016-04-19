@@ -9,8 +9,9 @@ export class Paw {
    private MAX_FORCE = 20000;
    private myCollisions: CollisionManager;
 
-   private stopOnContact: boolean = true;
    private inContact: boolean = false;
+   private hasMouse: boolean = false;
+   private dragCount: number = 0;
 
    public constructor(
        game: Phaser.Game,
@@ -55,17 +56,25 @@ export class Paw {
    }
 
    public beginDrag(isMouse : boolean = false) {
-     this.stopOnContact = false;
+     this.dragCount++;
      this.unstick();
-     this.sprite.loadTexture((isMouse ? "cat_paw_green" : "cat_paw_red"));
+     if(isMouse) {
+       this.hasMouse = true;
+     }
+     this.sprite.loadTexture((this.hasMouse ? "cat_paw_green" : "cat_paw_red"));
    }
 
-   public endDrag() {
-     this.stopOnContact = true;
+   public endDrag(isMouse: boolean = false) {
+     this.dragCount--;
      if(this.inContact) {
        this.stick();
      } else {
-       if(this.isTouchy()) {
+       if(isMouse) {
+         this.hasMouse = false;
+       }
+       if(this.dragCount > 0) {
+         this.sprite.loadTexture(this.hasMouse ? "cat_paw_green" : "cat_paw_red");
+       } else if(this.isTouchy()) {
          this.sprite.loadTexture("cat_paw_black");
        } else {
          this.sprite.loadTexture("cat_paw_blue");
@@ -76,7 +85,7 @@ export class Paw {
    public contactBegan(otherBody, otherShape, myShape, contactEq) {
      if(otherBody != null) {
        this.inContact = true;
-       if(this.stopOnContact) {
+       if(this.dragCount <= 0) {
          this.stick();
        }
      }
