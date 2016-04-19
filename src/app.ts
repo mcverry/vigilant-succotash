@@ -56,19 +56,19 @@ class SimpleGame {
         this.catSpriteManager = new CatSpriteManager(this.game);
 
         let randCat = Math.random();
-        if (randCat < 0.16) {
+        if (randCat < 0.25) {
             this.catSpriteManager.loadSpritesForCat("brown");
-        } else if (randCat < 0.32) {
+        } else if (randCat < 0.5) {
             this.catSpriteManager.loadSpritesForCat("orange");
-        } else if (randCat < 0.48) {
+        } else if (randCat < 0.75) {
             this.catSpriteManager.loadSpritesForCat("fat");
-        } else if (randCat < 0.64) {
+        } else /*if (randCat < 0.64)*/ {
             this.catSpriteManager.loadSpritesForCat("calico");
-        } else if (randCat < 0.80) {
+        } /*else if (randCat < 0.80) {
             this.catSpriteManager.loadSpritesForCat("black");
         } else {
             this.catSpriteManager.loadSpritesForCat("hairless");
-        }
+        } */
 
         /* Treat */
         this.game.load.image("fish_treat", "fish_treat.png");
