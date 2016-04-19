@@ -3,7 +3,7 @@ var DEBUG = false;
 var CatTail = (function () {
     function CatTail(game, cat, x, y, attach) {
         this.JOINT_MASS = 5;
-        this.MAX_FORCE = 20000;
+        this.MAX_FORCE = 100000;
         this.jointCount = 8;
         this.jointLength = 15;
         this.jointWidth = 7;

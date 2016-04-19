@@ -6,7 +6,7 @@ import { Cat } from "./Cat";
 
 export class CatTail {
 	private JOINT_MASS: number = 5;
-	private MAX_FORCE: number = 20000;
+	private MAX_FORCE: number = 100000;
 
 	private jointCount: number = 8;
 	private jointLength: number = 15;
