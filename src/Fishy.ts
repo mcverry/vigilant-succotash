@@ -64,7 +64,7 @@ export class Fishy {
   }
 
   public touchy(myBody, otherBody, myShape, otherShape) {
-    if(otherBody.sprite.key == "cat_head") {
+    if(otherBody.sprite.key.indexOf("cat_head") >= 0) {
       this.onEaten.dispatch();
       this.sprite.destroy();
       this.sprite = null;
